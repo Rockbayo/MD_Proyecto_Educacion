@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border-0 animate-slide-up">
+    <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-exclamation-diamond-fill"></i>
+                1. Problema y Contexto
+            </h3>
+            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
+        </div>
+    </div>
+    <div class="card-body p-4 p-md-5">
+        <div class="mb-4">
+            <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-info-circle text-primary"></i> Contexto general del tema
+            </h5>
+            <p class="text-justify lh-base" style="color: #334155;">
+                La brecha digital en el ecosistema educativo constituye un problema estructural que restringe el acceso equitativo a la información y altera la calidad del aprendizaje. La literatura científica evidencia que la carencia de infraestructura tecnológica interrumpe la continuidad educativa y profundiza las desigualdades socioeconómicas, consolidándose tras la pandemia. El acceso a las Tecnologías de la Información y las Comunicaciones (TIC) ha transitado de ser una herramienta complementaria a un predictor determinante del éxito académico.
+            </p>
+        </div>
+        
+        <div class="mb-4">
+            <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-bullseye text-primary"></i> Delimitación del problema específico
+            </h5>
+            <div class="p-3 bg-light rounded-3 border">
+                <p class="text-justify mb-0 lh-base fw-medium" style="color: #1e293b;">
+                    Cuantificar y modelar el impacto de la brecha digital (definida como la ausencia de acceso simultáneo a internet y computador dedicado en el hogar) y las condiciones socioeconómicas sobre el rendimiento académico estandarizado de los estudiantes de educación media, evaluando su comportamiento como factor de exclusión estructural.
+                </p>
+            </div>
+        </div>
+        
+        <div class="mt-4">
+            <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
+                <i class="bi bi-layers-half text-primary"></i> Análisis del fenómeno por niveles
+            </h5>
+            <ul class="list-group list-group-flush border rounded-3 overflow-hidden">
+                <li class="list-group-item p-3">
+                    <span class="badge bg-primary me-2"><i class="bi bi-globe me-1"></i> Global</span>
+                    <strong>Polarización del desempeño académico:</strong> entre economías en desarrollo y países miembros de la OCDE (pruebas PISA), correlacionada con los índices de penetración de banda ancha y capital tecnológico familiar.
+                </li>
+                <li class="list-group-item p-3">
+                    <span class="badge bg-primary me-2"><i class="bi bi-flag me-1"></i> Nacional (Colombia)</span>
+                    <strong>Desigualdad en pruebas Saber 11 (ICFES):</strong> donde la literatura evidencia que el déficit de infraestructura tecnológica en los hogares explica proporciones significativas de la varianza en el puntaje global, distanciando los centros urbanos principales de las periferias.
+                </li>
+                <li class="list-group-item p-3">
+                    <span class="badge bg-primary me-2"><i class="bi bi-geo-alt me-1"></i> Regional</span>
+                    <strong>Segregación educativa y digital en Cundinamarca:</strong> contrastando el desempeño en cascos urbanos consolidados (como Chía) frente a sectores rurales con déficit de infraestructura tecnológica.
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

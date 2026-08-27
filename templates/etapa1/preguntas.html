@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border-0 animate-slide-up">
+    <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-patch-question-fill"></i>
+                2. Preguntas de Investigación y Conocimiento
+            </h3>
+            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
+        </div>
+    </div>
+    <div class="card-body p-4 p-md-5">
+        <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
+            <i class="bi bi-lightbulb-fill fs-3 text-primary mt-1"></i>
+            <div>
+                <h5 class="fw-bold alert-heading mb-1">Pregunta principal de investigación</h5>
+                <p class="mb-0 fs-6">¿En qué medida el acceso concurrente a recursos tecnológicos (internet y computador) y el estrato socioeconómico determinan la probabilidad de que un estudiante de educación media alcance un desempeño superior en las pruebas estandarizadas?</p>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-list-nested text-primary"></i> Preguntas secundarias
+        </h5>
+        <ol class="list-group list-group-numbered mb-4 border rounded-3 overflow-hidden">
+            <li class="list-group-item p-3">¿Cómo varía el impacto de la desconexión digital en los puntajes de competencias críticas (matemáticas y lectura) al contrastar instituciones educativas urbanas y rurales de la región?</li>
+            <li class="list-group-item p-3">¿Cuáles son los clústeres sociodemográficos y espaciales que concentran el mayor riesgo de bajo rendimiento académico derivado de la carencia de infraestructura tecnológica?</li>
+            <li class="list-group-item p-3">¿En qué magnitud el capital cultural (nivel educativo de los padres) mitiga o amplifica el efecto negativo de no poseer acceso a internet en el hogar?</li>
+        </ol>
+
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-graph-up-arrow text-primary"></i> Conocimiento esperado a partir de los datos
+        </h5>
+        <div class="p-3 bg-light rounded-3 border">
+            <p class="text-justify mb-0 lh-base" style="color: #334155;">
+                Se espera extraer patrones predictivos para cuantificar la importancia relativa (<em class="text-primary fw-semibold">feature importance</em>) de las variables tecnológicas frente a las socioeconómicas. El análisis permitirá identificar perfiles de riesgo mediante modelos de clasificación y detectar agrupaciones geográficas vulnerables (algoritmos de <em class="text-primary fw-semibold">clustering</em>). Esto proporcionará evidencia empírica estructurada que demuestre cómo la infraestructura digital condiciona los resultados académicos, sirviendo de insumo técnico para el diseño de estrategias de mitigación en el sector educativo local.
+            </p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card border-0 animate-slide-up">
+    <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 d-flex align-items-center gap-2">
+                <i class="bi bi-list-check"></i>
+                3. Necesidades de Información
+            </h3>
+            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
+        </div>
+    </div>
+    <div class="card-body p-4 p-md-5">
+        
+        <div class="row g-4 mb-4">
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3 border h-100">
+                    <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-sliders text-primary"></i> Parámetros Generales
+                    </h5>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent"><strong>Población / unidad de análisis:</strong> Estudiante individual de educación media que presenta evaluación académica estandarizada.</li>
+                        <li class="list-group-item bg-transparent"><strong>Entidades involucradas:</strong> Estudiantes, Hogares (núcleo familiar), Instituciones Educativas (IE).</li>
+                        <li class="list-group-item bg-transparent"><strong>Periodo de análisis:</strong> 2019 - 2025.</li>
+                        <li class="list-group-item bg-transparent"><strong>Nivel de granularidad:</strong> Microdatos (un registro por cada estudiante).</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-light rounded-3 border h-100">
+                    <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
+                        <i class="bi bi-geo text-primary"></i> Cobertura Geográfica
+                    </h5>
+                    <ul class="list-group list-group-flush bg-transparent">
+                        <li class="list-group-item bg-transparent">
+                            <span class="badge bg-primary me-2"><i class="bi bi-globe me-1"></i> Global</span> Países participantes en PISA.
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <span class="badge bg-primary me-2"><i class="bi bi-flag me-1"></i> Nacional</span> Totalidad del territorio colombiano.
+                        </li>
+                        <li class="list-group-item bg-transparent">
+                            <span class="badge bg-primary me-2"><i class="bi bi-geo-alt me-1"></i> Regional</span> Departamento de Cundinamarca.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-table text-primary"></i> Variables Relevantes
+        </h5>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 22%;">Categoría</th>
+                        <th style="width: 38%;">Variable</th>
+                        <th style="width: 40%;">Justificación analítica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge bg-primary"><i class="bi bi-bullseye me-1"></i> Objetivo (Target)</span></td>
+                        <td class="fw-semibold">Puntaje Global, Puntaje Matemáticas, Puntaje Lectura</td>
+                        <td class="text-muted">Variables dependientes continuas para medir el rendimiento académico.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-info text-dark"><i class="bi bi-wifi me-1"></i> Tecnológicas</span></td>
+                        <td class="fw-semibold">Acceso a Internet (Sí/No), Computador (Sí/No)</td>
+                        <td class="text-muted">Variables independientes predictoras para medir la brecha digital doméstica.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-success"><i class="bi bi-cash-stack me-1"></i> Socioeconómicas</span></td>
+                        <td class="fw-semibold">Estrato socioeconómico, Nivel educativo padres</td>
+                        <td class="text-muted">Covariables necesarias para aislar y medir el peso del capital económico frente al tecnológico.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-warning text-dark"><i class="bi bi-gender-ambiguous me-1"></i> Demográficas</span></td>
+                        <td class="fw-semibold">Género del estudiante</td>
+                        <td class="text-muted">Variable de control para detectar posibles sesgos en el desempeño.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-secondary"><i class="bi bi-building me-1"></i> Institucionales</span></td>
+                        <td class="fw-semibold">Naturaleza IE (Oficial/No Oficial)</td>
+                        <td class="text-muted">Evalúa el impacto del entorno escolar frente a la vulnerabilidad del hogar.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-dark"><i class="bi bi-pin-map me-1"></i> Geográficas</span></td>
+                        <td class="fw-semibold">Municipio, Área (Urbano/Rural)</td>
+                        <td class="text-muted">Variables clave para aplicar algoritmos de agrupamiento espacial (clustering).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-arrows-angle-expand text-primary"></i> Variables para Comparación de Escalas
+        </h5>
+        <ol class="list-group list-group-numbered border rounded-3 overflow-hidden">
+            <li class="list-group-item p-3"><strong>Desempeño académico estandarizado:</strong> Homologación de resultados entre distintas pruebas mediante normalización estadística.</li>
+            <li class="list-group-item p-3"><strong>Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
+            <li class="list-group-item p-3"><strong>Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}
