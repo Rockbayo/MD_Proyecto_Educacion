@@ -1,34 +1,61 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="card shadow-sm border-0">
-            <div class="card-body p-5">
-                <h1 class="card-title text-primary mb-3">Proyecto de Minería de Datos</h1>
-                <h4 class="card-subtitle mb-4 text-muted">Tema: Educación, acceso y desempeño académico</h4>
+<div class="row justify-content-center animate-slide-up">
+    <div class="col-lg-8">
+        <div class="card border-0">
+            <div class="card-body p-4 p-md-5">
+                <div class="d-flex align-items-center gap-3 mb-2">
+                    <span class="badge bg-primary px-3 py-2"><i class="bi bi-mortarboard-fill me-1"></i> Universidad &bull; Minería de Datos</span>
+                </div>
+                <h1 class="card-title text-primary mb-2 fw-extrabold">Proyecto de Minería de Datos</h1>
+                <h4 class="card-subtitle mb-4 text-muted fs-5">Tema: Educación, acceso y desempeño académico</h4>
                 
-                <hr class="my-4">
+                <hr class="my-4" style="border-color: var(--border-color);">
                 
-                <h5 class="fw-bold">Integrantes del Equipo</h5>
+                <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-people text-primary"></i> Integrantes del Equipo
+                </h5>
                 <ul class="list-group list-group-flush mb-4">
-                    <li class="list-group-item">Oscar Robayo Olaya</li>
-                    <li class="list-group-item">Oscar Felipe Delgado</li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-person-circle text-primary me-3 fs-5"></i>
+                        <span>Oscar Robayo Olaya</span>
+                    </li>
+                    <li class="list-group-item d-flex align-items-center">
+                        <i class="bi bi-person-circle text-primary me-3 fs-5"></i>
+                        <span>Oscar Felipe Delgado</span>
+                    </li>
                 </ul>
 
-                <h5 class="fw-bold">Control de Versiones y Despliegue</h5>
-                <table class="table table-bordered mt-3">
-                    <tbody>
-                        <tr>
-                            <th scope="row" class="bg-light">Repositorio GitHub</th>
-                            <td><a href="#" target="_blank" class="text-decoration-none">Enlace al repositorio</a></td>
-                        </tr>
-                        <tr>
-                            <th scope="row" class="bg-light">Rama activa</th>
-                            <td><span class="badge bg-secondary">feature/etapa-1</span></td>
-                        </tr>
-                    </tbody>
-                </table>
+                <h5 class="fw-bold mb-3 d-flex align-items-center gap-2">
+                    <i class="bi bi-git text-primary"></i> Control de Versiones y Despliegue
+                </h5>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <tbody>
+                            <tr>
+                                <th scope="row" class="bg-light w-25 text-muted fw-semibold">
+                                    <i class="bi bi-github me-1"></i> Repositorio GitHub
+                                </th>
+                                <td>
+                                    <a href="#" target="_blank" class="text-decoration-none fw-semibold">
+                                        Enlace al repositorio <i class="bi bi-box-arrow-up-right ms-1 small"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th scope="row" class="bg-light text-muted fw-semibold">
+                                    <i class="bi bi-diagram-2 me-1"></i> Rama activa
+                                </th>
+                                <td>
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-git me-1"></i> feature/etapa-1
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
