@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">3. Necesidades de Información</h3>
+    </div>
+    <div class="card-body p-4">
+        
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <h5 class="fw-bold text-secondary">Parámetros Generales</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Población o unidad de análisis:</strong> Estudiante individual de educación media que presenta evaluación académica estandarizada.</li>
+                    <li class="list-group-item"><strong>Entidades involucradas:</strong> Estudiantes, Hogares (núcleo familiar), Instituciones Educativas (IE).</li>
+                    <li class="list-group-item"><strong>Periodo de análisis:</strong> 2019 - 2025.</li>
+                    <li class="list-group-item"><strong>Nivel de granularidad:</strong> Microdatos (un registro por cada estudiante).</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5 class="fw-bold text-secondary">Cobertura Geográfica</h5>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><strong>Global:</strong> Países participantes en PISA.</li>
+                    <li class="list-group-item"><strong>Nacional:</strong> Totalidad del territorio colombiano.</li>
+                    <li class="list-group-item"><strong>Regional:</strong> Departamento de Cundinamarca.</li>
+                </ul>
+            </div>
+        </div>
+
+        <h5 class="fw-bold text-secondary">Variables Relevantes</h5>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Categoría</th>
+                        <th>Variable</th>
+                        <th>Justificación analítica</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Objetivo (Target)</strong></td>
+                        <td>Puntaje Global, Puntaje Matemáticas, Puntaje Lectura</td>
+                        <td>Variables dependientes continuas para medir el rendimiento académico.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Tecnológicas</strong></td>
+                        <td>Acceso a Internet (Sí/No), Computador (Sí/No)</td>
+                        <td>Variables independientes predictoras para medir la brecha digital doméstica.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Socioeconómicas</strong></td>
+                        <td>Estrato socioeconómico, Nivel educativo padres</td>
+                        <td>Covariables necesarias para aislar y medir el peso del capital económico frente al tecnológico.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Demográficas</strong></td>
+                        <td>Género del estudiante</td>
+                        <td>Variable de control para detectar posibles sesgos en el desempeño.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Institucionales</strong></td>
+                        <td>Naturaleza IE (Oficial/No Oficial)</td>
+                        <td>Evalúa el impacto del entorno escolar frente a la vulnerabilidad del hogar.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geográficas</strong></td>
+                        <td>Municipio, Área (Urbano/Rural)</td>
+                        <td>Variables clave para aplicar algoritmos de agrupamiento espacial (clustering).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h5 class="fw-bold text-secondary">Variables para Comparación de Escalas</h5>
+        <ol class="list-group list-group-numbered">
+            <li class="list-group-item"><strong>Desempeño académico estandarizado:</strong> Homologación de resultados entre distintas pruebas mediante normalización estadística.</li>
+            <li class="list-group-item"><strong>Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
+            <li class="list-group-item"><strong>Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
+        </ol>
+    </div>
+</div>
+{% endblock %}

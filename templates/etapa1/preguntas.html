@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">2. Preguntas de Investigación y Conocimiento</h3>
+    </div>
+    <div class="card-body p-4">
+        <div class="alert alert-info">
+            <h5 class="fw-bold alert-heading">Pregunta principal de investigación</h5>
+            <p class="mb-0">¿En qué medida el acceso concurrente a recursos tecnológicos (internet y computador) y el estrato socioeconómico determinan la probabilidad de que un estudiante de educación media alcance un desempeño superior en las pruebas estandarizadas?</p>
+        </div>
+
+        <h5 class="fw-bold text-secondary mt-4">Preguntas secundarias</h5>
+        <ol class="list-group list-group-numbered mb-4">
+            <li class="list-group-item">¿Cómo varía el impacto de la desconexión digital en los puntajes de competencias críticas (matemáticas y lectura) al contrastar instituciones educativas urbanas y rurales de la región?</li>
+            <li class="list-group-item">¿Cuáles son los clústeres sociodemográficos y espaciales que concentran el mayor riesgo de bajo rendimiento académico derivado de la carencia de infraestructura tecnológica?</li>
+            <li class="list-group-item">¿En qué magnitud el capital cultural (nivel educativo de los padres) mitiga o amplifica el efecto negativo de no poseer acceso a internet en el hogar?</li>
+        </ol>
+
+        <h5 class="fw-bold text-secondary mt-4">Conocimiento esperado a partir de los datos</h5>
+        <p class="text-justify mb-0">Se espera extraer patrones predictivos para cuantificar la importancia relativa (<em>feature importance</em>) de las variables tecnológicas frente a las socioeconómicas. El análisis permitirá identificar perfiles de riesgo mediante modelos de clasificación y detectar agrupaciones geográficas vulnerables (algoritmos de <em>clustering</em>). Esto proporcionará evidencia empírica estructurada que demuestre cómo la infraestructura digital condiciona los resultados académicos, sirviendo de insumo técnico para el diseño de estrategias de mitigación en el sector educativo local.</p>
+    </div>
+</div>
+{% endblock %}

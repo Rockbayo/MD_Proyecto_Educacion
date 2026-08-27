@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">4. Fuentes de Datos</h3>
+    </div>
+    <div class="card-body p-4">
+
+        <!-- Nivel Global -->
+        <h4 class="text-primary mt-3 border-bottom pb-2">Nivel Global</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 1: Microdatos PISA</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> OCDE | <strong>Tipo:</strong> Secundaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> 2018 y 2022 | <strong>Registros:</strong> > 600.000</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://www.oecd.org/pisa/data/" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Contrasta el rendimiento global frente al capital tecnológico y nivel socioeconómico.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 2: Indicadores Educación y Tecnología</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> Banco Mundial | <strong>Tipo:</strong> Terciaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> 2019-2025 | <strong>Registros:</strong> > 50.000 series</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://data.worldbank.org/topic/education" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Aporta contexto macroeconómico y de infraestructura digital agregada por país.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nivel Nacional -->
+        <h4 class="text-primary mt-4 border-bottom pb-2">Nivel Nacional (Colombia)</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 3: Resultados Únicos Saber 11</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> ICFES | <strong>Tipo:</strong> Secundaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> 2019-2025 | <strong>Registros:</strong> > 3.5 millones</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://www.datos.gov.co/Educaci-n/Resultados-nicos-Saber-11/kgxf-xxbe" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Núcleo analítico con granularidad individual para modelos predictivos.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 4: ECV - Módulo TIC</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> DANE | <strong>Tipo:</strong> Secundaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> 2019-2024 | <strong>Registros:</strong> ~ 90.000 hogares</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://microdatos.dane.gov.co/" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Línea base poblacional sobre tenencia de tecnologías, complementa al ICFES.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nivel Regional -->
+        <h4 class="text-primary mt-4 border-bottom pb-2">Nivel Regional (Cundinamarca)</h4>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 5: SIMAT</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> MEN / Sec. Cundinamarca | <strong>Tipo:</strong> Secundaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> 2019-2025 | <strong>Registros:</strong> > 250.000/año</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://www.datos.gov.co/" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Integra volumen de población y segmentación espacial (urbano/rural).</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <div class="card h-100 bg-light border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">Fuente 6: Directorio Establecimientos Educativos</h6>
+                        <p class="card-text mb-1"><small><strong>Institución:</strong> MEN | <strong>Tipo:</strong> Secundaria</small></p>
+                        <p class="card-text mb-1"><small><strong>Periodo:</strong> Activo | <strong>Registros:</strong> ~ 1.500 sedes</small></p>
+                        <p class="card-text mb-2"><small><strong>URL:</strong> <a href="https://www.datos.gov.co/" target="_blank">Enlace</a></small></p>
+                        <p class="card-text text-muted" style="font-size: 0.85rem;"><strong>Justificación:</strong> Atributos de ubicación espacial y zonificación oficial para cruces relacionales.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
