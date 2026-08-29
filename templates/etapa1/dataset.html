@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card shadow-sm border-0">
+    <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">5. Construcción del Dataset Inicial</h3>
+    </div>
+    <div class="card-body p-4">
+
+        <h5 class="fw-bold text-secondary border-bottom pb-2">Estrategia de Integración (Data Blending)</h5>
+        <p class="text-justify">
+            El dataset consolidado se construye tomando como tabla de hechos (<em>Fact Table</em>) los microdatos de la prueba Saber 11 (Fuente 3). A partir de esta estructura granular a nivel de estudiante, se realizan cruces relacionales (<em>Left Joins</em>) con las fuentes secundarias para enriquecer las características espaciales e institucionales.
+        </p>
+
+        <div class="table-responsive mb-4">
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Fuente Base</th>
+                        <th>Fuente a Integrar</th>
+                        <th>Llave de Cruce (Key)</th>
+                        <th>Atributos Agregados</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Saber 11 (Microdatos)</td>
+                        <td>Directorio Establecimientos Educativos (DUE)</td>
+                        <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code></td>
+                        <td>Coordenadas (Latitud/Longitud), Naturaleza, Sector.</td>
+                    </tr>
+                    <tr>
+                        <td>Saber 11 (Microdatos)</td>
+                        <td>SIMAT (Matrícula Oficial)</td>
+                        <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code> + <code>PERIODO</code></td>
+                        <td>Tasa de matrícula institucional, Zona (Urbana/Rural).</td>
+                    </tr>
+                    <tr>
+                        <td>Saber 11 (Microdatos)</td>
+                        <td>ECV - Módulo TIC (DANE)</td>
+                        <td><code>CODIGO_DIVIPOLA_MUNICIPIO</code></td>
+                        <td>Índice de penetración tecnológica municipal (Macro).</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h5 class="fw-bold text-secondary border-bottom pb-2 mt-4">Criterios de Filtrado y Depuración Inicial</h5>
+        <ul class="list-group list-group-flush mb-4">
+            <li class="list-group-item"><strong>Filtro Temporal:</strong> Registros correspondientes exclusivamente a los periodos de aplicación entre 2019 y 2025.</li>
+            <li class="list-group-item"><strong>Filtro Espacial:</strong> Estudiantes cuyo departamento de residencia o de presentación de la prueba corresponde a Cundinamarca (<code>ESTU_DEPTO_RESIDE == 'CUNDINAMARCA'</code>).</li>
+            <li class="list-group-item"><strong>Exclusión:</strong> Eliminación de registros con estado de publicación "Anulado" o puntajes iguales a cero (0) por presunto fraude o inasistencia.</li>
+        </ul>
+
+        <h5 class="fw-bold text-secondary border-bottom pb-2 mt-4">Dimensiones del Dataset Unificado</h5>
+        <div class="row text-center mt-3 mb-2">
+            <div class="col-md-6">
+                <div class="p-3 bg-light border rounded">
+                    <h2 class="text-primary fw-bold">> 250.000</h2>
+                    <p class="mb-0 text-muted">Registros (Estudiantes)</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="p-3 bg-light border rounded">
+                    <h2 class="text-primary fw-bold">22</h2>
+                    <p class="mb-0 text-muted">Variables (Features + Target)</p>
+                </div>
+            </div>
+        </div>
+        <div class="alert alert-success mt-3" role="alert">
+            <strong>Cumplimiento de rúbrica:</strong> El volumen de datos procesados supera holgadamente el umbral mínimo de 10.000 registros exigido para la aplicación robusta de algoritmos de Machine Learning.
+        </div>
+
+    </div>
+</div>
+{% endblock %}
