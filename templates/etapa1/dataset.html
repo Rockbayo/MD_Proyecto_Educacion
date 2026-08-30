@@ -1,74 +1,139 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card shadow-sm border-0">
-    <div class="card-header bg-primary text-white">
-        <h3 class="mb-0">5. Construcción del Dataset Inicial</h3>
+<div class="card border-0 animate-slide-up">
+    <div class="card-header">
+        <div class="d-flex align-items-center justify-content-between">
+            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
+                <i class="bi bi-table text-white"></i>
+                5. Construcción del Dataset Inicial
+            </h3>
+            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
+        </div>
     </div>
-    <div class="card-body p-4">
+    <div class="card-body p-4 p-md-5">
 
-        <h5 class="fw-bold text-secondary border-bottom pb-2">Estrategia de Integración (Data Blending)</h5>
-        <p class="text-justify">
-            El dataset consolidado se construye tomando como tabla de hechos (<em>Fact Table</em>) los microdatos de la prueba Saber 11 (Fuente 3). A partir de esta estructura granular a nivel de estudiante, se realizan cruces relacionales (<em>Left Joins</em>) con las fuentes secundarias para enriquecer las características espaciales e institucionales.
-        </p>
+        <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
+            <i class="bi bi-diagram-3-fill fs-4 text-primary mt-1"></i>
+            <div>
+                <h5 class="fw-bold alert-heading mb-1">Estrategia de Integración Multifuente (Data Blending)</h5>
+                <p class="mb-0 text-justify">
+                    El dataset consolidado toma como tabla de hechos principal (<em>Fact Table</em>) los microdatos abiertos de la evaluación estandarizada <strong>Saber 11 (ICFES - Dataset Socrata <code>kgxf-xxbe</code>)</strong> a nivel de estudiante. Esta matriz se enriquece mediante uniones relacionales (<em>Left Joins</em>) con el <strong>Directorio Oficial de Establecimientos Educativos (MEN)</strong>, las series de matrícula <strong>SIMAT</strong>, y se contextualiza macroestructuralmente con los indicadores de <strong>PISA 2022 (OCDE)</strong> y el <strong>Banco Mundial</strong>.
+                </p>
+            </div>
+        </div>
 
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-link-45deg text-primary"></i> Matriz de Relaciones y Llaves de Cruce
+        </h5>
         <div class="table-responsive mb-4">
-            <table class="table table-bordered table-hover">
-                <thead class="table-light">
+            <table class="table table-hover align-middle">
+                <thead>
                     <tr>
-                        <th>Fuente Base</th>
-                        <th>Fuente a Integrar</th>
-                        <th>Llave de Cruce (Key)</th>
-                        <th>Atributos Agregados</th>
+                        <th style="width: 25%;">Fuente Base</th>
+                        <th style="width: 25%;">Fuente a Integrar</th>
+                        <th style="width: 25%;">Llave de Cruce (Key)</th>
+                        <th style="width: 25%;">Atributos Agregados</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Saber 11 (Microdatos)</td>
-                        <td>Directorio Establecimientos Educativos (DUE)</td>
+                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
+                        <td>Directorio Único Establecimientos (DUE - MEN)</td>
                         <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code></td>
-                        <td>Coordenadas (Latitud/Longitud), Naturaleza, Sector.</td>
+                        <td>Georreferenciación (Latitud/Longitud), Sector, Zona, Carácter.</td>
                     </tr>
                     <tr>
-                        <td>Saber 11 (Microdatos)</td>
-                        <td>SIMAT (Matrícula Oficial)</td>
+                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
+                        <td>SIMAT (Matrícula Cundinamarca)</td>
                         <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code> + <code>PERIODO</code></td>
-                        <td>Tasa de matrícula institucional, Zona (Urbana/Rural).</td>
+                        <td>Tamaño de cohorte matriculada, Tasa de retención local.</td>
                     </tr>
                     <tr>
-                        <td>Saber 11 (Microdatos)</td>
+                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
                         <td>ECV - Módulo TIC (DANE)</td>
                         <td><code>CODIGO_DIVIPOLA_MUNICIPIO</code></td>
-                        <td>Índice de penetración tecnológica municipal (Macro).</td>
+                        <td>Índice de penetración tecnológica municipal y tasa de conectividad.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge bg-secondary">Benchmark Global</span></td>
+                        <td>OECD PISA 2022 Database</td>
+                        <td><code>Nivel País (COL)</code> / <code>Índice ESCS</code></td>
+                        <td>Índice de capital TIC en el hogar y brecha global en Matemáticas/Lectura.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
-        <h5 class="fw-bold text-secondary border-bottom pb-2 mt-4">Criterios de Filtrado y Depuración Inicial</h5>
-        <ul class="list-group list-group-flush mb-4">
-            <li class="list-group-item"><strong>Filtro Temporal:</strong> Registros correspondientes exclusivamente a los periodos de aplicación entre 2019 y 2025.</li>
-            <li class="list-group-item"><strong>Filtro Espacial:</strong> Estudiantes cuyo departamento de residencia o de presentación de la prueba corresponde a Cundinamarca (<code>ESTU_DEPTO_RESIDE == 'CUNDINAMARCA'</code>).</li>
-            <li class="list-group-item"><strong>Exclusión:</strong> Eliminación de registros con estado de publicación "Anulado" o puntajes iguales a cero (0) por presunto fraude o inasistencia.</li>
-        </ul>
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-funnel text-primary"></i> Criterios de Filtrado y Depuración Muestral
+        </h5>
+        <div class="p-3 bg-light rounded-3 border mb-4">
+            <ul class="list-group list-group-flush bg-transparent">
+                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
+                    <i class="bi bi-calendar-range text-primary mt-1"></i>
+                    <div>
+                        <strong>Ventana Temporal:</strong> Cohortes evaluadas entre los años <strong>2019 y 2025</strong> (aplicaciones calendario A y B), permitiendo evaluar dinámicas prepandemia, pandemia y recuperación pospandemia.
+                    </div>
+                </li>
+                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
+                    <i class="bi bi-geo-alt-fill text-primary mt-1"></i>
+                    <div>
+                        <strong>Delimitación Geográfica Principal:</strong> Departamento de <strong>Cundinamarca</strong> (<code>COLE_DEPTO_UBICACION == 'CUNDINAMARCA'</code> o <code>ESTU_DEPTO_RESIDE == 'CUNDINAMARCA'</code>), contrastando núcleos urbanos y municipios rurales.
+                    </div>
+                </li>
+                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
+                    <i class="bi bi-shield-x text-danger mt-1"></i>
+                    <div>
+                        <strong>Exclusiones Técnicas:</strong> Registros con estado "Anulado", pruebas incompletas por presunto fraude y registros con puntaje global igual a cero (0).
+                    </div>
+                </li>
+            </ul>
+        </div>
 
-        <h5 class="fw-bold text-secondary border-bottom pb-2 mt-4">Dimensiones del Dataset Unificado</h5>
-        <div class="row text-center mt-3 mb-2">
-            <div class="col-md-6">
-                <div class="p-3 bg-light border rounded">
-                    <h2 class="text-primary fw-bold">> 250.000</h2>
-                    <p class="mb-0 text-muted">Registros (Estudiantes)</p>
+        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
+            <i class="bi bi-card-checklist text-primary"></i> Dimensiones y Métricas del Dataset Unificado
+        </h5>
+        <div class="row g-3 text-center mb-4">
+            <div class="col-md-4">
+                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
+                    <span class="text-muted small fw-semibold text-uppercase">Volumen Muestral</span>
+                    <h2 class="text-primary fw-extrabold mb-0 my-1">&gt; 250.000</h2>
+                    <span class="text-muted small">Registros de Estudiantes</span>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="p-3 bg-light border rounded">
-                    <h2 class="text-primary fw-bold">22</h2>
-                    <p class="mb-0 text-muted">Variables (Features + Target)</p>
+            <div class="col-md-4">
+                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
+                    <span class="text-muted small fw-semibold text-uppercase">Variables Depuradas</span>
+                    <h2 class="text-primary fw-extrabold mb-0 my-1">22</h2>
+                    <span class="text-muted small">Features Predictoras + Targets</span>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
+                    <span class="text-muted small fw-semibold text-uppercase">Formato de Almacenamiento</span>
+                    <h2 class="text-primary fw-extrabold mb-0 my-1">Parquet / CSV</h2>
+                    <span class="text-muted small">Particionado por Periodo</span>
                 </div>
             </div>
         </div>
-        <div class="alert alert-success mt-3" role="alert">
-            <strong>Cumplimiento de rúbrica:</strong> El volumen de datos procesados supera holgadamente el umbral mínimo de 10.000 registros exigido para la aplicación robusta de algoritmos de Machine Learning.
+
+        <div class="alert alert-success d-flex align-items-center gap-2 mb-0" role="alert">
+            <i class="bi bi-check-circle-fill fs-5"></i>
+            <div>
+                <strong>Garantía Metodológica:</strong> La escala del conjunto consolidado supera ampliamente el estándar mínimo de 10.000 observaciones requerido para entrenar modelos de aprendizaje supervisado (árboles de decisión, Random Forest, XGBoost) y algoritmos de agrupamiento espacial (K-Means, DBSCAN).
+            </div>
+        </div>
+
+        <!-- Navegación entre ítems -->
+        <hr class="my-4" style="border-color: var(--border-color);">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
+            <a href="{{ url_for('fuentes') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Anterior: 4. Fuentes de datos
+            </a>
+            <a href="{{ url_for('diccionario') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
+                Siguiente: 6. Diccionario de datos <i class="bi bi-arrow-right"></i>
+            </a>
         </div>
 
     </div>
