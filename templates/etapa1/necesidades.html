@@ -4,8 +4,8 @@
 <div class="card border-0 animate-slide-up">
     <div class="card-header">
         <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2">
-                <i class="bi bi-list-check"></i>
+            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
+                <i class="bi bi-list-check text-white"></i>
                 3. Necesidades de Información
             </h3>
             <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
@@ -102,6 +102,17 @@
             <li class="list-group-item p-3"><strong>Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
             <li class="list-group-item p-3"><strong>Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
         </ol>
+
+        <!-- Navegación entre ítems -->
+        <hr class="my-4" style="border-color: var(--border-color);">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
+            <a href="{{ url_for('preguntas') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Anterior: 2. Preguntas
+            </a>
+            <a href="{{ url_for('fuentes') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
+                Siguiente: 4. Fuentes de datos <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %}

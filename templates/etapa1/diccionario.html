@@ -4,22 +4,270 @@
 <div class="card border-0 animate-slide-up">
     <div class="card-header">
         <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2">
-                <i class="bi bi-book"></i>
+            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
+                <i class="bi bi-book-fill text-white"></i>
                 6. Diccionario de Datos
             </h3>
             <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
         </div>
     </div>
     <div class="card-body p-4 p-md-5">
+
         <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
             <i class="bi bi-info-circle-fill fs-4 text-primary mt-1"></i>
             <div>
-                <h5 class="fw-bold alert-heading mb-1">Diccionario de Datos</h5>
-                <p class="mb-0">Definición conceptual, tipos de datos, dominio de valores y rol de cada atributo en el análisis.</p>
+                <h5 class="fw-bold alert-heading mb-1">Estructura y Especificación de Variables</h5>
+                <p class="mb-0 text-justify">
+                    A continuación se presenta el catálogo técnico de atributos seleccionados a partir de los microdatos abiertos de <strong>Saber 11 (ICFES <code>kgxf-xxbe</code>)</strong> y variables de homologación internacional (<strong>PISA 2022 - OCDE</strong>), detallando su tipo de dato, dominio permitido, rol analítico y fuente de procedencia.
+                </p>
             </div>
         </div>
-        <p class="text-muted mb-0">Contenido en preparación para el entregable.</p>
+
+        <!-- 1. Variables Objetivo (Targets) -->
+        <h4 class="text-primary mt-4 border-bottom pb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-bullseye"></i> 1. Variables Objetivo (Targets de Rendimiento Académico)
+        </h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Variable (Código)</th>
+                        <th style="width: 15%;">Tipo de Dato</th>
+                        <th style="width: 20%;">Dominio / Rango</th>
+                        <th style="width: 33%;">Descripción Conceptual</th>
+                        <th style="width: 12%;">Fuente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>PUNT_GLOBAL</code></td>
+                        <td><span class="badge bg-primary">Numérico Continuo</span></td>
+                        <td><code>0 - 500</code> pts</td>
+                        <td>Puntaje global consolidado estandarizado obtenido por el estudiante en la prueba Saber 11. Variable dependiente primaria en modelos de regresión.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PUNT_MATEMATICAS</code></td>
+                        <td><span class="badge bg-primary">Numérico Continuo</span></td>
+                        <td><code>0 - 100</code> pts</td>
+                        <td>Puntaje individual en la prueba de razonamiento cuantitativo y matemáticas.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PUNT_LECTURA_CRITICA</code></td>
+                        <td><span class="badge bg-primary">Numérico Continuo</span></td>
+                        <td><code>0 - 100</code> pts</td>
+                        <td>Puntaje individual en comprensión lectora, lectura crítica y análisis textual.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PUNT_C_NATURALES</code></td>
+                        <td><span class="badge bg-primary">Numérico Continuo</span></td>
+                        <td><code>0 - 100</code> pts</td>
+                        <td>Puntaje individual en evaluación de competencias científicas y ciencias naturales.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PUNT_INGLES</code></td>
+                        <td><span class="badge bg-primary">Numérico Continuo</span></td>
+                        <td><code>0 - 100</code> pts</td>
+                        <td>Puntaje individual en dominio de lengua extranjera (Inglés).</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>DESEMP_INGLES</code></td>
+                        <td><span class="badge bg-info text-dark">Categórico Ordinal</span></td>
+                        <td><code>A-, A1, A2, B1, B+</code></td>
+                        <td>Nivel de competencia en inglés clasificado según el Marco Común Europeo de Referencia (MCER). Target para modelos de clasificación multiclase.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 2. Variables Predictoras Tecnológicas -->
+        <h4 class="text-primary mt-4 border-bottom pb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-wifi"></i> 2. Variables Predictoras de Brecha Digital (Tecnológicas)
+        </h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Variable (Código)</th>
+                        <th style="width: 15%;">Tipo de Dato</th>
+                        <th style="width: 20%;">Dominio / Rango</th>
+                        <th style="width: 33%;">Descripción Conceptual</th>
+                        <th style="width: 12%;">Fuente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>FAMI_TIENEINTERNET</code></td>
+                        <td><span class="badge bg-success">Binario (Booleano)</span></td>
+                        <td><code>Si / No</code></td>
+                        <td>Indica si el estudiante dispone de servicio de conexión a internet fijo o móvil en su lugar de residencia habitual.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>FAMI_TIENECOMPUTADOR</code></td>
+                        <td><span class="badge bg-success">Binario (Booleano)</span></td>
+                        <td><code>Si / No</code></td>
+                        <td>Indica si el hogar del evaluado cuenta con computador de escritorio o portátil para labores de estudio.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>IND_ACCESO_DIGITAL</code></td>
+                        <td><span class="badge bg-info text-dark">Categórico Derivado</span></td>
+                        <td><code>Pleno, Parcial, Nulo</code></td>
+                        <td><em>Feature derivada:</em> Combina simultáneamente la tenencia de Internet y Computador en el hogar.</td>
+                        <td><small class="text-muted">Calculada</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PISA_ICTRES</code></td>
+                        <td><span class="badge bg-secondary">Continuo (Índice)</span></td>
+                        <td><code>-3.0 a +3.0</code> (Media 0)</td>
+                        <td>Índice WLE de recursos y dispositivos TIC disponibles en el hogar según cuestionario de estudiantes PISA 2022.</td>
+                        <td><small class="text-muted">OCDE</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 3. Variables Socioeconómicas y Familiares -->
+        <h4 class="text-primary mt-4 border-bottom pb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-cash-coin"></i> 3. Variables Socioeconómicas y Capital Cultural
+        </h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Variable (Código)</th>
+                        <th style="width: 15%;">Tipo de Dato</th>
+                        <th style="width: 20%;">Dominio / Rango</th>
+                        <th style="width: 33%;">Descripción Conceptual</th>
+                        <th style="width: 12%;">Fuente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>FAMI_ESTRATOVIVIENDA</code></td>
+                        <td><span class="badge bg-warning text-dark">Categórico Ordinal</span></td>
+                        <td><code>Estrato 1 a 6, Sin Estrato</code></td>
+                        <td>Clasificación socioeconómica del inmueble residencial según la estratificación oficial colombiana.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>FAMI_EDUCACIONPADRE</code></td>
+                        <td><span class="badge bg-warning text-dark">Categórico Ordinal</span></td>
+                        <td><code>Primaria, Secundaria, Técnico, Univ, Posgrado, No sabe</code></td>
+                        <td>Máximo nivel educativo formal completado por el padre del estudiante (Proxy de capital cultural familiar).</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>FAMI_EDUCACIONMADRE</code></td>
+                        <td><span class="badge bg-warning text-dark">Categórico Ordinal</span></td>
+                        <td><code>Primaria, Secundaria, Técnico, Univ, Posgrado, No sabe</code></td>
+                        <td>Máximo nivel educativo formal completado por la madre del estudiante.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>FAMI_TIENELAVADORA</code></td>
+                        <td><span class="badge bg-light text-dark border">Binario</span></td>
+                        <td><code>Si / No</code></td>
+                        <td>Tenencia de electrodomésticos en el hogar, utilizada como indicador proxy de nivel de riqueza material.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>FAMI_TIENEAUTOMOVIL</code></td>
+                        <td><span class="badge bg-light text-dark border">Binario</span></td>
+                        <td><code>Si / No</code></td>
+                        <td>Tenencia de vehículo particular en el hogar.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PISA_ESCS</code></td>
+                        <td><span class="badge bg-secondary">Continuo (Índice)</span></td>
+                        <td><code>-4.0 a +4.0</code> (Media 0)</td>
+                        <td>Índice de Estatus Económico, Social y Cultural sintetizado por la OCDE en PISA.</td>
+                        <td><small class="text-muted">OCDE</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 4. Variables Institucionales, Demográficas y Geográficas -->
+        <h4 class="text-primary mt-4 border-bottom pb-2 d-flex align-items-center gap-2">
+            <i class="bi bi-geo-alt-fill"></i> 4. Variables Institucionales, Demográficas y Geográficas
+        </h4>
+        <div class="table-responsive mb-4">
+            <table class="table table-hover align-middle">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Variable (Código)</th>
+                        <th style="width: 15%;">Tipo de Dato</th>
+                        <th style="width: 20%;">Dominio / Rango</th>
+                        <th style="width: 33%;">Descripción Conceptual</th>
+                        <th style="width: 12%;">Fuente</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>ESTU_GENERO</code></td>
+                        <td><span class="badge bg-light text-dark border">Categórico Nominal</span></td>
+                        <td><code>M, F</code></td>
+                        <td>Género del estudiante reportado al momento de inscripción a la prueba. Variable de control demográfico.</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>COLE_NATURALEZA</code></td>
+                        <td><span class="badge bg-dark">Categórico Nominal</span></td>
+                        <td><code>OFICIAL, NO OFICIAL</code></td>
+                        <td>Naturaleza institucional del colegio (Público vs Privado).</td>
+                        <td><small class="text-muted">ICFES / MEN</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>COLE_BILINGUE</code></td>
+                        <td><span class="badge bg-light text-dark border">Binario</span></td>
+                        <td><code>S, N</code></td>
+                        <td>Indica si la institución educativa tiene acreditación de programa bilingüe oficial.</td>
+                        <td><small class="text-muted">ICFES / MEN</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>COLE_AREA_UBICACION</code></td>
+                        <td><span class="badge bg-dark">Categórico Nominal</span></td>
+                        <td><code>URBANO, RURAL</code></td>
+                        <td>Ubicación geográfica de la sede escolar según la zonificación territorial DANE.</td>
+                        <td><small class="text-muted">ICFES / DUE</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>COLE_MCPIO_UBICACION</code></td>
+                        <td><span class="badge bg-light text-dark border">Texto</span></td>
+                        <td><code>116 Municipios (Cundinamarca)</code></td>
+                        <td>Municipio donde se encuentra localizada la sede educativa. Llave para cruces con indicadores DIVIPOLA.</td>
+                        <td><small class="text-muted">ICFES / DANE</small></td>
+                    </tr>
+                    <tr>
+                        <td><code>PERIODO</code></td>
+                        <td><span class="badge bg-light text-dark border">Entero (Temporal)</span></td>
+                        <td><code>20194 a 20254</code></td>
+                        <td>Año y periodo semestral de aplicación del examen (Ej: 20194 = 2019 Semestre 2).</td>
+                        <td><small class="text-muted">ICFES</small></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Navegación entre ítems -->
+        <hr class="my-4" style="border-color: var(--border-color);">
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
+            <a href="{{ url_for('dataset') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
+                <i class="bi bi-arrow-left"></i> Anterior: 5. Dataset
+            </a>
+            <a href="{{ url_for('calidad') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
+                Siguiente: 7. Calidad inicial <i class="bi bi-arrow-right"></i>
+            </a>
+        </div>
+
     </div>
 </div>
 {% endblock %}
