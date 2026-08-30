@@ -1,8 +1,8 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card border-0 animate-slide-up">
-    <div class="card-header">
+<div class="card border-0 animate-slide-up shadow-sm">
+    <div class="card-header bg-primary">
         <div class="d-flex align-items-center justify-content-between">
             <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
                 <i class="bi bi-slash-circle-fill text-white"></i>
@@ -28,17 +28,17 @@
             <div class="col-md-6">
                 <div class="p-4 bg-light rounded-3 border h-100">
                     <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-ui-checks-grid"></i> 1. Sesgo de Autorreporte y Simplificación Binaria
+                        <i class="bi bi-ui-checks-grid"></i> 1. Sesgo de Autorreporte y Simplificación
                     </h5>
                     <ul class="list-group list-group-flush bg-transparent small">
                         <li class="list-group-item bg-transparent">
-                            <strong>Autorreporte no auditado:</strong> La tenencia de computador, internet y nivel educativo de los padres proviene del cuestionario sociodemográfico respondido por el estudiante, sujeto a sesgo de deseabilidad social o imprecisión familiar.
+                            <strong>Autorreporte no auditado:</strong> La tenencia de TIC y nivel educativo proviene de cuestionarios, sujetos a sesgo de deseabilidad social.
                         </li>
                         <li class="list-group-item bg-transparent">
-                            <strong>Acceso binario vs. Calidad real del servicio:</strong> Variables dicotómicas (<code>Si / No</code>) no capturan la velocidad efectiva en Mbps, la latencia, la intermitencia rural ni si el computador es exclusivo o compartido entre múltiples integrantes del hogar.
+                            <strong>Acceso binario vs. Calidad:</strong> Variables dicotómicas no capturan ancho de banda, latencia ni dispositivos compartidos.
                         </li>
                         <li class="list-group-item bg-transparent">
-                            <strong>Ausencia de métricas de uso pedagógico:</strong> No se registra el tiempo efectivo dedicado al estudio virtual frente al uso recreativo o redes sociales.
+                            <strong>Ausencia de métricas de uso:</strong> No se registra el tiempo efectivo dedicado al estudio vs. ocio.
                         </li>
                     </ul>
                 </div>
@@ -48,14 +48,14 @@
             <div class="col-md-6">
                 <div class="p-4 bg-light rounded-3 border h-100">
                     <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-person-x-fill"></i> 2. Sesgo de Selección y Supervivencia Escolar
+                        <i class="bi bi-person-x-fill"></i> 2. Supervivencia Escolar y Cobertura
                     </h5>
                     <ul class="list-group list-group-flush bg-transparent small">
                         <li class="list-group-item bg-transparent">
-                            <strong>Sesgo de supervivencia (Grado 11):</strong> La base de datos de Saber 11 evalúa exclusivamente a los estudiantes que culminan la educación media; no incluye a los jóvenes que desertaron en la básica primaria o secundaria debido a la falta de conectividad o extrema vulnerabilidad.
+                            <strong>Sesgo de supervivencia:</strong> Saber 11 evalúa solo a quienes culminan; excluye a desertores por vulnerabilidad.
                         </li>
                         <li class="list-group-item bg-transparent">
-                            <strong>Subrepresentación de ruralidad extrema:</strong> Zonas rurales no interconectadas con dificultades de acceso para la presentación de pruebas pueden presentar tasas de no presentación selectivas.
+                            <strong>Subrepresentación rural:</strong> Zonas no interconectadas pueden presentar tasas de no presentación selectivas.
                         </li>
                     </ul>
                 </div>
@@ -65,14 +65,14 @@
             <div class="col-md-6">
                 <div class="p-4 bg-light rounded-3 border h-100">
                     <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-diagram-2"></i> 3. Naturaleza Observacional y Causalidad
+                        <i class="bi bi-diagram-2"></i> 3. Naturaleza Observacional
                     </h5>
                     <ul class="list-group list-group-flush bg-transparent small">
                         <li class="list-group-item bg-transparent">
-                            <strong>Corte transversal repetido:</strong> Los datos corresponden a cohortes anuales independientes (no a un panel longitudinal con seguimiento del mismo estudiante a través de su trayectoria escolar). Por ende, los modelos identifican <em>asociación predictiva</em>, no causalidad contrafactual pura.
+                            <strong>Corte transversal:</strong> Cohortes independientes identifican asociación predictiva, no causalidad pura.
                         </li>
                         <li class="list-group-item bg-transparent">
-                            <strong>Sesgo por variables omitidas:</strong> Factores determinantes como motivación intrínseca del estudiante, salud emocional, calidad pedagógica docente en el aula y hábitos de nutrición no están presentes en los microdatos.
+                            <strong>Variables latentes:</strong> Se omiten factores no cuantificables como salud emocional o calidad pedagógica del docente.
                         </li>
                     </ul>
                 </div>
@@ -82,14 +82,14 @@
             <div class="col-md-6">
                 <div class="p-4 bg-light rounded-3 border h-100">
                     <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-clock-history"></i> 4. Disrupción Temporal y Escalas Cruzadas
+                        <i class="bi bi-clock-history"></i> 4. Disrupción Temporal (Efecto COVID)
                     </h5>
                     <ul class="list-group list-group-flush bg-transparent small">
                         <li class="list-group-item bg-transparent">
-                            <strong>Efecto extraordinario COVID-19 (2020-2021):</strong> Las condiciones atípicas de confinamiento, virtualización de emergencia y flexibilización evaluativa generan choques estructurales en las series históricas.
+                            <strong>Anomalía 2020-2021:</strong> Confinamiento genera hiperinflación en el peso predictivo de la conectividad.
                         </li>
                         <li class="list-group-item bg-transparent">
-                            <strong>Homologación de escalas internacionales:</strong> La escala Saber 11 (0 a 500 puntos) responde al currículo colombiano, mientras que PISA (500 &plusmn; 100 puntos) evalúa competencias de alfabetización científica global, requiriendo normalización por puntajes Z o percentiles para su contraste macro.
+                            <strong>Homologación de escalas:</strong> Diferencias métricas entre ICFES (0-500) y PISA (WLE) exigen normalización (Z-scores).
                         </li>
                     </ul>
                 </div>
@@ -97,35 +97,35 @@
         </div>
 
         <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-shield-check text-primary"></i> Estrategias de Mitigación Implementadas en el Proyecto
+            <i class="bi bi-shield-check text-primary"></i> Estrategias de Mitigación
         </h5>
         <div class="table-responsive">
-            <table class="table table-hover align-middle">
-                <thead>
+            <table class="table table-hover align-middle border">
+                <thead class="table-light">
                     <tr>
                         <th style="width: 30%;">Limitación Detectada</th>
-                        <th style="width: 70%;">Estrategia Técnica de Mitigación en Minería de Datos</th>
+                        <th style="width: 70%;">Acción en Fase de Preprocesamiento</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td><strong>Acceso digital binario simplificado</strong></td>
-                        <td>Construcción de un <em>Índice Compuesto de Acceso Digital</em> que cruza la tenencia de hardware (computador), conectividad (internet) y estrato de la vivienda para segmentar perfiles de vulnerabilidad.</td>
+                        <td><strong>Acceso digital simplificado</strong></td>
+                        <td>Construcción de <em>Índice Compuesto de Acceso Digital</em> (Hardware + Conectividad + Estrato).</td>
                     </tr>
                     <tr>
-                        <td><strong>Valores nulos en variables familiares</strong></td>
-                        <td>Creación de categorías explícitas de no reporte (<code>"NO_INFORMA"</code>) para capturar el patrón de abstención como variable predictiva en lugar de distorsionar con imputaciones artificiales.</td>
+                        <td><strong>Valores nulos sociodemográficos</strong></td>
+                        <td>Creación de categoría <code>"NO_INFORMA"</code> para capturar el patrón de abstención.</td>
                     </tr>
                     <tr>
                         <td><strong>Disrupción del periodo 2020-2021</strong></td>
-                        <td>Segmentación de modelos en subperiodos temporales (Pre-COVID: 2019, COVID: 2020-2021, Pos-COVID: 2022-2025) y uso de variables de control temporal (<code>PERIODO</code>).</td>
+                        <td>Inclusión de <code>PERIODO</code> como covariable de control y validación cruzada estratificada por año.</td>
                     </tr>
                 </tbody>
             </table>
         </div>
 
         <!-- Navegación entre ítems -->
-        <hr class="my-4" style="border-color: var(--border-color);">
+        <hr class="my-4" style="border-color: var(--border-color, #dee2e6);">
         <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
             <a href="{{ url_for('calidad') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
                 <i class="bi bi-arrow-left"></i> Anterior: 7. Calidad
