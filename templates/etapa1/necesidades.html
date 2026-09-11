@@ -1,118 +1,146 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card border-0 animate-slide-up">
-    <div class="card-header">
-        <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
-                <i class="bi bi-list-check text-white"></i>
-                3. Necesidades de Información
-            </h3>
-            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
-        </div>
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Necesidades de Información</span>
     </div>
-    <div class="card-body p-4 p-md-5">
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            3. Necesidades de Información
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Definición de parámetros generales, cobertura geográfica, variables relevantes y escalas de comparación.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
         
-        <div class="row g-4 mb-4">
-            <div class="col-md-6">
-                <div class="p-3 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-sliders text-primary"></i> Parámetros Generales
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent">
-                        <li class="list-group-item bg-transparent"><strong>Población / unidad de análisis:</strong> Estudiante individual de educación media que presenta evaluación académica estandarizada.</li>
-                        <li class="list-group-item bg-transparent"><strong>Entidades involucradas:</strong> Estudiantes, Hogares (núcleo familiar), Instituciones Educativas (IE).</li>
-                        <li class="list-group-item bg-transparent"><strong>Periodo de análisis:</strong> 2019 - 2025.</li>
-                        <li class="list-group-item bg-transparent"><strong>Nivel de granularidad:</strong> Microdatos (un registro por cada estudiante).</li>
-                    </ul>
-                </div>
+        <!-- Grid: Parámetros Generales y Cobertura -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Parámetros Generales -->
+            <div class="card-base p-6 animate-on-scroll">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0m-3.75 0H5.75" /></svg>
+                    Parámetros Generales
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Población / unidad de análisis:</strong> Estudiante individual de educación media que presenta evaluación académica estandarizada.</li>
+                    <li><strong class="text-foreground">Entidades involucradas:</strong> Estudiantes, Hogares (núcleo familiar), Instituciones Educativas (IE).</li>
+                    <li><strong class="text-foreground">Periodo de análisis:</strong> 2019 - 2025.</li>
+                    <li><strong class="text-foreground">Nivel de granularidad:</strong> Microdatos (un registro por cada estudiante).</li>
+                </ul>
             </div>
-            <div class="col-md-6">
-                <div class="p-3 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-secondary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-geo text-primary"></i> Cobertura Geográfica
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent">
-                        <li class="list-group-item bg-transparent">
-                            <span class="badge bg-primary me-2"><i class="bi bi-globe me-1"></i> Global</span> Países participantes en PISA.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <span class="badge bg-primary me-2"><i class="bi bi-flag me-1"></i> Nacional</span> Totalidad del territorio colombiano.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <span class="badge bg-primary me-2"><i class="bi bi-geo-alt me-1"></i> Regional</span> Departamento de Cundinamarca.
-                        </li>
-                    </ul>
-                </div>
+
+            <!-- Cobertura Geográfica -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 100ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.038 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.038-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                    Cobertura Geográfica
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Global</span> Países participantes en PISA.
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Nacional</span> Totalidad del territorio colombiano.
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Regional</span> Departamento de Cundinamarca.
+                    </li>
+                </ul>
             </div>
         </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-table text-primary"></i> Variables Relevantes
-        </h5>
-        <div class="table-responsive mb-4">
-            <table class="table table-hover align-middle">
-                <thead>
-                    <tr>
-                        <th style="width: 22%;">Categoría</th>
-                        <th style="width: 38%;">Variable</th>
-                        <th style="width: 40%;">Justificación analítica</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="badge bg-primary"><i class="bi bi-bullseye me-1"></i> Objetivo (Target)</span></td>
-                        <td class="fw-semibold">Puntaje Global, Puntaje Matemáticas, Puntaje Lectura</td>
-                        <td class="text-muted">Variables dependientes continuas para medir el rendimiento académico.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-info text-dark"><i class="bi bi-wifi me-1"></i> Tecnológicas</span></td>
-                        <td class="fw-semibold">Acceso a Internet (Sí/No), Computador (Sí/No)</td>
-                        <td class="text-muted">Variables independientes predictoras para medir la brecha digital doméstica.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-success"><i class="bi bi-cash-stack me-1"></i> Socioeconómicas</span></td>
-                        <td class="fw-semibold">Estrato socioeconómico, Nivel educativo padres</td>
-                        <td class="text-muted">Covariables necesarias para aislar y medir el peso del capital económico frente al tecnológico.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-warning text-dark"><i class="bi bi-gender-ambiguous me-1"></i> Demográficas</span></td>
-                        <td class="fw-semibold">Género del estudiante</td>
-                        <td class="text-muted">Variable de control para detectar posibles sesgos en el desempeño.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-secondary"><i class="bi bi-building me-1"></i> Institucionales</span></td>
-                        <td class="fw-semibold">Naturaleza IE (Oficial/No Oficial)</td>
-                        <td class="text-muted">Evalúa el impacto del entorno escolar frente a la vulnerabilidad del hogar.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-dark"><i class="bi bi-pin-map me-1"></i> Geográficas</span></td>
-                        <td class="fw-semibold">Municipio, Área (Urbano/Rural)</td>
-                        <td class="text-muted">Variables clave para aplicar algoritmos de agrupamiento espacial (clustering).</td>
-                    </tr>
-                </tbody>
-            </table>
+        <!-- Variables Relevantes (Tabla) -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">03.</span> Variables Relevantes
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Categoría</th>
+                            <th class="pb-3 pr-4">Variable</th>
+                            <th class="pb-3">Justificación analítica</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Objetivo (Target)</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Puntaje Global, Puntaje Matemáticas, Puntaje Lectura</td>
+                            <td class="py-3 text-muted-foreground">Variables dependientes continuas para medir el rendimiento académico.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Tecnológicas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Acceso a Internet (Sí/No), Computador (Sí/No)</td>
+                            <td class="py-3 text-muted-foreground">Variables independientes predictoras para medir la brecha digital doméstica.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Socioeconómicas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Estrato socioeconómico, Nivel educativo padres</td>
+                            <td class="py-3 text-muted-foreground">Covariables necesarias para aislar y medir el peso del capital económico frente al tecnológico.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Demográficas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Género del estudiante</td>
+                            <td class="py-3 text-muted-foreground">Variable de control para detectar posibles sesgos en el desempeño.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Institucionales</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Naturaleza IE (Oficial/No Oficial)</td>
+                            <td class="py-3 text-muted-foreground">Evalúa el impacto del entorno escolar frente a la vulnerabilidad del hogar.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Geográficas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Municipio, Área (Urbano/Rural)</td>
+                            <td class="py-3 text-muted-foreground">Variables clave para aplicar algoritmos de agrupamiento espacial (clustering).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-arrows-angle-expand text-primary"></i> Variables para Comparación de Escalas
-        </h5>
-        <ol class="list-group list-group-numbered border rounded-3 overflow-hidden">
-            <li class="list-group-item p-3"><strong>Desempeño académico estandarizado:</strong> Homologación de resultados entre distintas pruebas mediante normalización estadística.</li>
-            <li class="list-group-item p-3"><strong>Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
-            <li class="list-group-item p-3"><strong>Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
-        </ol>
-
-        <!-- Navegación entre ítems -->
-        <hr class="my-4" style="border-color: var(--border-color);">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
-            <a href="{{ url_for('preguntas') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
-                <i class="bi bi-arrow-left"></i> Anterior: 2. Preguntas
-            </a>
-            <a href="{{ url_for('fuentes') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
-                Siguiente: 4. Fuentes de datos <i class="bi bi-arrow-right"></i>
-            </a>
+        <!-- Variables para Comparación de Escalas -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">04.</span> Variables para Comparación de Escalas
+            </h2>
+            <ol class="space-y-3 text-sm text-secondary-foreground list-decimal list-inside pl-2">
+                <li class="pl-2"><strong class="text-foreground">Desempeño académico estandarizado:</strong> Homologación de resultados entre distintas pruebas mediante normalización estadística.</li>
+                <li class="pl-2"><strong class="text-foreground">Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
+                <li class="pl-2"><strong class="text-foreground">Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
+            </ol>
         </div>
+
     </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('preguntas') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 2. Preguntas
+        </a>
+        <a href="{{ url_for('fuentes') }}" class="btn-primary text-sm">
+            Siguiente: 4. Fuentes de datos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
 </div>
 {% endblock %}

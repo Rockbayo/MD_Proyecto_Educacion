@@ -1,140 +1,144 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card border-0 animate-slide-up shadow-sm">
-    <div class="card-header bg-primary">
-        <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
-                <i class="bi bi-slash-circle-fill text-white"></i>
-                8. Limitaciones Metodológicas y Técnicas
-            </h3>
-            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
-        </div>
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Limitaciones Metodológicas</span>
     </div>
-    <div class="card-body p-4 p-md-5">
 
-        <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
-            <i class="bi bi-shield-exclamation fs-4 text-primary mt-1"></i>
-            <div>
-                <h5 class="fw-bold alert-heading mb-1">Alcance y Delimitación Metodológica</h5>
-                <p class="mb-0 text-justify">
-                    Para asegurar la validez interna y externa de los hallazgos en la minería de datos, se identifican con rigor técnico las restricciones inherentes a las fuentes de datos (<strong>ICFES Saber 11</strong>, <strong>PISA 2022</strong>, <strong>DANE</strong> y <strong>Banco Mundial</strong>), los sesgos de recolección y las fronteras de inferencia de los modelos.
-                </p>
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            8. Limitaciones Metodológicas y Técnicas
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Delimitación de restricciones analíticas, sesgos de las fuentes de datos y estrategias de mitigación en el preprocesamiento.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-10">
+        
+        <!-- Alerta informativa -->
+        <div class="card-base p-6 border-primary/30 bg-primary/5 flex items-start gap-4">
+            <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            <div class="text-sm text-secondary-foreground leading-relaxed">
+                <strong class="text-foreground block mb-1">Alcance y Delimitación Metodológica</strong>
+                Para asegurar la validez interna y externa de los hallazgos en la minería de datos, se identifican con rigor técnico las restricciones inherentes a las fuentes de datos (<strong>ICFES Saber 11</strong>, <strong>PISA 2022</strong>, <strong>DANE</strong> y <strong>Banco Mundial</strong>), los sesgos de recolección y las fronteras de inferencia de los modelos.
             </div>
         </div>
 
-        <div class="row g-4 mb-4">
-            <!-- 1. Limitaciones de las Fuentes y Captura -->
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-ui-checks-grid"></i> 1. Sesgo de Autorreporte y Simplificación
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent small">
-                        <li class="list-group-item bg-transparent">
-                            <strong>Autorreporte no auditado:</strong> La tenencia de TIC y nivel educativo proviene de cuestionarios, sujetos a sesgo de deseabilidad social.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <strong>Acceso binario vs. Calidad:</strong> Variables dicotómicas no capturan ancho de banda, latencia ni dispositivos compartidos.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <strong>Ausencia de métricas de uso:</strong> No se registra el tiempo efectivo dedicado al estudio vs. ocio.
-                        </li>
-                    </ul>
-                </div>
+        <!-- Grid de Limitaciones (4 Secciones) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 1. Sesgo de Autorreporte y Simplificación -->
+            <div class="card-base p-6 animate-on-scroll">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" /></svg>
+                    1. Sesgo de Autorreporte y Simplificación
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Autorreporte no auditado:</strong> La tenencia de TIC y nivel educativo proviene de cuestionarios, sujetos a sesgo de deseabilidad social.</li>
+                    <li><strong class="text-foreground">Acceso binario vs. Calidad:</strong> Variables dicotómicas no capturan ancho de banda, latencia ni dispositivos compartidos.</li>
+                    <li><strong class="text-foreground">Ausencia de métricas de uso:</strong> No se registra el tiempo efectivo dedicado al estudio vs. ocio.</li>
+                </ul>
             </div>
 
-            <!-- 2. Sesgo de Supervivencia y Cobertura -->
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-person-x-fill"></i> 2. Supervivencia Escolar y Cobertura
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent small">
-                        <li class="list-group-item bg-transparent">
-                            <strong>Sesgo de supervivencia:</strong> Saber 11 evalúa solo a quienes culminan; excluye a desertores por vulnerabilidad.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <strong>Subrepresentación rural:</strong> Zonas no interconectadas pueden presentar tasas de no presentación selectivas.
-                        </li>
-                    </ul>
-                </div>
+            <!-- 2. Supervivencia Escolar y Cobertura -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 100ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    2. Supervivencia Escolar y Cobertura
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Sesgo de supervivencia:</strong> Saber 11 evalúa solo a quienes culminan; excluye a desertores por vulnerabilidad.</li>
+                    <li><strong class="text-foreground">Subrepresentación rural:</strong> Zonas no interconectadas pueden presentar tasas de no presentación selectivas.</li>
+                </ul>
             </div>
 
-            <!-- 3. Inferencia Causal y Variables Omitidas -->
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-diagram-2"></i> 3. Naturaleza Observacional
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent small">
-                        <li class="list-group-item bg-transparent">
-                            <strong>Corte transversal:</strong> Cohortes independientes identifican asociación predictiva, no causalidad pura.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <strong>Variables latentes:</strong> Se omiten factores no cuantificables como salud emocional o calidad pedagógica del docente.
-                        </li>
-                    </ul>
-                </div>
+            <!-- 3. Naturaleza Observacional -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 200ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V5.25A2.25 2.25 0 0018 3H6A2.25 2.25 0 003.75 5.25V18A2.25 2.25 0 006 20.25z" /></svg>
+                    3. Naturaleza Observacional
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Corte transversal:</strong> Cohortes independientes identifican asociación predictiva, no causalidad pura.</li>
+                    <li><strong class="text-foreground">Variables latentes:</strong> Se omiten factores no cuantificables como salud emocional o calidad pedagógica del docente.</li>
+                </ul>
             </div>
 
-            <!-- 4. Comparabilidad y Disrupción Temporal -->
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded-3 border h-100">
-                    <h5 class="fw-bold text-primary d-flex align-items-center gap-2 mb-3">
-                        <i class="bi bi-clock-history"></i> 4. Disrupción Temporal (Efecto COVID)
-                    </h5>
-                    <ul class="list-group list-group-flush bg-transparent small">
-                        <li class="list-group-item bg-transparent">
-                            <strong>Anomalía 2020-2021:</strong> Confinamiento genera hiperinflación en el peso predictivo de la conectividad.
-                        </li>
-                        <li class="list-group-item bg-transparent">
-                            <strong>Homologación de escalas:</strong> Diferencias métricas entre ICFES (0-500) y PISA (WLE) exigen normalización (Z-scores).
-                        </li>
-                    </ul>
-                </div>
+            <!-- 4. Disrupción Temporal (Efecto COVID) -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 300ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    4. Disrupción Temporal (Efecto COVID)
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Anomalía 2020-2021:</strong> Confinamiento genera hiperinflación en el peso predictivo de la conectividad.</li>
+                    <li><strong class="text-foreground">Homologación de escalas:</strong> Diferencias métricas entre ICFES (0-500) y PISA (WLE) exigen normalización (Z-scores).</li>
+                </ul>
             </div>
+
         </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-shield-check text-primary"></i> Estrategias de Mitigación
-        </h5>
-        <div class="table-responsive">
-            <table class="table table-hover align-middle border">
-                <thead class="table-light">
-                    <tr>
-                        <th style="width: 30%;">Limitación Detectada</th>
-                        <th style="width: 70%;">Acción en Fase de Preprocesamiento</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><strong>Acceso digital simplificado</strong></td>
-                        <td>Construcción de <em>Índice Compuesto de Acceso Digital</em> (Hardware + Conectividad + Estrato).</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Valores nulos sociodemográficos</strong></td>
-                        <td>Creación de categoría <code>"NO_INFORMA"</code> para capturar el patrón de abstención.</td>
-                    </tr>
-                    <tr>
-                        <td><strong>Disrupción del periodo 2020-2021</strong></td>
-                        <td>Inclusión de <code>PERIODO</code> como covariable de control y validación cruzada estratificada por año.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- Navegación entre ítems -->
-        <hr class="my-4" style="border-color: var(--border-color, #dee2e6);">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
-            <a href="{{ url_for('calidad') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
-                <i class="bi bi-arrow-left"></i> Anterior: 7. Calidad
-            </a>
-            <a href="{{ url_for('index') }}" class="btn btn-success rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
-                <i class="bi bi-check-circle-fill"></i> Fin del Entregable 1 &bull; Volver al Inicio
-            </a>
+        <!-- Estrategias de Mitigación -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">05.</span> Estrategias de Mitigación
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Limitación Detectada</th>
+                            <th class="pb-3">Acción en Fase de Preprocesamiento</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Acceso digital simplificado</td>
+                            <td class="py-3 text-muted-foreground">Construcción de <em>Índice Compuesto de Acceso Digital</em> (Hardware + Conectividad + Estrato).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Valores nulos sociodemográficos</td>
+                            <td class="py-3 text-muted-foreground">Creación de categoría <code class="text-xs text-primary">"NO_INFORMA"</code> para capturar el patrón de abstención.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Disrupción del periodo 2020-2021</td>
+                            <td class="py-3 text-muted-foreground">Inclusión de <code class="text-xs text-primary">PERIODO</code> como covariable de control y validación cruzada estratificada por año.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
     </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('calidad') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 7. Calidad
+        </a>
+        <a href="{{ url_for('index') }}" class="btn-primary text-sm bg-green-600 hover:bg-green-500 border-none">
+            Fin del Entregable 1 · Volver al Inicio
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        </a>
+    </div>
+
 </div>
 {% endblock %}

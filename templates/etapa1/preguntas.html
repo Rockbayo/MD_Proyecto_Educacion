@@ -1,53 +1,89 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card border-0 animate-slide-up">
-    <div class="card-header">
-        <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
-                <i class="bi bi-patch-question-fill text-white"></i>
-                2. Preguntas de Investigación y Conocimiento
-            </h3>
-            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
-        </div>
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Preguntas de Investigación</span>
     </div>
-    <div class="card-body p-4 p-md-5">
-        <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
-            <i class="bi bi-lightbulb-fill fs-3 text-primary mt-1"></i>
-            <div>
-                <h5 class="fw-bold alert-heading mb-1">Pregunta principal de investigación</h5>
-                <p class="mb-0 fs-6">¿En qué medida el acceso concurrente a recursos tecnológicos (internet y computador) y el estrato socioeconómico determinan la probabilidad de que un estudiante de educación media alcance un desempeño superior en las pruebas estandarizadas?</p>
-            </div>
-        </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-list-nested text-primary"></i> Preguntas secundarias
-        </h5>
-        <ol class="list-group list-group-numbered mb-4 border rounded-3 overflow-hidden">
-            <li class="list-group-item p-3">¿Cómo varía el impacto de la desconexión digital en los puntajes de competencias críticas (matemáticas y lectura) al contrastar instituciones educativas urbanas y rurales de la región?</li>
-            <li class="list-group-item p-3">¿Cuáles son los clústeres sociodemográficos y espaciales que concentran el mayor riesgo de bajo rendimiento académico derivado de la carencia de infraestructura tecnológica?</li>
-            <li class="list-group-item p-3">¿En qué magnitud el capital cultural (nivel educativo de los padres) mitiga o amplifica el efecto negativo de no poseer acceso a internet en el hogar?</li>
-        </ol>
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Preguntas de Investigación y Conocimiento
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Delimitación de los interrogantes orientadores y el conocimiento esperado a partir del procesamiento de los microdatos.
+        </p>
+    </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-graph-up-arrow text-primary"></i> Conocimiento esperado a partir de los datos
-        </h5>
-        <div class="p-3 bg-light rounded-3 border">
-            <p class="text-justify mb-0 lh-base" style="color: #334155;">
-                Se espera extraer patrones predictivos para cuantificar la importancia relativa (<em class="text-primary fw-semibold">feature importance</em>) de las variables tecnológicas frente a las socioeconómicas. El análisis permitirá identificar perfiles de riesgo mediante modelos de clasificación y detectar agrupaciones geográficas vulnerables (algoritmos de <em class="text-primary fw-semibold">clustering</em>). Esto proporcionará evidencia empírica estructurada que demuestre cómo la infraestructura digital condiciona los resultados académicos, sirviendo de insumo técnico para el diseño de estrategias de mitigación en el sector educativo local.
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Pregunta Principal -->
+        <div class="card-base p-6 sm:p-8 border-primary/40 bg-primary/5 animate-on-scroll">
+            <span class="font-mono text-xs text-primary uppercase tracking-widest block mb-2">Pregunta Principal de Investigación</span>
+            <p class="text-lg font-bold text-foreground leading-relaxed">
+                ¿En qué medida el acceso concurrente a recursos tecnológicos (internet y computador) y el estrato socioeconómico determinan la probabilidad de que un estudiante de educación media alcance un desempeño superior en las pruebas estandarizadas?
             </p>
         </div>
 
-        <!-- Navegación entre ítems -->
-        <hr class="my-4" style="border-color: var(--border-color);">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
-            <a href="{{ url_for('problema') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
-                <i class="bi bi-arrow-left"></i> Anterior: 1. Problema
-            </a>
-            <a href="{{ url_for('necesidades') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
-                Siguiente: 3. Necesidades de información <i class="bi bi-arrow-right"></i>
-            </a>
+        <!-- Preguntas Secundarias -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Preguntas Secundarias
+            </h2>
+            <ol class="space-y-4 text-secondary-foreground text-sm leading-relaxed list-decimal list-inside pl-2">
+                <li class="pl-2">
+                    <strong class="text-foreground">Impacto urbano vs. rural:</strong> ¿Cómo varía el impacto de la desconexión digital en los puntajes de competencias críticas (matemáticas y lectura) al contrastar instituciones educativas urbanas y rurales de la región?
+                </li>
+                <li class="pl-2">
+                    <strong class="text-foreground">Clústeres sociodemográficos:</strong> ¿Cuáles son los clústeres sociodemográficos y espaciales que concentran el mayor riesgo de bajo rendimiento académico derivado de la carencia de infraestructura tecnológica?
+                </li>
+                <li class="pl-2">
+                    <strong class="text-foreground">Mitigación por capital cultural:</strong> ¿En qué magnitud el capital cultural (nivel educativo de los padres) mitiga o amplifica el efecto negativo de no poseer acceso a internet en el hogar?
+                </li>
+            </ol>
         </div>
+
+        <!-- Conocimiento Esperado -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">03.</span> Conocimiento esperado a partir de los datos
+            </h2>
+            <div class="space-y-4 text-secondary-foreground text-sm leading-relaxed">
+                <p>
+                    Se espera extraer patrones predictivos para cuantificar la importancia relativa (<em class="text-primary not-italic font-semibold">feature importance</em>) de las variables tecnológicas frente a las socioeconómicas.
+                </p>
+                <p>
+                    El análisis permitirá identificar perfiles de riesgo mediante modelos de clasificación y detectar agrupaciones geográficas vulnerables (algoritmos de <em class="text-primary not-italic font-semibold">clustering</em>). Esto proporcionará evidencia empírica estructurada que demuestre cómo la infraestructura digital condiciona los resultados académicos, sirviendo de insumo técnico para el diseño de estrategias de mitigación en el sector educativo local.
+                </p>
+            </div>
+        </div>
+
     </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('problema') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 1. Planteamiento
+        </a>
+        <a href="{{ url_for('necesidades') }}" class="btn-primary text-sm">
+            Siguiente: 3. Necesidades de información
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
 </div>
 {% endblock %}

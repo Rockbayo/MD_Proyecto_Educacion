@@ -1,141 +1,119 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="card border-0 animate-slide-up">
-    <div class="card-header">
-        <div class="d-flex align-items-center justify-content-between">
-            <h3 class="mb-0 d-flex align-items-center gap-2 text-white">
-                <i class="bi bi-table text-white"></i>
-                5. Construcción del Dataset Inicial
-            </h3>
-            <span class="badge bg-light text-primary fw-semibold">Fase 1</span>
-        </div>
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Estructura del Dataset</span>
     </div>
-    <div class="card-body p-4 p-md-5">
 
-        <div class="alert alert-info d-flex align-items-start gap-3 mb-4">
-            <i class="bi bi-diagram-3-fill fs-4 text-primary mt-1"></i>
-            <div>
-                <h5 class="fw-bold alert-heading mb-1">Estrategia de Integración Multifuente (Data Blending)</h5>
-                <p class="mb-0 text-justify">
-                    El dataset consolidado toma como tabla de hechos principal (<em>Fact Table</em>) los microdatos abiertos de la evaluación estandarizada <strong>Saber 11 (ICFES - Dataset Socrata <code>kgxf-xxbe</code>)</strong> a nivel de estudiante. Esta matriz se enriquece mediante uniones relacionales (<em>Left Joins</em>) con el <strong>Directorio Oficial de Establecimientos Educativos (MEN)</strong>, las series de matrícula <strong>SIMAT</strong>, y se contextualiza macroestructuralmente con los indicadores de <strong>PISA 2022 (OCDE)</strong> y el <strong>Banco Mundial</strong>.
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            5. Estructura y Volumetría del Dataset
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Especificación de dimensiones, tipos de datos y volumetría estimada para el procesamiento en el entorno analítico.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Tarjetas de Métricas Volumétricas -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-primary tracking-tight mb-1">> 2.1M</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Registros Totales</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-accent tracking-tight mb-1">47</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Atributos / Columnas</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-green-400 tracking-tight mb-1">2019-2023</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Ventana Temporal</p>
+            </div>
+        </div>
+
+        <!-- Descripción de la Estructura -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Organización de los Datos
+            </h2>
+            <div class="space-y-4 text-sm text-secondary-foreground leading-relaxed">
+                <p>
+                    La estructura tabular combina identificadores únicos por estudiante (anonimizados), puntajes continuos de las pruebas de Estado, variables categóricas nominales (género, tipo de colegio) y variables binarias de disponibilidad tecnológica en el hogar.
+                </p>
+                <p>
+                    Para optimizar la carga computacional en memoria durante la Fase 2 (Diagnóstico y Calidad), los microdatos se particionarán por año calendario utilizando optimización de tipos de datos en Pandas (conversión de enteros a tipos categóricos de baja cardinalidad).
                 </p>
             </div>
         </div>
 
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-link-45deg text-primary"></i> Matriz de Relaciones y Llaves de Cruce
-        </h5>
-        <div class="table-responsive mb-4">
-            <table class="table table-hover align-middle">
-                <thead>
-                    <tr>
-                        <th style="width: 25%;">Fuente Base</th>
-                        <th style="width: 25%;">Fuente a Integrar</th>
-                        <th style="width: 25%;">Llave de Cruce (Key)</th>
-                        <th style="width: 25%;">Atributos Agregados</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
-                        <td>Directorio Único Establecimientos (DUE - MEN)</td>
-                        <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code></td>
-                        <td>Georreferenciación (Latitud/Longitud), Sector, Zona, Carácter.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
-                        <td>SIMAT (Matrícula Cundinamarca)</td>
-                        <td><code>COLE_COD_DANE_ESTABLECIMIENTO</code> + <code>PERIODO</code></td>
-                        <td>Tamaño de cohorte matriculada, Tasa de retención local.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-primary">Saber 11 (ICFES)</span></td>
-                        <td>ECV - Módulo TIC (DANE)</td>
-                        <td><code>CODIGO_DIVIPOLA_MUNICIPIO</code></td>
-                        <td>Índice de penetración tecnológica municipal y tasa de conectividad.</td>
-                    </tr>
-                    <tr>
-                        <td><span class="badge bg-secondary">Benchmark Global</span></td>
-                        <td>OECD PISA 2022 Database</td>
-                        <td><code>Nivel País (COL)</code> / <code>Índice ESCS</code></td>
-                        <td>Índice de capital TIC en el hogar y brecha global en Matemáticas/Lectura.</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-funnel text-primary"></i> Criterios de Filtrado y Depuración Muestral
-        </h5>
-        <div class="p-3 bg-light rounded-3 border mb-4">
-            <ul class="list-group list-group-flush bg-transparent">
-                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
-                    <i class="bi bi-calendar-range text-primary mt-1"></i>
-                    <div>
-                        <strong>Ventana Temporal:</strong> Cohortes evaluadas entre los años <strong>2019 y 2025</strong> (aplicaciones calendario A y B), permitiendo evaluar dinámicas prepandemia, pandemia y recuperación pospandemia.
-                    </div>
-                </li>
-                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
-                    <i class="bi bi-geo-alt-fill text-primary mt-1"></i>
-                    <div>
-                        <strong>Delimitación Geográfica Principal:</strong> Departamento de <strong>Cundinamarca</strong> (<code>COLE_DEPTO_UBICACION == 'CUNDINAMARCA'</code> o <code>ESTU_DEPTO_RESIDE == 'CUNDINAMARCA'</code>), contrastando núcleos urbanos y municipios rurales.
-                    </div>
-                </li>
-                <li class="list-group-item bg-transparent d-flex align-items-start gap-2">
-                    <i class="bi bi-shield-x text-danger mt-1"></i>
-                    <div>
-                        <strong>Exclusiones Técnicas:</strong> Registros con estado "Anulado", pruebas incompletas por presunto fraude y registros con puntaje global igual a cero (0).
-                    </div>
-                </li>
-            </ul>
-        </div>
-
-        <h5 class="fw-bold text-secondary mt-4 mb-3 d-flex align-items-center gap-2">
-            <i class="bi bi-card-checklist text-primary"></i> Dimensiones y Métricas del Dataset Unificado
-        </h5>
-        <div class="row g-3 text-center mb-4">
-            <div class="col-md-4">
-                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
-                    <span class="text-muted small fw-semibold text-uppercase">Volumen Muestral</span>
-                    <h2 class="text-primary fw-extrabold mb-0 my-1">&gt; 250.000</h2>
-                    <span class="text-muted small">Registros de Estudiantes</span>
-                </div>
+        <!-- Tipos de Atributos -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Tipificación de Atributos Principales
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Cantidad estimada</th>
+                            <th class="pb-3">Ejemplos de Atributos</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Numéricos (Continuos)</td>
+                            <td class="py-3 pr-4">8 columnas</td>
+                            <td class="py-3 text-muted-foreground">Puntaje Global, Puntaje Matemáticas, Lectura Crítica, Ciencias Naturales.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Categóricos (Nominales)</td>
+                            <td class="py-3 pr-4">22 columnas</td>
+                            <td class="py-3 text-muted-foreground">Departamento, Municipio, Área (Urbano/Rural), Naturaleza del establecimiento.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Binarios / Indicadores</td>
+                            <td class="py-3 pr-4">12 columnas</td>
+                            <td class="py-3 text-muted-foreground">Tiene internet (S/N), Tiene computador (S/N), Tiene servicio de energía.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Ordinales</td>
+                            <td class="py-3 pr-4">5 columnas</td>
+                            <td class="py-3 text-muted-foreground">Estrato socioeconómico, Nivel de escolaridad de los padres.</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="col-md-4">
-                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
-                    <span class="text-muted small fw-semibold text-uppercase">Variables Depuradas</span>
-                    <h2 class="text-primary fw-extrabold mb-0 my-1">22</h2>
-                    <span class="text-muted small">Features Predictoras + Targets</span>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="p-3 bg-light border rounded-3 h-100 d-flex flex-column justify-content-center">
-                    <span class="text-muted small fw-semibold text-uppercase">Formato de Almacenamiento</span>
-                    <h2 class="text-primary fw-extrabold mb-0 my-1">Parquet / CSV</h2>
-                    <span class="text-muted small">Particionado por Periodo</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="alert alert-success d-flex align-items-center gap-2 mb-0" role="alert">
-            <i class="bi bi-check-circle-fill fs-5"></i>
-            <div>
-                <strong>Garantía Metodológica:</strong> La escala del conjunto consolidado supera ampliamente el estándar mínimo de 10.000 observaciones requerido para entrenar modelos de aprendizaje supervisado (árboles de decisión, Random Forest, XGBoost) y algoritmos de agrupamiento espacial (K-Means, DBSCAN).
-            </div>
-        </div>
-
-        <!-- Navegación entre ítems -->
-        <hr class="my-4" style="border-color: var(--border-color);">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 pt-2">
-            <a href="{{ url_for('fuentes') }}" class="btn btn-outline-secondary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2">
-                <i class="bi bi-arrow-left"></i> Anterior: 4. Fuentes de datos
-            </a>
-            <a href="{{ url_for('diccionario') }}" class="btn btn-primary rounded-pill px-4 py-2 d-inline-flex align-items-center gap-2 shadow-sm">
-                Siguiente: 6. Diccionario de datos <i class="bi bi-arrow-right"></i>
-            </a>
         </div>
 
     </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('fuentes') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 4. Fuentes
+        </a>
+        <a href="{{ url_for('diccionario') }}" class="btn-primary text-sm">
+            Siguiente: 6. Diccionario de Datos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
 </div>
 {% endblock %}
