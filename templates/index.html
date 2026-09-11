@@ -1,109 +1,322 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="row justify-content-center animate-slide-up">
-    <div class="col-lg-9 col-xl-8">
-        <div class="card border-0 shadow-sm">
-            <div class="card-body p-4 p-md-5">
-                
-                <!-- Insignias Superiores -->
-                <div class="d-flex flex-wrap align-items-center gap-2 mb-3 pb-1">
-                    <span class="badge bg-primary px-3 py-2"><i class="bi bi-mortarboard-fill me-1"></i> Universidad de Cundinamarca</span>
-                    <span class="badge bg-secondary px-2.5 py-2"><i class="bi bi-cpu-fill me-1"></i> Minería de Datos</span>
-                    <span class="badge bg-light text-muted border px-2.5 py-2"><i class="bi bi-calendar-event me-1"></i> 2026</span>
+<div class="space-y-0 pb-20">
+
+    <!-- 1. Hero Section -->
+    <section class="relative min-h-screen flex flex-col justify-between overflow-hidden -mx-4 sm:-mx-6 -mt-24 mb-16 pt-24">
+        <!-- Background Image & Effects -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://img.rocket.new/generatedImages/rocket_gen_img_170dedbe2-1776886224384.png" alt="Data Visualization" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-b from-background/85 via-background/50 to-background"></div>
+            <div class="absolute inset-0 bg-grid-pattern opacity-60"></div>
+        </div>
+
+        <!-- Atmospheric blobs -->
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 blob-primary animate-pulse-slow pointer-events-none"></div>
+        <div class="absolute bottom-1/3 left-1/5 w-80 h-80 blob-accent animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 flex-1 flex flex-col justify-end max-w-7xl mx-auto w-full px-4 sm:px-6 pb-16 pt-32">
+            <div class="max-w-4xl">
+                <div class="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <span class="font-mono text-xs tracking-widest text-primary uppercase">
+                        Proyecto Activo · 2026-II
+                    </span>
                 </div>
-                
-                <!-- Jerarquía Tipográfica Principal -->
-                <h1 class="card-title text-primary fw-extrabold mb-2" style="font-size: 2.6rem; letter-spacing: -0.035em; line-height: 1.15;">
-                    EduMetrics Colombia
+
+                <h1 class="text-[clamp(2.5rem,6vw,5rem)] font-bold text-foreground leading-[1.05] tracking-tight mb-4">
+                    Educación, <span class="text-primary">acceso</span> y desempeño<br class="hidden sm:block"> académico
                 </h1>
-                <h4 class="card-subtitle text-secondary fw-semibold mb-3" style="font-size: 1.35rem; letter-spacing: -0.015em; line-height: 1.35;">
-                    Educación, acceso digital y desempeño académico
-                </h4>
-                
-                <p class="text-muted mb-4" style="font-size: 1.02rem; line-height: 1.7; max-width: 95%;">
-                    Plataforma analítica y bitácora técnica para cuantificar, perfilar y modelar el impacto de la brecha digital (acceso a internet y computador) y los factores socioeconómicos en el rendimiento académico estandarizado en Colombia.
+
+                <p class="text-lg sm:text-xl text-secondary-foreground font-light leading-relaxed max-w-2xl mb-8">
+                    Análisis del impacto de la brecha digital en los resultados de las pruebas <span class="font-mono text-primary text-base">Saber 11</span> en Colombia mediante minería de datos, ETL y modelos de aprendizaje automático.
                 </p>
 
-                <hr class="my-4" style="border-color: var(--border-color); opacity: 0.7;">
-                
-                <!-- Integrantes -->
-                <div class="mb-4">
-                    <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2" style="font-size: 1.1rem;">
-                        <i class="bi bi-people-fill text-primary"></i> Integrantes del Equipo
-                    </h5>
-                    <ul class="list-group list-group-flush border rounded-3 overflow-hidden">
-                        <li class="list-group-item d-flex align-items-center justify-content-between p-3">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-person-badge-fill text-primary me-3 fs-4"></i>
-                                <div>
-                                    <span class="fw-bold d-block text-dark">Oscar Robayo Olaya</span>
-                                    <small class="text-muted">Universidad de Cundinamarca</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-light text-primary border fw-semibold px-3 py-1.5">Investigador</span>
-                        </li>
-                        <li class="list-group-item d-flex align-items-center justify-content-between p-3">
-                            <div class="d-flex align-items-center">
-                                <i class="bi bi-person-badge-fill text-primary me-3 fs-4"></i>
-                                <div>
-                                    <span class="fw-bold d-block text-dark">Oscar Felipe Delgado</span>
-                                    <small class="text-muted">Universidad de Cundinamarca</small>
-                                </div>
-                            </div>
-                            <span class="badge bg-light text-primary border fw-semibold px-3 py-1.5">Investigador</span>
-                        </li>
-                    </ul>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <a href="{{ url_for('problema') }}" class="btn-primary" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: shimmer 3s infinite linear; background-color: var(--primary);">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Ver Entregable 1
+                    </a>
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="btn-ghost">
+                        <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                        Repositorio GitHub
+                    </a>
                 </div>
+            </div>
+        </div>
 
-                <hr class="my-4" style="border-color: var(--border-color); opacity: 0.7;">
+        <!-- Bottom meta bar -->
+        <div class="relative z-10 border-t border-border/40 bg-background/30 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">ÁREA:</span>
+                    <span class="font-mono text-xs text-primary">Ingeniería de Sistemas</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">FASE:</span>
+                    <span class="font-mono text-xs text-foreground">Comprensión de Datos</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">DATASET:</span>
+                    <span class="font-mono text-xs text-foreground">Saber 11 · ICFES 2019–2023</span>
+                </div>
+                <div class="ml-auto hidden sm:flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="font-mono text-xs text-muted-foreground">En progreso</span>
+                </div>
+            </div>
+        </div>
+    </section>
 
-                <!-- Control de Versiones -->
-                <div class="mb-4">
-                    <h5 class="fw-bold text-dark mb-3 d-flex align-items-center gap-2" style="font-size: 1.1rem;">
-                        <i class="bi bi-git text-primary"></i> Control de Versiones y Despliegue
-                    </h5>
-                    <div class="table-responsive">
-                        <table class="table align-middle mb-0">
-                            <tbody>
-                                <tr>
-                                    <th scope="row" class="bg-light w-35 text-muted fw-semibold py-3 px-3">
-                                        <i class="bi bi-github me-1"></i> Repositorio GitHub
-                                    </th>
-                                    <td class="py-3 px-3">
-                                        <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-1">
-                                            https://github.com/Rockbayo/MD_Proyecto_Educacion <i class="bi bi-box-arrow-up-right small ms-1"></i>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <th scope="row" class="bg-light text-muted fw-semibold py-3 px-3">
-                                        <i class="bi bi-diagram-2 me-1"></i> Rama activa
-                                    </th>
-                                    <td class="py-3 px-3">
-                                        <span class="badge bg-secondary">
-                                            <i class="bi bi-git me-1"></i> feature/etapa-1
-                                        </span>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+    <!-- 2. Executive Summary -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 animate-on-scroll">
+                    <span class="section-label mb-4 block">Resumen Ejecutivo</span>
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground mb-6 leading-[1.2]">
+                        Brecha digital y resultados<br class="hidden sm:block"> académicos en Colombia
+                    </h2>
+                    <div class="space-y-4 text-secondary-foreground leading-relaxed">
+                        <p>Este proyecto de minería de datos examina la relación entre el acceso a tecnologías digitales y el desempeño estudiantil en las pruebas Saber 11 del ICFES, utilizando un enfoque multidimensional que integra datos globales, nacionales y regionales.</p>
+                        <p>A través de la implementación estructurada de la metodología CRISP-DM, se desarrollara un pipeline ETL, un análisis exploratorio exhaustivo y modelos predictivos preliminares para cuantificar el efecto de la conectividad y disponibilidad de dispositivos sobre los puntajes estandarizados.</p>
+                        <p>El objetivo principal es generar conocimiento técnico y estadístico que sirva como apoyo analítico para comprender las desigualdades educativas derivadas de la brecha tecnológica en Colombia.</p>
+                    </div>
+                    <div class="mt-8 flex flex-wrap gap-2">
+                        <span class="data-tag">ETL · Extracción & Carga</span>
+                        <span class="data-tag">EDA · Análisis Exploratorio</span>
+                        <span class="data-tag">ML · Modelos Predictivos</span>
+                        <span class="data-tag">Saber 11 · ICFES</span>
+                        <span class="data-tag">Brecha Digital</span>
                     </div>
                 </div>
 
-                <hr class="my-4" style="border-color: var(--border-color); opacity: 0.7;">
-
-                <!-- Botón de Acción Principal -->
-                <div class="pt-1">
-                    <a href="{{ url_for('problema') }}" class="btn btn-primary px-4 py-2.5 rounded-pill d-inline-flex align-items-center gap-3 shadow">
-                        <span class="fw-normal" style="letter-spacing: 0.02em;">Explorar</span>
-                        <span class="fw-bold border-start ps-3" style="border-color: rgba(255, 255, 255, 0.35) !important;">Entregable 1</span>
-                        <i class="bi bi-arrow-right fs-6"></i>
-                    </a>
+                <div class="lg:col-span-5 animate-on-scroll" style="transition-delay: 150ms;">
+                    <div class="card-base p-6 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Abstract</span>
+                            <span class="phase-badge">v1.0 · 2026</span>
+                        </div>
+                        <div class="h-px bg-border"></div>
+                        <p class="text-sm text-secondary-foreground leading-relaxed font-light">
+                            <span class="font-semibold text-foreground">Objetivo:</span> Determinar si existe una correlación estadísticamente significativa entre indicadores de acceso digital y los puntajes globales en Saber 11.
+                        </p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed font-light">
+                            <span class="font-semibold text-foreground">Hipótesis:</span> Los municipios con mayor índice de acceso digital presentan puntajes Saber 11 significativamente más altos, incluso al controlar por variables socioeconómicas.
+                        </p>
+                        <div class="h-px bg-border"></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">PERIODO</p>
+                                <p class="text-sm font-semibold text-foreground">2019 – 2023</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">ALCANCE</p>
+                                <p class="text-sm font-semibold text-foreground">Nacional · Colombia</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">METODOLOGÍA</p>
+                                <p class="text-sm font-semibold text-foreground">CRISP-DM</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">ESTADO</p>
+                                <p class="text-sm font-semibold text-primary">En progreso</p>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('problema') }}" class="btn-primary w-full justify-center text-sm">
+                            Explorar Metodología
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        </a>
+                    </div>
                 </div>
-
             </div>
         </div>
-    </div>
+    </section>
+
+<!-- 3. Research Phases Bento Grid -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 animate-on-scroll">
+                <span class="section-label mb-4 block">Fases del Proyecto</span>
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground">Metodología CRISP-DM</h2>
+                    <p class="text-sm text-muted-foreground max-w-md">Proceso estructurado de minería de datos con fases iterativas, adaptado a la retroalimentación docente.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-auto">
+                <!-- Fase 01: Comprensión -->
+                <div class="md:col-span-2 card-base p-6 group relative overflow-hidden animate-on-scroll">
+                    <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent top-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/15 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1">Fase 01</span>
+                                <h3 class="text-lg font-semibold text-foreground">Comprensión de Negocio y Datos</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono font-medium text-primary">En progreso</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-5">Planteamiento del problema, formulación de hipótesis sobre la brecha digital y consolidación del diccionario de datos desde las fuentes maestras.</p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="data-tag">ICFES API</span><span class="data-tag">DANE</span><span class="data-tag">Banco Mundial</span>
+                    </div>
+                </div>
+
+                <!-- Fase 02: Diagnóstico y Calidad -->
+                <div class="md:col-span-1 md:row-span-2 card-base p-6 group relative overflow-hidden animate-on-scroll flex flex-col" style="transition-delay: 100ms;">
+                    <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent top-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div class="flex items-start justify-between mb-5">
+                        <div>
+                            <span class="phase-badge block mb-1" style="color: #64748B; border-color: rgba(100, 116, 139, 0.3); background: rgba(100, 116, 139, 0.05);">Fase 02</span>
+                            <h3 class="text-lg font-semibold text-foreground">Diagnóstico y Calidad</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                        </div>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-4">Evaluación de consistencia, completitud, manejo de valores nulos, análisis de outliers y perfilamiento técnico de las variables seleccionadas.</p>
+                    <div class="flex flex-wrap gap-1.5 mb-4">
+                        <span class="data-tag" style="color: #64748B; border-color: rgba(100, 116, 139, 0.3);">Python</span><span class="data-tag" style="color: #64748B; border-color: rgba(100, 116, 139, 0.3);">Pandas</span>
+                    </div>
+                    <span class="text-xs font-mono font-medium text-muted-foreground mb-4">Pendiente</span>
+                </div>
+
+                <!-- Fase 03: ETL & Modelado -->
+                <div class="md:col-span-1 card-base p-6 group relative overflow-hidden animate-on-scroll" style="transition-delay: 200ms;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1" style="color: #64748B; border-color: rgba(100, 116, 139, 0.3); background: rgba(100, 116, 139, 0.05);">Fase 03</span>
+                                <h3 class="text-base font-semibold text-foreground">Pipeline ETL & ML</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono text-muted-foreground">Pendiente</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-4">Ingeniería de características, transformación de datos y entrenamiento de algoritmos supervisados para predicción.</p>
+                </div>
+
+                <!-- Fuentes de Datos -->
+                <div class="md:col-span-1 card-base p-6 group relative overflow-hidden animate-on-scroll" style="transition-delay: 300ms;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1">Fuentes</span>
+                                <h3 class="text-base font-semibold text-foreground">Datasets Activos</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono font-medium text-accent">4 Fuentes</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-4">Inventario de datasets estructurados para consolidación y análisis multidimensional.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center animate-on-scroll" style="transition-delay: 400ms;">
+                <a href="{{ url_for('problema') }}" class="btn-ghost">
+                    Ver documentación completa de Fase 1
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Key Metrics -->
+    <section class="py-16 px-4 sm:px-6 border-b border-border bg-muted/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <div class="border-l-2 border-primary pl-6 animate-on-scroll" style="transition-delay: 0ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">2.1M+</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Registros Saber 11</p>
+                    <p class="font-mono text-xs text-muted-foreground">2019 – 2023</p>
+                </div>
+                <div class="border-l-2 border-accent pl-6 animate-on-scroll" style="transition-delay: 80ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">1,100+</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Municipios analizados</p>
+                    <p class="font-mono text-xs text-muted-foreground">32 departamentos</p>
+                </div>
+                <div class="border-l-2 border-primary pl-6 animate-on-scroll" style="transition-delay: 160ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">47</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Variables en el modelo</p>
+                    <p class="font-mono text-xs text-muted-foreground">Socioeconómicas + digitales</p>
+                </div>
+                <div class="border-l-2 border-accent pl-6 animate-on-scroll" style="transition-delay: 240ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">4</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Fuentes de datos</p>
+                    <p class="font-mono text-xs text-muted-foreground">Global · Nacional · Regional</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Team Section (Neutral) -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 animate-on-scroll">
+                <span class="section-label mb-4 block">Equipo de Investigación</span>
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground">Ingeniería de Sistemas</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Miembro 1 (Oscar Giovanni) -->
+                <div class="card-base p-6 group animate-on-scroll flex gap-5 border-primary/30" style="transition-delay: 0ms;">
+                    <div class="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center">
+                        <span class="text-xl font-bold text-primary">OG</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-foreground leading-tight">Oscar Robayo Olaya</h3>
+                        <p class="text-xs text-primary font-mono mt-1 mb-3">Investigador Analista</p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed">
+                            Gestión de calidad, limpieza, preprocesamiento de datos estructurados y arquitectura de tratamiento.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Miembro 2 (Oscar Felipe) -->
+                <div class="card-base p-6 group animate-on-scroll flex gap-5 border-primary/30" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center">
+                        <span class="text-xl font-bold text-primary">OF</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-foreground leading-tight">Oscar Felipe Delgado</h3>
+                        <p class="text-xs text-primary font-mono mt-1 mb-3">Investigador Analista</p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed">
+                            Ideación estratégica, desarrollo del pipeline analítico y ecosistema tecnológico para modelado predictivo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 callout-info p-4 animate-on-scroll" style="transition-delay: 200ms; background-color: rgba(0, 180, 216, 0.06); border-left: 3px solid var(--primary); border-radius: 0 0.5rem 0.5rem 0;">
+                <div class="flex items-start gap-3">
+                    <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm text-secondary-foreground">
+                        <span class="font-semibold text-foreground">Proyecto Educación · </span>
+                        Universidad de Cundinamarca. Semestre 2026-II. Asignatura: Minería de Datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 {% endblock %}
