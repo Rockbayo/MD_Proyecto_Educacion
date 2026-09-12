@@ -23,12 +23,31 @@
   --font-mono: 'JetBrains Mono', monospace;
 }
 
+html.light {
+  --background: #F8FAFC;
+  --foreground: #0F172A;
+  --primary: #0284C7;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F1F5F9;
+  --secondary-foreground: #334155;
+  --accent: #0EA5E9;
+  --accent-foreground: #FFFFFF;
+  --muted: #E2E8F0;
+  --muted-foreground: #64748B;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --border: #E2E8F0;
+  --input: #F1F5F9;
+  --ring: #0284C7;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
   margin: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 html {
