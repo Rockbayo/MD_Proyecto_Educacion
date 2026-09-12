@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Etapa 2 - Calidad de Datos</span>
+        <span>/</span>
+        <span class="text-primary">Propósito y Requisitos</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            1. Propósito y Requisitos de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Evaluación de la idoneidad del dataset integrado (Saber 11, MinTIC, DANE) frente a los objetivos de investigación sobre la brecha digital.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Propósito -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Propósito del Conjunto de Datos
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-4">
+                El conjunto de datos integrado, compuesto por <strong>más de 4.5 millones de registros y 93 variables</strong>, tiene como objetivo cuantificar el impacto de la brecha digital en el desempeño académico de los estudiantes en Colombia. La información servirá para resolver tres preguntas de investigación principales:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-sm text-secondary-foreground pl-2">
+                <li>Impacto del acceso concurrente a internet y computador en los resultados de las pruebas.</li>
+                <li>Diferencias en el rendimiento académico entre zonas urbanas y rurales.</li>
+                <li>Efecto del capital cultural del núcleo familiar como mitigador de la brecha tecnológica.</li>
+            </ul>
+        </div>
+
+        <!-- Requisitos de Calidad -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Requisitos de Calidad
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-4">
+                Para garantizar que los datos sean adecuados para el modelamiento y respondan al problema de investigación, se establecen los siguientes parámetros:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Completitud</strong>
+                    <span class="text-sm text-secondary-foreground">Variables objetivo (ej. PUNT_GLOBAL) exigen 100% de llenado. Predictoras (ej. FAMI_TIENEINTERNET) tolerarán un máximo de 5% de nulos.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Validez</strong>
+                    <span class="text-sm text-secondary-foreground">Los puntajes académicos deben enmarcarse estrictamente en el rango métrico establecido de 0 a 500.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Consistencia</strong>
+                    <span class="text-sm text-secondary-foreground">Homologación estandarizada de categorías sociodemográficas cruzadas entre ICFES, MinTIC y DANE.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Cobertura</strong>
+                    <span class="text-sm text-secondary-foreground">Representatividad a nivel nacional abarcando ininterrumpidamente las cohortes de 2019 a 2025.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problemas e Idoneidad (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card-base p-6 animate-on-scroll border-l-4 border-l-accent">
+                <h3 class="text-base font-bold text-foreground mb-3">Riesgos Anticipados</h3>
+                <ul class="list-disc list-inside space-y-2 text-sm text-secondary-foreground">
+                    <li>Ausencia de datos por evasión en el cuestionario de inscripción.</li>
+                    <li>Variaciones en la denominación geográfica entre entidades gubernamentales a lo largo de los años.</li>
+                    <li>Valores atípicos derivados de errores de digitación en la captura original.</li>
+                </ul>
+            </div>
+            
+            <div class="card-base p-6 animate-on-scroll border-l-4 border-l-primary">
+                <h3 class="text-base font-bold text-foreground mb-3">Idoneidad de los Datos</h3>
+                <p class="text-sm text-secondary-foreground leading-relaxed">
+                    El dataset es adecuado. El volumen estructural y la granularidad capturan la varianza necesaria para evaluar el desempeño académico frente a los factores tecnológicos y demográficos requeridos.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <!-- Navegación de Etapa -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('index') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Volver al Panel
+            </a>
+            <a href="{{ url_for('perfilamiento') }}" class="btn-primary text-sm">
+                Siguiente: Perfilamiento
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+        </div>
+</div>
+{% endblock %}

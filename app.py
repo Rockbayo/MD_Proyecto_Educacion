@@ -38,5 +38,28 @@ def calidad():
 def limitaciones():
     return render_template('etapa1/limitaciones.html')
 
+# ==========================================
+# RUTAS ETAPA 2: DIAGNÓSTICO Y CALIDAD
+# ==========================================
+@app.route('/etapa2/proposito')
+def proposito():
+    return render_template('etapa2/proposito.html')
+
+@app.route('/etapa2/perfilamiento')
+def perfilamiento():
+    return render_template('etapa2/perfilamiento.html')
+
+@app.route('/etapa2/dimensiones')
+def dimensiones():
+    return render_template('etapa2/dimensiones.html')
+
+@app.route('/etapa2/integracion')
+def integracion():
+    return render_template('etapa2/integracion.html')
+
+@app.route('/etapa2/informe')
+def informe():
+    return render_template('etapa2/informe.html')
+
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,3282 @@
+# ESTRUCTURA Y CONTEXTO COMPLETO DEL PROYECTO EDUDATACO
+==================================================
+
+## 1. ÁRBOL DE DIRECTORIOS
+./
+    .gitignore
+    3.11.9.python-version
+    app.py
+    generador_contexto.py
+    README.md
+    scripts/
+        01_extraccion.py
+        02_perfilamiento.py
+        03_dimensiones.py
+    static/
+        assets/
+            images/
+        css/
+            custom.css
+            styles.css
+            assets/
+    templates/
+        base.html
+        index.html
+        etapa1/
+            calidad.html
+            dataset.html
+            diccionario.html
+            fuentes.html
+            limitaciones.html
+            necesidades.html
+            preguntas.html
+            problema.html
+        etapa2/
+            dimensiones.html
+            informe.html
+            integracion.html
+            perfilamiento.html
+            proposito.html
+
+==================================================
+
+## 2. CÓDIGO Y CONTENIDO DE ARCHIVOS CLAVE (COMPLETO)
+
+### Archivo: .\app.py
+```
+from flask import Flask, render_template
+
+app = Flask(__name__)
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/etapa1/problema')
+def problema():
+    return render_template('etapa1/problema.html')
+
+@app.route('/etapa1/preguntas')
+def preguntas():
+    return render_template('etapa1/preguntas.html')
+
+@app.route('/etapa1/necesidades')
+def necesidades():
+    return render_template('etapa1/necesidades.html')
+
+@app.route('/etapa1/fuentes')
+def fuentes():
+    return render_template('etapa1/fuentes.html')
+
+@app.route('/etapa1/dataset')
+def dataset():
+    return render_template('etapa1/dataset.html')
+
+@app.route('/etapa1/diccionario')
+def diccionario():
+    return render_template('etapa1/diccionario.html')
+
+@app.route('/etapa1/calidad')
+def calidad():
+    return render_template('etapa1/calidad.html')
+
+@app.route('/etapa1/limitaciones')
+def limitaciones():
+    return render_template('etapa1/limitaciones.html')
+
+# ==========================================
+# RUTAS ETAPA 2: DIAGNÓSTICO Y CALIDAD
+# ==========================================
+@app.route('/etapa2/proposito')
+def proposito():
+    return render_template('etapa2/proposito.html')
+
+@app.route('/etapa2/perfilamiento')
+def perfilamiento():
+    return render_template('etapa2/perfilamiento.html')
+
+@app.route('/etapa2/dimensiones')
+def dimensiones():
+    return render_template('etapa2/dimensiones.html')
+
+@app.route('/etapa2/integracion')
+def integracion():
+    return render_template('etapa2/integracion.html')
+
+@app.route('/etapa2/informe')
+def informe():
+    return render_template('etapa2/informe.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
+```
+
+### Archivo: .\README.md
+```
+# MD_Proyecto_Educacion
+
+#Página principal creada
+```
+
+### Archivo: .\scripts\01_extraccion.py
+```
+import os
+import pandas as pd
+
+# Configuración de rutas
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+RAW_DIR = os.path.join(BASE_DIR, 'data', 'raw')
+PROCESSED_DIR = os.path.join(BASE_DIR, 'data', 'processed')
+
+def consolidar_txt_locales(delimitador=';', codificacion='utf-8'):
+    """
+    Lee y concatena todos los archivos .txt en data/raw/
+    Ajusta el delimitador (';', '|', o ',') según el formato del ICFES.
+    """
+    archivos = [f for f in os.listdir(RAW_DIR) if f.endswith('.txt')]
+    if not archivos:
+        print("No se encontraron archivos .txt en data/raw/")
+        return None
+        
+    print(f"Consolidando {len(archivos)} archivos...")
+    dfs = []
+    
+    for archivo in archivos:
+        print(f"Procesando {archivo}...")
+        ruta_archivo = os.path.join(RAW_DIR, archivo)
+        try:
+            # low_memory=False evita advertencias por tipos de datos mixtos en archivos grandes
+            df = pd.read_csv(ruta_archivo, sep=delimitador, encoding=codificacion, low_memory=False)
+            dfs.append(df)
+        except Exception as e:
+            print(f"Error procesando {archivo}: {e}")
+            print("Intenta cambiar el delimitador a '|' o la codificación a 'latin-1'")
+            return None
+            
+    df_consolidado = pd.concat(dfs, ignore_index=True)
+    ruta_salida = os.path.join(PROCESSED_DIR, 'saber11_integrado.csv')
+    
+    # Exportamos el consolidado como un CSV estándar separado por comas
+    df_consolidado.to_csv(ruta_salida, index=False)
+    print(f"Consolidación exitosa. Dataset final ({len(df_consolidado):,} registros) guardado en: {ruta_salida}")
+    return df_consolidado
+
+if __name__ == '__main__':
+    # Ejecutar la consolidación
+    # Si al ejecutar te da error de formato, cambia delimitador a '|' o ',' 
+    consolidar_txt_locales(delimitador=';', codificacion='utf-8')
+```
+
+### Archivo: .\scripts\02_perfilamiento.py
+```
+import os
+import pandas as pd
+import numpy as np
+
+# Configuración de rutas
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROCESSED_DIR = os.path.join(BASE_DIR, 'data', 'processed')
+REPORTS_DIR = os.path.join(BASE_DIR, 'data', 'reports')
+
+def ejecutar_perfilamiento():
+    ruta_csv = os.path.join(PROCESSED_DIR, 'saber11_integrado.csv')
+    ruta_salida = os.path.join(REPORTS_DIR, 'perfil_variables.csv')
+    
+    print(f"Cargando dataset para perfilamiento desde: {ruta_csv}...")
+    # low_memory=False por el volumen de 4.5M de registros
+    df = pd.read_csv(ruta_csv, low_memory=False)
+    
+    # 1. Volumetría y Duplicados
+    filas, columnas = df.shape
+    print("\nCalculando registros duplicados (esto puede tomar unos segundos)...")
+    duplicados = df.duplicated().sum()
+    print(f"Registros totales: {filas:,} | Variables: {columnas} | Duplicados exactos: {duplicados:,}")
+    
+    # 2. Perfilamiento base por variable
+    print("Calculando estadísticas por variable...")
+    perfil = pd.DataFrame({
+        'Tipo': df.dtypes,
+        'Nulos': df.isnull().sum(),
+        '%_Nulos': (df.isnull().sum() / filas * 100).round(2),
+        'Unicos': df.nunique()
+    })
+    
+    # 3. Estadísticas numéricas (Min, Max, Promedio)
+    num_cols = df.select_dtypes(include=[np.number]).columns
+    if len(num_cols) > 0:
+        stats = df[num_cols].describe().T[['min', 'max', 'mean']].round(2)
+        perfil = perfil.join(stats)
+    else:
+        perfil['min'] = np.nan
+        perfil['max'] = np.nan
+        perfil['mean'] = np.nan
+    
+    # Exportar resultados
+    perfil.index.name = 'Variable'
+    perfil.to_csv(ruta_salida)
+    
+    print(f"\nPerfilamiento completado. Archivo generado exitosamente en:\n{ruta_salida}")
+    
+    # Muestra rápida en consola de las variables con más nulos
+    print("\nTop 5 variables con mayor porcentaje de nulos:")
+    print(perfil.sort_values(by='%_Nulos', ascending=False)[['Tipo', '%_Nulos', 'Unicos']].head(5))
+
+if __name__ == '__main__':
+    ejecutar_perfilamiento()
+```
+
+### Archivo: .\scripts\03_dimensiones.py
+```
+import os
+import pandas as pd
+import numpy as np
+
+# Configuración de rutas
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROCESSED_DIR = os.path.join(BASE_DIR, 'data', 'processed')
+
+def evaluar_dimensiones():
+    ruta_csv = os.path.join(PROCESSED_DIR, 'saber11_integrado.csv')
+    print(f"Cargando dataset para evaluación de dimensiones...\n")
+    df = pd.read_csv(ruta_csv, low_memory=False)
+    total_registros = len(df)
+    
+    # 1. COMPLETITUD
+    print("--- 1. COMPLETITUD ---")
+    vars_target = ['punt_global', 'punt_matematicas', 'punt_lectura_critica']
+    vars_familia = ['fami_tieneinternet', 'fami_estratovivienda', 'fami_tienecomputador']
+    
+    print("Variables Objetivo (Exigencia 100%):")
+    for var in vars_target:
+        completos = df[var].notnull().sum()
+        print(f" - {var}: {(completos/total_registros)*100:.2f}% completos")
+        
+    print("\nVariables Autoreporte (Tolerancia < 5% nulos):")
+    for var in vars_familia:
+        nulos = df[var].isnull().sum()
+        print(f" - {var}: {(nulos/total_registros)*100:.2f}% nulos ({nulos:,} registros vacíos)")
+
+    # 2. UNICIDAD
+    print("\n--- 2. UNICIDAD ---")
+    duplicados = df.duplicated().sum()
+    unicidad = ((total_registros - duplicados) / total_registros) * 100
+    print(f"Métrica de Unicidad general: {unicidad:.2f}% ({duplicados} registros duplicados exactos)")
+
+    # 3. VALIDEZ
+    print("\n--- 3. VALIDEZ ---")
+    # Regla: punt_global debe estar entre 0 y 500
+    invalidos_punt = df[~df['punt_global'].between(0, 500, inclusive='both')].shape[0]
+    print(f"Registros con 'punt_global' fuera de rango (0-500): {invalidos_punt}")
+    
+    # Regla: estu_grado debe ser un grado de media (ej. 10 u 11)
+    if 'estu_grado' in df.columns:
+        invalidos_grado = df[df['estu_grado'] > 11].shape[0]
+        print(f"Registros con 'estu_grado' inválido (>11): {invalidos_grado:,} (Presencia de outliers como 20234.0)")
+
+    # 4. CONSISTENCIA
+    print("\n--- 4. CONSISTENCIA ---")
+    # Revisión de formatos de fecha
+    if 'estu_fechanacimiento' in df.columns:
+        formatos_unicos = df['estu_fechanacimiento'].astype(str).str.len().unique()
+        print(f"Longitudes de cadena encontradas en 'estu_fechanacimiento': {formatos_unicos}")
+        print("Conclusión: Discrepancia en formatos de fecha (requiere estandarización a YYYY-MM-DD)")
+
+if __name__ == '__main__':
+    evaluar_dimensiones()
+```
+
+### Archivo: .\static\css\custom.css
+```
+/* ==========================================================================
+   EduDataCO - Estilos Maestros (Adaptados de Rocket.new)
+   ========================================================================== */
+
+:root {
+  --background: #0D1117;
+  --foreground: #E2E8F0;
+  --primary: #00B4D8;
+  --primary-foreground: #0D1117;
+  --secondary: #0F1D2E;
+  --secondary-foreground: #CBD5E1;
+  --accent: #48CAE4;
+  --accent-foreground: #0D1117;
+  --muted: #1A2535;
+  --muted-foreground: #64748B;
+  --card: #111827;
+  --card-foreground: #E2E8F0;
+  --border: #1E293B;
+  --input: #1A2535;
+  --ring: #00B4D8;
+  --radius: 0.5rem;
+  --font-sans: 'DM Sans', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Patrones y Efectos Visuales */
+.bg-grain {
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.bg-grid-pattern {
+  background-image: radial-gradient(circle at 1px 1px, rgba(0, 180, 216, 0.08) 1px, transparent 0);
+  background-size: 32px 32px;
+}
+
+.phase-badge {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border-radius: 2px;
+  border: 1px solid rgba(0, 180, 216, 0.3);
+  color: var(--primary);
+  background: rgba(0, 180, 216, 0.05);
+}
+
+.data-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 3px;
+  background: rgba(0, 180, 216, 0.08);
+  border: 1px solid rgba(0, 180, 216, 0.15);
+  color: var(--accent);
+}
+
+.card-base {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) * 1.5);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card-base:hover {
+  border-color: rgba(0, 180, 216, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  font-weight: 600;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--radius);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-primary:hover {
+  background-color: var(--accent);
+  box-shadow: 0 4px 20px rgba(0, 180, 216, 0.3);
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--foreground);
+  font-weight: 500;
+  font-size: 0.875rem;
+  padding: 0.625rem 1.5rem;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.btn-ghost:hover {
+  border-color: rgba(0, 180, 216, 0.4);
+  background-color: rgba(0, 180, 216, 0.05);
+  color: var(--primary);
+}
+
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-label::before {
+  content: '';
+  display: inline-block;
+  width: 1.5rem;
+  height: 1px;
+  background-color: var(--primary);
+}
+
+/* Animaciones */
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+.animate-pulse-slow {
+  animation: pulse-glow 6s ease-in-out infinite;
+}
+
+.blob-primary {
+  background: radial-gradient(circle, rgba(0, 180, 216, 0.12) 0%, transparent 70%);
+  filter: blur(60px);
+}
+
+.blob-accent {
+  background: radial-gradient(circle, rgba(72, 202, 228, 0.08) 0%, transparent 70%);
+  filter: blur(80px);
+}
+```
+
+### Archivo: .\static\css\styles.css
+```
+/* ==========================================================================
+   EduMetrics Colombia - Estilos Modernos 2026
+   Tema: Minería de Datos - Educación, Acceso y Desempeño Académico
+   Paleta: Esmeralda & Forest Green / Soporte Modo Claro & Oscuro
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+:root {
+    /* Color Palette - Emerald & Forest */
+    --primary: #059669;
+    --primary-dark: #047857;
+    --primary-hover: #065f46;
+    --primary-light: #ecfdf5;
+    --primary-gradient: linear-gradient(135deg, #047857 0%, #0d9488 100%);
+    --accent-gradient: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+    
+    /* Neutrals - Light Mode */
+    --bg-body: #f8fafc;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f8fafc;
+    --text-main: #0f172a;
+    --text-secondary: #334155;
+    --text-muted: #64748b;
+    --border-color: rgba(226, 232, 240, 0.9);
+
+    /* Shadows 2026 */
+    --shadow-subtle: 0 1px 3px 0 rgba(15, 23, 42, 0.04), 0 1px 2px -1px rgba(15, 23, 42, 0.04);
+    --shadow-card: 0 4px 20px -2px rgba(6, 78, 59, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+    --shadow-hover: 0 12px 30px -4px rgba(5, 150, 105, 0.14), 0 4px 10px -2px rgba(15, 23, 42, 0.04);
+    --shadow-navbar: 0 4px 20px -2px rgba(6, 78, 59, 0.12);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+    --radius-pill: 9999px;
+}
+
+/* Modo Oscuro - Variables */
+[data-theme="dark"] {
+    --bg-body: #0a0f1d;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #1e293b;
+    --text-main: #f8fafc;
+    --text-secondary: #cbd5e1;
+    --text-muted: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --primary-light: rgba(5, 150, 105, 0.15);
+    --shadow-card: 0 6px 24px -2px rgba(0, 0, 0, 0.45);
+    --shadow-hover: 0 14px 34px -4px rgba(5, 150, 105, 0.25);
+}
+
+/* Base & Typography */
+body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-main);
+    background-color: var(--bg-body);
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.06) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(13, 148, 136, 0.05) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(241, 245, 249, 0.85) 0px, transparent 50%);
+    background-attachment: fixed;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    letter-spacing: -0.01em;
+    line-height: 1.6;
+    transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+[data-theme="dark"] body {
+    background-image: 
+        radial-gradient(at 0% 0%, rgba(5, 150, 105, 0.12) 0px, transparent 50%),
+        radial-gradient(at 100% 0%, rgba(13, 148, 136, 0.08) 0px, transparent 50%),
+        radial-gradient(at 50% 100%, rgba(17, 24, 39, 0.95) 0px, transparent 50%);
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-main);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.text-primary {
+    color: var(--primary) !important;
+}
+
+.text-secondary {
+    color: var(--text-secondary) !important;
+}
+
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+[data-theme="dark"] ::-webkit-scrollbar-track {
+    background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #059669;
+}
+
+/* Navbar - Deep Forest Dark Green Glass */
+.navbar {
+    background: rgba(15, 35, 28, 0.94) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(16, 185, 129, 0.15);
+    box-shadow: var(--shadow-navbar);
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    font-size: 1.12rem;
+    font-weight: 700;
+    color: #ffffff !important;
+}
+
+.navbar-brand-badge {
+    background: var(--primary-gradient);
+    color: #ffffff;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.22rem 0.65rem;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.35);
+}
+
+.navbar-nav .nav-link {
+    color: #d1fae5 !important;
+    font-size: 0.92rem;
+    font-weight: 500;
+    padding: 0.5rem 0.95rem !important;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: #ffffff !important;
+    background: rgba(255, 255, 255, 0.1);
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: 0 16px 36px -4px rgba(15, 35, 28, 0.15);
+    padding: 0.5rem;
+    min-width: 260px;
+}
+
+[data-theme="dark"] .dropdown-menu {
+    background: rgba(17, 24, 39, 0.98);
+    border-color: rgba(255, 255, 255, 0.12);
+    box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.6);
+}
+
+.dropdown-item {
+    color: var(--text-main);
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 0.55rem 0.85rem;
+    border-radius: var(--radius-sm);
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: var(--primary-light);
+    color: var(--primary);
+    transform: translateX(3px);
+}
+
+[data-theme="dark"] .dropdown-item:hover {
+    background-color: rgba(5, 150, 105, 0.2);
+    color: #34d399;
+}
+
+.dropdown-divider {
+    border-color: var(--border-color);
+    margin: 0.4rem 0;
+}
+
+/* Cards & Layout */
+main.container {
+    flex: 1;
+    animation: fadeIn 0.35s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(5, 150, 105, 0.25);
+}
+
+/* Card Header - Emerald Gradient with Pure White Text & Icons */
+.card-header {
+    background: var(--primary-gradient) !important;
+    padding: 1.2rem 1.6rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.card-header,
+.card-header h1,
+.card-header h2,
+.card-header h3,
+.card-header h4,
+.card-header h5,
+.card-header h6,
+.card-header .bi,
+.card-header i,
+.card-header span:not(.badge) {
+    color: #ffffff !important;
+}
+
+.card-header h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin-bottom: 0;
+}
+
+.card-body {
+    padding: 2rem !important;
+}
+
+/* Inner Cards & Containers */
+.card .card.bg-light,
+.bg-light.rounded-3 {
+    background: var(--bg-surface-elevated) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-subtle);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card .card.bg-light:hover {
+    background: var(--bg-surface) !important;
+    border-color: rgba(5, 150, 105, 0.3) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px -4px rgba(6, 78, 59, 0.08);
+}
+
+[data-theme="dark"] .card .card.bg-light:hover {
+    box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .bg-white {
+    background-color: #1a2333 !important;
+    color: var(--text-secondary);
+}
+
+/* Section Subheadings */
+h4.border-bottom {
+    border-bottom: 2px solid var(--border-color) !important;
+    position: relative;
+    padding-bottom: 0.55rem !important;
+    margin-top: 1.6rem !important;
+    font-size: 1.12rem;
+}
+
+h4.border-bottom::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 44px;
+    height: 2px;
+    background: var(--primary-gradient);
+    border-radius: 2px;
+}
+
+/* Tables */
+.table-responsive {
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    overflow: hidden;
+    box-shadow: var(--shadow-subtle);
+}
+
+.table {
+    margin-bottom: 0;
+    font-size: 0.91rem;
+    color: var(--text-secondary);
+}
+
+.table thead th {
+    background: var(--bg-surface-elevated);
+    color: var(--text-secondary);
+    font-weight: 700;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table tbody td, 
+.table tbody th {
+    padding: 0.9rem 1rem;
+    vertical-align: middle;
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(5, 150, 105, 0.04);
+}
+
+[data-theme="dark"] .table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--text-secondary);
+}
+
+[data-theme="dark"] .table thead th {
+    background-color: #1e293b;
+    color: #f1f5f9;
+}
+
+[data-theme="dark"] .table tbody th.bg-light {
+    background-color: #1e293b !important;
+    color: #cbd5e1 !important;
+}
+
+/* List Groups */
+.list-group {
+    border-radius: var(--radius-md);
+}
+
+.list-group-item {
+    border-color: var(--border-color);
+    padding: 0.85rem 1.15rem;
+    color: var(--text-secondary);
+    font-size: 0.93rem;
+    background-color: transparent;
+}
+
+.list-group-flush > .list-group-item {
+    border-color: var(--border-color);
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.list-group-numbered > .list-group-item::before {
+    font-weight: 700;
+    color: var(--primary);
+    background: var(--primary-light);
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.82rem;
+    margin-right: 0.75rem;
+}
+
+[data-theme="dark"] .list-group-numbered > .list-group-item {
+    background-color: transparent;
+    color: var(--text-secondary);
+}
+
+/* Modern Alerts */
+.alert-info {
+    background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+    border: 1px solid #a7f3d0;
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius-md);
+    color: #064e3b;
+    padding: 1.15rem 1.4rem;
+    box-shadow: var(--shadow-subtle);
+}
+
+.alert-info .alert-heading {
+    color: var(--primary-dark);
+    font-size: 1.02rem;
+    margin-bottom: 0.4rem;
+}
+
+[data-theme="dark"] .alert-info {
+    background: linear-gradient(135deg, rgba(6, 78, 59, 0.45) 0%, rgba(13, 148, 136, 0.3) 100%);
+    border-color: rgba(16, 185, 129, 0.3);
+    border-left: 4px solid #10b981;
+    color: #a7f3d0;
+}
+
+[data-theme="dark"] .alert-info .alert-heading {
+    color: #34d399;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+    border: 1px solid #bbf7d0;
+    border-left: 4px solid #16a34a;
+    color: #14532d;
+    border-radius: var(--radius-md);
+}
+
+[data-theme="dark"] .alert-success {
+    background: linear-gradient(135deg, rgba(20, 83, 45, 0.45) 0%, rgba(22, 101, 52, 0.3) 100%);
+    border-color: rgba(34, 197, 94, 0.3);
+    border-left: 4px solid #22c55e;
+    color: #bbf7d0;
+}
+
+/* Badges & Buttons */
+.badge {
+    padding: 0.38rem 0.7rem;
+    font-weight: 600;
+    font-size: 0.76rem;
+    border-radius: var(--radius-pill);
+    letter-spacing: 0.02em;
+}
+
+.badge.bg-primary {
+    background: var(--primary-gradient) !important;
+    box-shadow: 0 2px 6px rgba(5, 150, 105, 0.28);
+}
+
+.badge.bg-secondary {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--text-secondary) !important;
+    border: 1px solid var(--border-color);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.btn-primary {
+    background: var(--primary-gradient);
+    border: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(5, 150, 105, 0.25);
+    color: #ffffff !important;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #065f46 0%, #0f766e 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(5, 150, 105, 0.35);
+}
+
+.btn-outline-secondary {
+    border-color: var(--border-color);
+    color: var(--text-secondary);
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-secondary:hover {
+    background-color: var(--bg-surface-elevated);
+    border-color: var(--text-muted);
+    color: var(--text-main);
+    transform: translateY(-1px);
+}
+
+/* Dark mode specific text utilities */
+[data-theme="dark"] .text-dark {
+    color: #f8fafc !important;
+}
+
+[data-theme="dark"] .badge.bg-light {
+    background-color: #1e293b !important;
+    color: #34d399 !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* Links */
+a {
+    color: var(--primary);
+    transition: color 0.15s ease;
+}
+
+a:hover {
+    color: var(--primary-hover);
+}
+
+[data-theme="dark"] a {
+    color: #34d399;
+}
+
+[data-theme="dark"] a:hover {
+    color: #6ee7b7;
+}
+
+/* Footer */
+.footer {
+    background: rgba(15, 35, 28, 0.96);
+    backdrop-filter: blur(12px);
+    border-top: 1px solid rgba(16, 185, 129, 0.15);
+    color: #94a3b8;
+    font-size: 0.85rem;
+    padding: 1.4rem 0;
+    margin-top: auto;
+}
+
+.footer a {
+    color: #a7f3d0;
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: #ffffff;
+}
+
+/* Animations */
+.animate-slide-up {
+    animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+```
+
+### Archivo: .\templates\base.html
+```
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduDataCO — Educación y Desempeño Académico</title>
+    
+    <link rel="icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}" type="image/x-icon">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        background: '#0D1117',
+                        foreground: '#E2E8F0',
+                        primary: { DEFAULT: '#00B4D8', foreground: '#0D1117' },
+                        secondary: { DEFAULT: '#0F1D2E', foreground: '#CBD5E1' },
+                        accent: { DEFAULT: '#48CAE4', foreground: '#0D1117' },
+                        muted: { DEFAULT: '#1A2535', foreground: '#64748B' },
+                        card: { DEFAULT: '#111827', foreground: '#E2E8F0' },
+                        border: '#1E293B',
+                    },
+                    fontFamily: {
+                        sans: ['"DM Sans"', 'sans-serif'],
+                        mono: ['"JetBrains Mono"', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body class="bg-[#0D1117] min-h-screen flex flex-col relative overflow-x-hidden m-0 p-0 text-foreground font-sans">
+    
+    <!-- Header -->
+    <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent border-b border-transparent">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative z-10">
+            <!-- Retorno al Index -->
+            <a href="{{ url_for('index') }}" class="flex items-center gap-2.5 group">
+                <img src="{{ url_for('static', filename='assets/images/app_logo.png') }}" alt="EduDataCO Logo" class="w-8 h-8 object-contain">
+                <span class="font-mono text-sm font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors hidden sm:block">EduMetricsCO</span>
+            </a>
+            
+            <!-- Bloque Derecho -->
+            <div class="hidden md:flex items-center gap-3 ml-auto">
+                <span class="phase-badge">Semestre 2026-II</span>
+                <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="btn-ghost text-xs py-1.5 px-3 h-8 font-mono">GitHub</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full relative z-10">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-border bg-background py-8 text-center text-xs text-muted-foreground font-mono relative z-10">
+        <p>© 2026 Universidad de Cundinamarca · Ing. Sistemas y Computación</p>
+    </footer>
+
+    <script>
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 40) {
+                nav.classList.add('bg-background/90', 'backdrop-blur-xl', 'border-border', 'shadow-lg');
+                nav.classList.remove('bg-transparent', 'border-transparent');
+            } else {
+                nav.classList.remove('bg-background/90', 'backdrop-blur-xl', 'border-border', 'shadow-lg');
+                nav.classList.add('bg-transparent', 'border-transparent');
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { rootMargin: '0px', threshold: 0.1 });
+
+            document.querySelectorAll('.animate-on-scroll').forEach((el) => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
+### Archivo: .\templates\index.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="space-y-0 pb-20">
+
+    <!-- 1. Hero Section -->
+    <section class="relative min-h-screen flex flex-col justify-between overflow-hidden -mx-4 sm:-mx-6 -mt-24 mb-16 pt-24">
+        <!-- Background Image & Effects -->
+        <div class="absolute inset-0 z-0">
+            <img src="https://img.rocket.new/generatedImages/rocket_gen_img_170dedbe2-1776886224384.png" alt="Data Visualization" class="w-full h-full object-cover opacity-40">
+            <div class="absolute inset-0 bg-gradient-to-b from-background/85 via-background/50 to-background"></div>
+            <div class="absolute inset-0 bg-grid-pattern opacity-60"></div>
+        </div>
+
+        <!-- Atmospheric blobs -->
+        <div class="absolute top-1/4 right-1/4 w-96 h-96 blob-primary animate-pulse-slow pointer-events-none"></div>
+        <div class="absolute bottom-1/3 left-1/5 w-80 h-80 blob-accent animate-pulse-slow pointer-events-none" style="animation-delay: 2s;"></div>
+
+        <!-- Content -->
+        <div class="relative z-10 flex-1 flex flex-col justify-end max-w-7xl mx-auto w-full px-4 sm:px-6 pb-16 pt-32">
+            <div class="max-w-4xl">
+                <div class="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-primary/20 bg-primary/5 backdrop-blur-sm">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+                    </span>
+                    <span class="font-mono text-xs tracking-widest text-primary uppercase">
+                        Proyecto Activo · 2026-II
+                    </span>
+                </div>
+
+                <h1 class="text-[clamp(2.5rem,6vw,5rem)] font-bold text-foreground leading-[1.05] tracking-tight mb-4">
+                    Educación, <span class="text-primary">acceso</span> y desempeño<br class="hidden sm:block"> académico
+                </h1>
+
+                <p class="text-lg sm:text-xl text-secondary-foreground font-light leading-relaxed max-w-2xl mb-8">
+                    Análisis del impacto de la brecha digital en los resultados de las pruebas <span class="font-mono text-primary text-base">Saber 11</span> en Colombia mediante minería de datos, ETL y modelos de aprendizaje automático.
+                </p>
+
+                <div class="flex flex-col sm:flex-row flex-wrap gap-3">
+                    <!-- Botón Entregable 1 (Completado) -->
+                    <a href="{{ url_for('problema') }}" class="btn-ghost">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                        Ver Entregable 1
+                    </a>
+                    
+                    <!-- Botón Entregable 2 (Fase Activa) -->
+                    <a href="{{ url_for('proposito') }}" class="btn-primary" style="background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0) 100%); background-size: 200% 100%; animation: shimmer 3s infinite linear; background-color: var(--primary);">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                        </svg>
+                        Ver Entregable 2
+                    </a>
+
+                    <!-- Botón Repositorio GitHub -->
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="btn-ghost">
+                        <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z"/></svg>
+                        Repositorio GitHub
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom meta bar -->
+        <div class="relative z-10 border-t border-border/40 bg-background/30 backdrop-blur-sm">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-wrap items-center gap-x-8 gap-y-2">
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">ÁREA:</span>
+                    <span class="font-mono text-xs text-primary">Ingeniería de Sistemas y Computación</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">FASE:</span>
+                    <span class="font-mono text-xs text-foreground">Calidad de los Datos</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-mono text-xs text-muted-foreground">DATASET:</span>
+                    <span class="font-mono text-xs text-foreground">Saber 11 · ICFES 2019–2023</span>
+                </div>
+                <div class="ml-auto hidden sm:flex items-center gap-1.5">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>
+                    <span class="font-mono text-xs text-muted-foreground">En progreso</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Executive Summary -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid lg:grid-cols-12 gap-12 items-start">
+                <div class="lg:col-span-7 animate-on-scroll">
+                    <span class="section-label mb-4 block">Resumen Ejecutivo</span>
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground mb-6 leading-[1.2]">
+                        Brecha digital y resultados<br class="hidden sm:block"> académicos en Colombia
+                    </h2>
+                    <div class="space-y-4 text-secondary-foreground leading-relaxed">
+                        <p>Este proyecto de minería de datos examina la relación entre el acceso a tecnologías digitales y el desempeño estudiantil en las pruebas Saber 11 del ICFES, utilizando un enfoque multidimensional que integra datos globales, nacionales y regionales.</p>
+                        <p>A través de la implementación estructurada de la metodología CRISP-DM, se desarrollara un pipeline ETL, un análisis exploratorio exhaustivo y modelos predictivos preliminares para cuantificar el efecto de la conectividad y disponibilidad de dispositivos sobre los puntajes estandarizados.</p>
+                        <p>El objetivo principal es generar conocimiento técnico y estadístico que sirva como apoyo analítico para comprender las desigualdades educativas derivadas de la brecha tecnológica en Colombia.</p>
+                    </div>
+                    <div class="mt-8 flex flex-wrap gap-2">
+                        <span class="data-tag">ETL · Extracción & Carga</span>
+                        <span class="data-tag">EDA · Análisis Exploratorio</span>
+                        <span class="data-tag">ML · Modelos Predictivos</span>
+                        <span class="data-tag">Saber 11 · ICFES</span>
+                        <span class="data-tag">Brecha Digital</span>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 animate-on-scroll" style="transition-delay: 150ms;">
+                    <div class="card-base p-6 space-y-5">
+                        <div class="flex items-center justify-between">
+                            <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Abstract</span>
+                            <span class="phase-badge">v1.0 · 2026</span>
+                        </div>
+                        <div class="h-px bg-border"></div>
+                        <p class="text-sm text-secondary-foreground leading-relaxed font-light">
+                            <span class="font-semibold text-foreground">Objetivo:</span> Determinar si existe una correlación estadísticamente significativa entre indicadores de acceso digital y los puntajes globales en Saber 11.
+                        </p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed font-light">
+                            <span class="font-semibold text-foreground">Hipótesis:</span> Los municipios con mayor índice de acceso digital presentan puntajes Saber 11 significativamente más altos, incluso al controlar por variables socioeconómicas.
+                        </p>
+                        <div class="h-px bg-border"></div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">PERIODO</p>
+                                <p class="text-sm font-semibold text-foreground">2019 – 2023</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">ALCANCE</p>
+                                <p class="text-sm font-semibold text-foreground">Nacional · Colombia</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">METODOLOGÍA</p>
+                                <p class="text-sm font-semibold text-foreground">CRISP-DM</p>
+                            </div>
+                            <div>
+                                <p class="font-mono text-xs text-muted-foreground mb-1">ESTADO</p>
+                                <p class="text-sm font-semibold text-primary">En progreso</p>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('problema') }}" class="btn-primary w-full justify-center text-sm">
+                            Explorar Metodología
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<!-- 3. Research Phases Bento Grid -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 animate-on-scroll">
+                <span class="section-label mb-4 block">Fases del Proyecto</span>
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground">Metodología CRISP-DM</h2>
+                    <p class="text-sm text-muted-foreground max-w-md">Proceso estructurado de minería de datos con fases iterativas, adaptado a la retroalimentación docente.</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-auto">
+                <!-- Fase 01: Comprensión -->
+                <div class="md:col-span-2 card-base p-6 group relative overflow-hidden animate-on-scroll flex flex-col">
+                    <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent top-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div class="flex items-start justify-between mb-5">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/15 transition-colors">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21v-8.25M15.75 21v-8.25M8.25 21v-8.25M3 9l9-6 9 6m-1.5 12V10.332A48.36 48.36 0 0012 9.75c-2.551 0-5.056.2-7.5.582V21M3 21h18M12 6.75h.008v.008H12V6.75z" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1">Fase 01</span>
+                                <h3 class="text-lg font-semibold text-foreground">Comprensión de Negocio y Datos</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono font-medium text-primary">Completado</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-5 flex-grow">Planteamiento del problema, formulación de hipótesis sobre la brecha digital y consolidación del diccionario de datos desde las fuentes maestras.</p>
+                    <div class="flex flex-wrap gap-1.5 mb-6">
+                        <span class="data-tag">ICFES API</span><span class="data-tag">DANE</span><span class="data-tag">Banco Mundial</span>
+                    </div>
+                    <a href="{{ url_for('problema') }}" class="btn-ghost text-xs w-full justify-center">
+                        Ver Fase 1
+                        <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </a>
+                </div>
+
+                <!-- Fase 02: Diagnóstico y Calidad (Activa) -->
+                <div class="md:col-span-1 md:row-span-2 card-base p-6 group relative overflow-hidden animate-on-scroll flex flex-col" style="transition-delay: 100ms;">
+                    <div class="absolute w-full h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent top-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <div class="flex items-start justify-between mb-5">
+                        <div>
+                            <span class="phase-badge block mb-1">Fase 02</span>
+                            <h3 class="text-lg font-semibold text-foreground">Diagnóstico y Calidad</h3>
+                        </div>
+                        <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary group-hover:bg-primary/15 transition-colors">
+                            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m3.75 9v6m3-3H9m1.5-12H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" /></svg>
+                        </div>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-4 flex-grow">Evaluación de consistencia, completitud, manejo de nulos, análisis de outliers y perfilamiento técnico de las variables seleccionadas.</p>
+                    <div class="flex flex-wrap gap-1.5 mb-6">
+                        <span class="data-tag">Python</span><span class="data-tag">Pandas</span>
+                    </div>
+                    <a href="{{ url_for('proposito') }}" class="btn-ghost text-xs w-full justify-center">
+                        Ver Fase 2
+                        <svg class="w-3 h-3 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                    </a>
+                </div>
+
+                <!-- Fase 03: ETL & Modelado -->
+                <div class="md:col-span-1 card-base p-6 group relative overflow-hidden animate-on-scroll flex flex-col" style="transition-delay: 200ms;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-muted border border-border flex items-center justify-center text-muted-foreground">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1" style="color: #64748B; border-color: rgba(100, 116, 139, 0.3); background: rgba(100, 116, 139, 0.05);">Fase 03</span>
+                                <h3 class="text-base font-semibold text-foreground">Pipeline ETL & ML</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono text-muted-foreground">Pendiente</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-6 flex-grow">Ingeniería de características, transformación de datos y entrenamiento de algoritmos supervisados para predicción.</p>
+                    <button disabled class="btn-ghost opacity-50 cursor-not-allowed text-xs w-full justify-center">
+                        Próximamente
+                    </button>
+                </div>
+
+                <!-- Fuentes de Datos -->
+                <div class="md:col-span-1 card-base p-6 group relative overflow-hidden animate-on-scroll" style="transition-delay: 300ms;">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                                <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 5.625c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>
+                            </div>
+                            <div>
+                                <span class="phase-badge block mb-1">Fuentes</span>
+                                <h3 class="text-base font-semibold text-foreground">Datasets Activos</h3>
+                            </div>
+                        </div>
+                        <span class="text-xs font-mono font-medium text-accent">4 Fuentes</span>
+                    </div>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-4">Inventario de datasets estructurados para consolidación y análisis multidimensional.</p>
+                </div>
+            </div>
+
+            <div class="mt-8 text-center animate-on-scroll" style="transition-delay: 400ms;">
+                <a href="{{ url_for('problema') }}" class="btn-ghost">
+                    Ver documentación completa de Fase 1
+                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Key Metrics -->
+    <section class="py-16 px-4 sm:px-6 border-b border-border bg-muted/20">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+                <div class="border-l-2 border-primary pl-6 animate-on-scroll" style="transition-delay: 0ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">4.5M+</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Registros Saber 11</p>
+                    <p class="font-mono text-xs text-muted-foreground">2019 – 2023</p>
+                </div>
+                <div class="border-l-2 border-accent pl-6 animate-on-scroll" style="transition-delay: 80ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">1,100+</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Municipios analizados</p>
+                    <p class="font-mono text-xs text-muted-foreground">32 departamentos</p>
+                </div>
+                <div class="border-l-2 border-primary pl-6 animate-on-scroll" style="transition-delay: 160ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">93</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Variables en el modelo</p>
+                    <p class="font-mono text-xs text-muted-foreground">Socioeconómicas + digitales</p>
+                </div>
+                <div class="border-l-2 border-accent pl-6 animate-on-scroll" style="transition-delay: 240ms;">
+                    <p class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-1">4</p>
+                    <p class="text-sm font-medium text-foreground mb-0.5">Fuentes de datos</p>
+                    <p class="font-mono text-xs text-muted-foreground">Global · Nacional · Regional</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Team Section (Neutral) -->
+    <section class="py-20 px-4 sm:px-6 border-b border-border">
+        <div class="max-w-7xl mx-auto">
+            <div class="mb-12 animate-on-scroll">
+                <span class="section-label mb-4 block">Equipo de Investigación</span>
+                <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                    <h2 class="text-[clamp(1.25rem,2.5vw,2rem)] font-bold text-foreground">Ingeniería de Sistemas</h2>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                <!-- Miembro 1 (Oscar Giovanni) -->
+                <div class="card-base p-6 group animate-on-scroll flex gap-5 border-primary/30" style="transition-delay: 0ms;">
+                    <div class="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center">
+                        <span class="text-xl font-bold text-primary">OG</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-foreground leading-tight">Oscar Robayo Olaya</h3>
+                        <p class="text-xs text-primary font-mono mt-1 mb-3">Investigador Analista</p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed">
+                            Gestión de calidad, limpieza, preprocesamiento de datos estructurados y arquitectura de tratamiento.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Miembro 2 (Oscar Felipe) -->
+                <div class="card-base p-6 group animate-on-scroll flex gap-5 border-primary/30" style="transition-delay: 100ms;">
+                    <div class="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center">
+                        <span class="text-xl font-bold text-primary">OF</span>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-bold text-foreground leading-tight">Oscar Felipe Delgado</h3>
+                        <p class="text-xs text-primary font-mono mt-1 mb-3">Investigador Analista</p>
+                        <p class="text-sm text-secondary-foreground leading-relaxed">
+                            Ideación estratégica, desarrollo del pipeline analítico y ecosistema tecnológico para modelado predictivo.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 callout-info p-4 animate-on-scroll" style="transition-delay: 200ms; background-color: rgba(0, 180, 216, 0.06); border-left: 3px solid var(--primary); border-radius: 0 0.5rem 0.5rem 0;">
+                <div class="flex items-start gap-3">
+                    <svg class="w-4 h-4 text-primary mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p class="text-sm text-secondary-foreground">
+                        <span class="font-semibold text-foreground">Proyecto Educación · </span>
+                        Universidad de Cundinamarca. Semestre 2026-II. Asignatura: Minería de Datos.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\calidad.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Calidad Inicial</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            7. Propuesta de Calidad Inicial y Criterios de Aceptación
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Protocolo de auditoría y aseguramiento de calidad en el marco de la Etapa 1 (Comprensión de los Datos - CRISP-DM).
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-10">
+        
+        <!-- Alerta informativa -->
+        <div class="card-base p-6 border-primary/30 bg-primary/5 flex items-start gap-4">
+            <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="text-sm text-secondary-foreground leading-relaxed">
+                <strong class="text-foreground block mb-1">Protocolo de Auditoría y Aseguramiento de Calidad</strong>
+                Se formula la propuesta metodológica de calidad de datos, definiendo los <strong>criterios de aceptación, umbrales de tolerancia y reglas de negocio</strong> que guiarán la depuración empírica en la Etapa 2 tras la ingesta de los microdatos de <strong>Saber 11 (ICFES)</strong> y fuentes del <strong>MEN</strong>.
+            </div>
+        </div>
+
+        <!-- Criterios de Aceptabilidad / Umbrales (Grid) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div class="card-base p-5 text-center">
+                <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-1">Completitud Targets</span>
+                <p class="text-2xl font-bold text-primary tracking-tight my-1">100% Exigido</p>
+                <span class="text-xs text-secondary-foreground">Cero valores nulos en puntajes oficiales</span>
+            </div>
+            <div class="card-base p-5 text-center">
+                <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-1">Tolerancia en Encuesta</span>
+                <p class="text-2xl font-bold text-primary tracking-tight my-1">&le; 5% Nulos</p>
+                <span class="text-xs text-secondary-foreground">Máximo admisible en variables familiares</span>
+            </div>
+            <div class="card-base p-5 text-center">
+                <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-1">Regla de Unicidad</span>
+                <p class="text-2xl font-bold text-primary tracking-tight my-1">0% Duplicados</p>
+                <span class="text-xs text-secondary-foreground">Identificador único por evaluado</span>
+            </div>
+            <div class="card-base p-5 text-center">
+                <span class="font-mono text-xs text-muted-foreground uppercase tracking-widest block mb-1">Conformidad de Rango</span>
+                <p class="text-2xl font-bold text-primary tracking-tight my-1">0 a 500 pts</p>
+                <span class="text-xs text-secondary-foreground">Escalas estandarizadas del ICFES</span>
+            </div>
+        </div>
+
+        <!-- 1. Análisis de Completitud y Justificación -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">01.</span> Evaluación de Completitud y Tratamiento de Valores Faltantes
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-6">
+                La completitud evalúa la ausencia de datos no registrados en la matriz. Se establece una diferenciación técnica obligatoria según la naturaleza del atributo:
+            </p>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Grupo de Atributos</th>
+                            <th class="pb-3 pr-4">Comportamiento Esperado</th>
+                            <th class="pb-3 pr-4">¿Por qué ocurre? (Justificación)</th>
+                            <th class="pb-3">Plan de Tratamiento (Etapa 2)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Variables Objetivo</strong><br><code class="text-xs text-primary">PUNT_GLOBAL, PUNT_MATEMATICAS</code></td>
+                            <td class="py-3 pr-4"><span class="data-tag text-green-400 border-green-500/30 bg-green-500/10">Completitud Total (100%)</span></td>
+                            <td class="py-3 pr-4">Todo estudiante con evaluación publicada cuenta con calificación asignada por el algoritmo de psicometría del ICFES.</td>
+                            <td class="py-3">Exclusión directa de registros con estado "Anulado" o pruebas incompletas sin imputación artificial.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Variables Tecnológicas</strong><br><code class="text-xs text-primary">FAMI_TIENEINTERNET</code></td>
+                            <td class="py-3 pr-4"><span class="data-tag text-amber-400 border-amber-500/30 bg-amber-500/10">Omisión Moderada (&le; 5%)</span></td>
+                            <td class="py-3 pr-4">El cuestionario sociodemográfico es de autorreporte voluntario, lo que genera tasas naturales de no respuesta.</td>
+                            <td class="py-3">Imputación estadística mediante la moda zonal condicionada al estrato y municipio de residencia.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Capital Cultural</strong><br><code class="text-xs text-primary">FAMI_EDUCACIONPADRE</code></td>
+                            <td class="py-3 pr-4"><span class="data-tag text-amber-400 border-amber-500/30 bg-amber-500/10">Omisión / "No Sabe"</span></td>
+                            <td class="py-3 pr-4">Desconocimiento del evaluado sobre el nivel de escolaridad formal exacto de sus progenitores.</td>
+                            <td class="py-3">Codificación como categoría explícita <code class="text-xs text-foreground">"NO_INFORMA"</code> para preservar el valor predictivo de la no respuesta.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Estrato de la Vivienda</strong><br><code class="text-xs text-primary">FAMI_ESTRATOVIVIENDA</code></td>
+                            <td class="py-3 pr-4"><span class="data-tag text-amber-400 border-amber-500/30 bg-amber-500/10">Casos Especiales</span></td>
+                            <td class="py-3 pr-4">Viviendas en áreas rurales dispersas o predios institucionales sin estratificación oficial.</td>
+                            <td class="py-3">Asignación a la categoría formal <code class="text-xs text-foreground">"SIN_ESTRATO"</code> para evitar sesgos en el escalamiento.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2. Consistencia y Reglas de Negocio -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">02.</span> Consistencia Lógica y Reglas de Negocio
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-muted/30 p-5 rounded-lg border border-border">
+                    <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-3">Coherencia de Escalas Numéricas</h3>
+                    <ul class="space-y-2 text-sm text-secondary-foreground list-disc list-inside">
+                        <li><strong class="text-foreground">Puntajes por prueba:</strong> Deben ubicarse estrictamente en la escala de 0 a 100 puntos.</li>
+                        <li><strong class="text-foreground">Puntaje global:</strong> Debe encontrarse dentro del rango oficial de 0 a 500 puntos.</li>
+                        <li><strong class="text-foreground">Fórmula de agregación:</strong> Validación de coherencia entre los componentes individuales y el puntaje global publicado.</li>
+                    </ul>
+                </div>
+                <div class="bg-muted/30 p-5 rounded-lg border border-border">
+                    <h3 class="text-sm font-bold text-primary uppercase tracking-wider mb-3">Integridad Relacional y Espacial</h3>
+                    <ul class="space-y-2 text-sm text-secondary-foreground list-disc list-inside">
+                        <li><strong class="text-foreground">Unicidad del evaluado:</strong> El código <code class="text-xs text-foreground">ESTU_CONSECUTIVO</code> no debe presentar registros duplicados para el mismo periodo.</li>
+                        <li><strong class="text-foreground">Correspondencia DIVIPOLA:</strong> Validación de los 116 municipios pertenecientes a la jurisdicción de Cundinamarca frente al estándar del DANE.</li>
+                        <li><strong class="text-foreground">Integridad institucional:</strong> Validación cruzada de códigos DANE de sedes educativas contra el Directorio Oficial (DUE).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Detección de Outliers y Distribución Esperada -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">03.</span> Análisis de Valores Atípicos (Outliers) y Distribución
+            </h2>
+            <ul class="space-y-4 text-sm text-secondary-foreground">
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <div>
+                        <strong class="text-foreground">Distribución esperada:</strong> De acuerdo con el diseño psicométrico del ICFES, el puntaje global presenta una distribución unimodal aproximadamente normal, con una media histórica esperada cercana a 250 puntos y una desviación estándar alrededor de 50 puntos.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    <div>
+                        <strong class="text-foreground">Valores extremos legítimos vs. Anomalías:</strong> Estudiantes con puntajes superiores a 400 o inferiores a 150 puntos reflejan desempeños excepcionales o condiciones de alta vulnerabilidad socioeconómica real. Estos casos se conservan en la muestra para no sesgar los modelos de Machine Learning.
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <svg class="w-5 h-5 text-accent flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129" /></svg>
+                    <div>
+                        <strong class="text-foreground">Estandarización de texto y encoding:</strong> Se aplicará normalización a mayúsculas y corrección de caracteres especiales (acentos, diéresis) bajo codificación UTF-8 para garantizar uniformidad en nombres de colegios y municipios (por ejemplo, homologación de "Chía", "Zipaquirá" y "Facatativá").
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Protocolo de Validación en Python -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">04.</span> Protocolo de Verificación Técnica para la Etapa 2 (Python)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Dimensión de Calidad</th>
+                            <th class="pb-3 pr-4">Función de Validación en Python / Pandas</th>
+                            <th class="pb-3">Criterio de Aceptación</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Valores Nulos</strong></td>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary">df[['PUNT_GLOBAL', 'FAMI_TIENEINTERNET']].isnull().mean()</td>
+                            <td class="py-3 text-muted-foreground">0% en targets; &le; 5% en encuesta sociodemográfica.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Duplicidad</strong></td>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary">df['ESTU_CONSECUTIVO'].duplicated().sum()</td>
+                            <td class="py-3 text-muted-foreground">Exactamente 0 registros duplicados.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Rango Válido</strong></td>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary">df['PUNT_GLOBAL'].between(0, 500).all()</td>
+                            <td class="py-3 text-muted-foreground">Retorno booleano <code class="text-xs text-foreground">True</code> en toda la muestra.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><strong class="text-foreground">Dispersión / Outliers</strong></td>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary">scipy.stats.iqr() / Boxplots por municipio</td>
+                            <td class="py-3 text-muted-foreground">Detección y clasificación de anomalías sin pérdida de varianza real.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('diccionario') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 6. Diccionario
+        </a>
+        <a href="{{ url_for('limitaciones') }}" class="btn-primary text-sm">
+            Siguiente: 8. Limitaciones
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\dataset.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Estructura del Dataset</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            5. Estructura y Volumetría del Dataset
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Especificación de dimensiones, tipos de datos y volumetría estimada para el procesamiento en el entorno analítico.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Tarjetas de Métricas Volumétricas -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-primary tracking-tight mb-1">> 2.1M</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Registros Totales</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-accent tracking-tight mb-1">47</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Atributos / Columnas</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-green-400 tracking-tight mb-1">2019-2023</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase tracking-widest">Ventana Temporal</p>
+            </div>
+        </div>
+
+        <!-- Descripción de la Estructura -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Organización de los Datos
+            </h2>
+            <div class="space-y-4 text-sm text-secondary-foreground leading-relaxed">
+                <p>
+                    La estructura tabular combina identificadores únicos por estudiante (anonimizados), puntajes continuos de las pruebas de Estado, variables categóricas nominales (género, tipo de colegio) y variables binarias de disponibilidad tecnológica en el hogar.
+                </p>
+                <p>
+                    Para optimizar la carga computacional en memoria durante la Fase 2 (Diagnóstico y Calidad), los microdatos se particionarán por año calendario utilizando optimización de tipos de datos en Pandas (conversión de enteros a tipos categóricos de baja cardinalidad).
+                </p>
+            </div>
+        </div>
+
+        <!-- Tipos de Atributos -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Tipificación de Atributos Principales
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Cantidad estimada</th>
+                            <th class="pb-3">Ejemplos de Atributos</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Numéricos (Continuos)</td>
+                            <td class="py-3 pr-4">8 columnas</td>
+                            <td class="py-3 text-muted-foreground">Puntaje Global, Puntaje Matemáticas, Lectura Crítica, Ciencias Naturales.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Categóricos (Nominales)</td>
+                            <td class="py-3 pr-4">22 columnas</td>
+                            <td class="py-3 text-muted-foreground">Departamento, Municipio, Área (Urbano/Rural), Naturaleza del establecimiento.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Binarios / Indicadores</td>
+                            <td class="py-3 pr-4">12 columnas</td>
+                            <td class="py-3 text-muted-foreground">Tiene internet (S/N), Tiene computador (S/N), Tiene servicio de energía.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Ordinales</td>
+                            <td class="py-3 pr-4">5 columnas</td>
+                            <td class="py-3 text-muted-foreground">Estrato socioeconómico, Nivel de escolaridad de los padres.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('fuentes') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 4. Fuentes
+        </a>
+        <a href="{{ url_for('diccionario') }}" class="btn-primary text-sm">
+            Siguiente: 6. Diccionario de Datos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\diccionario.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Diccionario de Datos</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            6. Diccionario de Datos
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Catálogo técnico de atributos seleccionados a partir de los microdatos de Saber 11 (ICFES) y variables de homologación internacional (PISA 2022 - OCDE).
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-10">
+        
+        <!-- Alerta informativa -->
+        <div class="card-base p-6 border-primary/30 bg-primary/5 flex items-start gap-4">
+            <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            <div class="text-sm text-secondary-foreground leading-relaxed">
+                <strong class="text-foreground block mb-1">Estructura y Especificación de Variables</strong>
+                A continuación se presenta el catálogo técnico detallando su tipo de dato, dominio permitido, rol analítico y fuente de procedencia.
+            </div>
+        </div>
+
+        <!-- 1. Variables Objetivo (Targets) -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">01.</span> Variables Objetivo (Targets de Rendimiento Académico)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable (Código)</th>
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Dominio / Rango</th>
+                            <th class="pb-3 pr-4">Descripción Conceptual</th>
+                            <th class="pb-3">Fuente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PUNT_GLOBAL</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Numérico Continuo</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">0 - 500 pts</td>
+                            <td class="py-3 pr-4">Puntaje global consolidado estandarizado obtenido por el estudiante en la prueba Saber 11. Variable dependiente primaria en modelos de regresión.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PUNT_MATEMATICAS</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Numérico Continuo</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">0 - 100 pts</td>
+                            <td class="py-3 pr-4">Puntaje individual en la prueba de razonamiento cuantitativo y matemáticas.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PUNT_LECTURA_CRITICA</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Numérico Continuo</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">0 - 100 pts</td>
+                            <td class="py-3 pr-4">Puntaje individual en comprensión lectora, lectura crítica y análisis textual.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PUNT_C_NATURALES</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Numérico Continuo</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">0 - 100 pts</td>
+                            <td class="py-3 pr-4">Puntaje individual en evaluación de competencias científicas y ciencias naturales.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PUNT_INGLES</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Numérico Continuo</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">0 - 100 pts</td>
+                            <td class="py-3 pr-4">Puntaje individual en dominio de lengua extranjera (Inglés).</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">DESEMP_INGLES</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Ordinal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">A-, A1, A2, B1, B+</td>
+                            <td class="py-3 pr-4">Nivel de competencia en inglés clasificado según el Marco Común Europeo de Referencia (MCER). Target para modelos de clasificación multiclase.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 2. Variables Predictoras Tecnológicas -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">02.</span> Variables Predictoras de Brecha Digital (Tecnológicas)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable (Código)</th>
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Dominio / Rango</th>
+                            <th class="pb-3 pr-4">Descripción Conceptual</th>
+                            <th class="pb-3">Fuente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_TIENEINTERNET</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Binario (Booleano)</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Si / No</td>
+                            <td class="py-3 pr-4">Indica si el estudiante dispone de servicio de conexión a internet fijo o móvil en su lugar de residencia habitual.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_TIENECOMPUTADOR</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Binario (Booleano)</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Si / No</td>
+                            <td class="py-3 pr-4">Indica si el hogar del evaluado cuenta con computador de escritorio o portátil para labores de estudio.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">IND_ACCESO_DIGITAL</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Derivado</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Pleno, Parcial, Nulo</td>
+                            <td class="py-3 pr-4"><em class="text-foreground">Feature derivada:</em> Combina simultáneamente la tenencia de Internet y Computador en el hogar.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">Calculada</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PISA_ICTRES</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Continuo (Índice)</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">-3.0 a +3.0</td>
+                            <td class="py-3 pr-4">Índice WLE de recursos y dispositivos TIC disponibles en el hogar según cuestionario de estudiantes PISA 2022.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">OCDE</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 3. Variables Socioeconómicas y Familiares -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">03.</span> Variables Socioeconómicas y Capital Cultural
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable (Código)</th>
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Dominio / Rango</th>
+                            <th class="pb-3 pr-4">Descripción Conceptual</th>
+                            <th class="pb-3">Fuente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_ESTRATOVIVIENDA</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Ordinal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">1 a 6, Sin Estrato</td>
+                            <td class="py-3 pr-4">Clasificación socioeconómica del inmueble residencial según la estratificación oficial colombiana.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_EDUCACIONPADRE</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Ordinal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Primaria a Posgrado</td>
+                            <td class="py-3 pr-4">Máximo nivel educativo formal completado por el padre del estudiante (Proxy de capital cultural familiar).</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_EDUCACIONMADRE</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Ordinal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Primaria a Posgrado</td>
+                            <td class="py-3 pr-4">Máximo nivel educativo formal completado por la madre del estudiante.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_TIENELAVADORA</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Binario</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Si / No</td>
+                            <td class="py-3 pr-4">Tenencia de electrodomésticos en el hogar, utilizada como indicador proxy de nivel de riqueza material.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">FAMI_TIENEAUTOMOVIL</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Binario</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">Si / No</td>
+                            <td class="py-3 pr-4">Tenencia de vehículo particular en el hogar.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PISA_ESCS</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Continuo (Índice)</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">-4.0 a +4.0</td>
+                            <td class="py-3 pr-4">Índice de Estatus Económico, Social y Cultural sintetizado por la OCDE en PISA.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">OCDE</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 4. Variables Institucionales, Demográficas y Geográficas -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">04.</span> Variables Institucionales, Demográficas y Geográficas
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable (Código)</th>
+                            <th class="pb-3 pr-4">Tipo de Dato</th>
+                            <th class="pb-3 pr-4">Dominio / Rango</th>
+                            <th class="pb-3 pr-4">Descripción Conceptual</th>
+                            <th class="pb-3">Fuente</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">ESTU_GENERO</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Nominal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">M, F</td>
+                            <td class="py-3 pr-4">Género del estudiante reportado al momento de inscripción a la prueba. Variable de control demográfico.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">COLE_NATURALEZA</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Nominal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">OFICIAL, NO OFICIAL</td>
+                            <td class="py-3 pr-4">Naturaleza institucional del colegio (Público vs Privado).</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES / MEN</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">COLE_BILINGUE</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Binario</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">S, N</td>
+                            <td class="py-3 pr-4">Indica si la institución educativa tiene acreditación de programa bilingüe oficial.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES / MEN</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">COLE_AREA_UBICACION</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Categórico Nominal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">URBANO, RURAL</td>
+                            <td class="py-3 pr-4">Ubicación geográfica de la sede escolar según la zonificación territorial DANE.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES / DUE</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">COLE_MCPIO_UBICACION</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Texto</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">116 Municipios (Cund.)</td>
+                            <td class="py-3 pr-4">Municipio donde se encuentra localizada la sede educativa. Llave para cruces con indicadores DIVIPOLA.</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES / DANE</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-mono text-xs text-primary font-semibold">PERIODO</td>
+                            <td class="py-3 pr-4"><span class="data-tag">Entero Temporal</span></td>
+                            <td class="py-3 pr-4 font-mono text-xs">20194 a 20254</td>
+                            <td class="py-3 pr-4">Año y periodo semestral de aplicación del examen (Ej: 20194 = 2019 Semestre 2).</td>
+                            <td class="py-3 text-muted-foreground font-mono text-xs">ICFES</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('dataset') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 5. Dataset
+        </a>
+        <a href="{{ url_for('calidad') }}" class="btn-primary text-sm">
+            Siguiente: 7. Calidad inicial
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\fuentes.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Fuentes de Datos</span>
+    </div>
+
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            4. Fuentes de Datos y Matriz de Integración
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Inventario y descripción técnica de los datasets oficiales seleccionados para la construcción del data warehouse analítico.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-3 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Estrategia de Selección de Fuentes
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed">
+                Para contrastar las hipótesis planteadas sobre la brecha digital y el desempeño en la educación media, se integran cuatro fuentes secundarias de carácter público e institucional. Esta triangulación de datos permite enlazar los resultados estandarizados individuales con la infraestructura tecnológica a nivel municipal y las directrices macroeconómicas globales.
+            </p>
+        </div>
+
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Matriz de Fuentes Maestras
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Fuente / Entidad</th>
+                            <th class="pb-3 pr-4">Dataset / Nombre</th>
+                            <th class="pb-3 pr-4">Granularidad</th>
+                            <th class="pb-3">Uso en el Proyecto</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">ICFES</td>
+                            <td class="py-3 pr-4">Resultados Saber 11 (2019–2023)</td>
+                            <td class="py-3 pr-4 text-muted-foreground">Estudiante</td>
+                            <td class="py-3 text-muted-foreground">Variable objetivo (puntajes) y características sociodemográficas del hogar.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">MinTIC</td>
+                            <td class="py-3 pr-4">Estadísticas de Conectividad TIC</td>
+                            <td class="py-3 pr-4 text-muted-foreground">Municipal</td>
+                            <td class="py-3 text-muted-foreground">Indicadores de penetración de internet fijo/móvil y suscripciones de banda ancha.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">DANE</td>
+                            <td class="py-3 pr-4">Encuesta de Calidad de Vida (ECV)</td>
+                            <td class="py-3 pr-4 text-muted-foreground">Hogar / Regional</td>
+                            <td class="py-3 text-muted-foreground">Covariables estructurales de acceso a tecnologías y condiciones de vivienda.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Banco Mundial</td>
+                            <td class="py-3 pr-4">World Bank Education Statistics</td>
+                            <td class="py-3 pr-4 text-muted-foreground">Nacional / Global</td>
+                            <td class="py-3 text-muted-foreground">Referentes comparativos macroeconómicos de gasto educativo e infraestructura digital.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card-base p-6 border-primary/30 bg-primary/5 animate-on-scroll">
+            <span class="font-mono text-xs text-primary uppercase tracking-widest block mb-1">Nota del Pipeline ETL</span>
+            <p class="text-xs text-secondary-foreground leading-relaxed">
+                Los conjuntos de datos en formato CSV y XLSX descargados de estas fuentes oficiales serán procesados mediante scripts en Python (Pandas) para estandarizar códigos de departamentos y municipios (DANE), limpiando valores nulos antes de su almacenamiento en la base de datos relacional.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('necesidades') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 3. Necesidades
+        </a>
+        <a href="{{ url_for('dataset') }}" class="btn-primary text-sm">
+            Siguiente: 5. Estructura del Dataset
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\limitaciones.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Limitaciones Metodológicas</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            8. Limitaciones Metodológicas y Técnicas
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Delimitación de restricciones analíticas, sesgos de las fuentes de datos y estrategias de mitigación en el preprocesamiento.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-10">
+        
+        <!-- Alerta informativa -->
+        <div class="card-base p-6 border-primary/30 bg-primary/5 flex items-start gap-4">
+            <svg class="w-6 h-6 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+            <div class="text-sm text-secondary-foreground leading-relaxed">
+                <strong class="text-foreground block mb-1">Alcance y Delimitación Metodológica</strong>
+                Para asegurar la validez interna y externa de los hallazgos en la minería de datos, se identifican con rigor técnico las restricciones inherentes a las fuentes de datos (<strong>ICFES Saber 11</strong>, <strong>PISA 2022</strong>, <strong>DANE</strong> y <strong>Banco Mundial</strong>), los sesgos de recolección y las fronteras de inferencia de los modelos.
+            </div>
+        </div>
+
+        <!-- Grid de Limitaciones (4 Secciones) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- 1. Sesgo de Autorreporte y Simplificación -->
+            <div class="card-base p-6 animate-on-scroll">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" /></svg>
+                    1. Sesgo de Autorreporte y Simplificación
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Autorreporte no auditado:</strong> La tenencia de TIC y nivel educativo proviene de cuestionarios, sujetos a sesgo de deseabilidad social.</li>
+                    <li><strong class="text-foreground">Acceso binario vs. Calidad:</strong> Variables dicotómicas no capturan ancho de banda, latencia ni dispositivos compartidos.</li>
+                    <li><strong class="text-foreground">Ausencia de métricas de uso:</strong> No se registra el tiempo efectivo dedicado al estudio vs. ocio.</li>
+                </ul>
+            </div>
+
+            <!-- 2. Supervivencia Escolar y Cobertura -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 100ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg>
+                    2. Supervivencia Escolar y Cobertura
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Sesgo de supervivencia:</strong> Saber 11 evalúa solo a quienes culminan; excluye a desertores por vulnerabilidad.</li>
+                    <li><strong class="text-foreground">Subrepresentación rural:</strong> Zonas no interconectadas pueden presentar tasas de no presentación selectivas.</li>
+                </ul>
+            </div>
+
+            <!-- 3. Naturaleza Observacional -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 200ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V5.25A2.25 2.25 0 0018 3H6A2.25 2.25 0 003.75 5.25V18A2.25 2.25 0 006 20.25z" /></svg>
+                    3. Naturaleza Observacional
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Corte transversal:</strong> Cohortes independientes identifican asociación predictiva, no causalidad pura.</li>
+                    <li><strong class="text-foreground">Variables latentes:</strong> Se omiten factores no cuantificables como salud emocional o calidad pedagógica del docente.</li>
+                </ul>
+            </div>
+
+            <!-- 4. Disrupción Temporal (Efecto COVID) -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 300ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    4. Disrupción Temporal (Efecto COVID)
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Anomalía 2020-2021:</strong> Confinamiento genera hiperinflación en el peso predictivo de la conectividad.</li>
+                    <li><strong class="text-foreground">Homologación de escalas:</strong> Diferencias métricas entre ICFES (0-500) y PISA (WLE) exigen normalización (Z-scores).</li>
+                </ul>
+            </div>
+
+        </div>
+
+        <!-- Estrategias de Mitigación -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">05.</span> Estrategias de Mitigación
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Limitación Detectada</th>
+                            <th class="pb-3">Acción en Fase de Preprocesamiento</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Acceso digital simplificado</td>
+                            <td class="py-3 text-muted-foreground">Construcción de <em>Índice Compuesto de Acceso Digital</em> (Hardware + Conectividad + Estrato).</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Valores nulos sociodemográficos</td>
+                            <td class="py-3 text-muted-foreground">Creación de categoría <code class="text-xs text-primary">"NO_INFORMA"</code> para capturar el patrón de abstención.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Disrupción del periodo 2020-2021</td>
+                            <td class="py-3 text-muted-foreground">Inclusión de <code class="text-xs text-primary">PERIODO</code> como covariable de control y validación cruzada estratificada por año.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('calidad') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 7. Calidad
+        </a>
+        <a href="{{ url_for('index') }}" class="btn-primary text-sm bg-green-600 hover:bg-green-500 border-none">
+            Fin del Entregable 1 · Volver al Inicio
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\necesidades.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Necesidades de Información</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            3. Necesidades de Información
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Definición de parámetros generales, cobertura geográfica, variables relevantes y escalas de comparación.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Grid: Parámetros Generales y Cobertura -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Parámetros Generales -->
+            <div class="card-base p-6 animate-on-scroll">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0m-3.75 0H5.75" /></svg>
+                    Parámetros Generales
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Población / unidad de análisis:</strong> Estudiante individual de educación media que presenta evaluación académica estandarizada.</li>
+                    <li><strong class="text-foreground">Entidades involucradas:</strong> Estudiantes, Hogares (núcleo familiar), Instituciones Educativas (IE).</li>
+                    <li><strong class="text-foreground">Periodo de análisis:</strong> 2019 - 2025.</li>
+                    <li><strong class="text-foreground">Nivel de granularidad:</strong> Microdatos (un registro por cada estudiante).</li>
+                </ul>
+            </div>
+
+            <!-- Cobertura Geográfica -->
+            <div class="card-base p-6 animate-on-scroll" style="transition-delay: 100ms;">
+                <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.038 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.038-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" /></svg>
+                    Cobertura Geográfica
+                </h2>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Global</span> Países participantes en PISA.
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Nacional</span> Totalidad del territorio colombiano.
+                    </li>
+                    <li class="flex items-center gap-2">
+                        <span class="data-tag">Regional</span> Departamento de Cundinamarca.
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Variables Relevantes (Tabla) -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">03.</span> Variables Relevantes
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Categoría</th>
+                            <th class="pb-3 pr-4">Variable</th>
+                            <th class="pb-3">Justificación analítica</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Objetivo (Target)</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Puntaje Global, Puntaje Matemáticas, Puntaje Lectura</td>
+                            <td class="py-3 text-muted-foreground">Variables dependientes continuas para medir el rendimiento académico.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Tecnológicas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Acceso a Internet (Sí/No), Computador (Sí/No)</td>
+                            <td class="py-3 text-muted-foreground">Variables independientes predictoras para medir la brecha digital doméstica.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Socioeconómicas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Estrato socioeconómico, Nivel educativo padres</td>
+                            <td class="py-3 text-muted-foreground">Covariables necesarias para aislar y medir el peso del capital económico frente al tecnológico.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Demográficas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Género del estudiante</td>
+                            <td class="py-3 text-muted-foreground">Variable de control para detectar posibles sesgos en el desempeño.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Institucionales</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Naturaleza IE (Oficial/No Oficial)</td>
+                            <td class="py-3 text-muted-foreground">Evalúa el impacto del entorno escolar frente a la vulnerabilidad del hogar.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4"><span class="data-tag">Geográficas</span></td>
+                            <td class="py-3 pr-4 font-semibold text-foreground">Municipio, Área (Urbano/Rural)</td>
+                            <td class="py-3 text-muted-foreground">Variables clave para aplicar algoritmos de agrupamiento espacial (clustering).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Variables para Comparación de Escalas -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">04.</span> Variables para Comparación de Escalas
+            </h2>
+            <ol class="space-y-3 text-sm text-secondary-foreground list-decimal list-inside pl-2">
+                <li class="pl-2"><strong class="text-foreground">Desempeño académico estandarizado:</strong> Homologación de resultados entre distintas pruebas mediante normalización estadística.</li>
+                <li class="pl-2"><strong class="text-foreground">Disponibilidad de Internet y Computador:</strong> Métrica común en cuestionarios sociodemográficos.</li>
+                <li class="pl-2"><strong class="text-foreground">Ubicación (Urbano/Rural):</strong> Contraste de segregación territorial en las tres escalas.</li>
+            </ol>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('preguntas') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 2. Preguntas
+        </a>
+        <a href="{{ url_for('fuentes') }}" class="btn-primary text-sm">
+            Siguiente: 4. Fuentes de datos
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\preguntas.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Preguntas de Investigación</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            2. Preguntas de Investigación y Conocimiento
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Delimitación de los interrogantes orientadores y el conocimiento esperado a partir del procesamiento de los microdatos.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Pregunta Principal -->
+        <div class="card-base p-6 sm:p-8 border-primary/40 bg-primary/5 animate-on-scroll">
+            <span class="font-mono text-xs text-primary uppercase tracking-widest block mb-2">Pregunta Principal de Investigación</span>
+            <p class="text-lg font-bold text-foreground leading-relaxed">
+                ¿En qué medida el acceso concurrente a recursos tecnológicos (internet y computador) y el estrato socioeconómico determinan la probabilidad de que un estudiante de educación media alcance un desempeño superior en las pruebas estandarizadas?
+            </p>
+        </div>
+
+        <!-- Preguntas Secundarias -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-5 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Preguntas Secundarias
+            </h2>
+            <ol class="space-y-4 text-secondary-foreground text-sm leading-relaxed list-decimal list-inside pl-2">
+                <li class="pl-2">
+                    <strong class="text-foreground">Impacto urbano vs. rural:</strong> ¿Cómo varía el impacto de la desconexión digital en los puntajes de competencias críticas (matemáticas y lectura) al contrastar instituciones educativas urbanas y rurales de la región?
+                </li>
+                <li class="pl-2">
+                    <strong class="text-foreground">Clústeres sociodemográficos:</strong> ¿Cuáles son los clústeres sociodemográficos y espaciales que concentran el mayor riesgo de bajo rendimiento académico derivado de la carencia de infraestructura tecnológica?
+                </li>
+                <li class="pl-2">
+                    <strong class="text-foreground">Mitigación por capital cultural:</strong> ¿En qué magnitud el capital cultural (nivel educativo de los padres) mitiga o amplifica el efecto negativo de no poseer acceso a internet en el hogar?
+                </li>
+            </ol>
+        </div>
+
+        <!-- Conocimiento Esperado -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">03.</span> Conocimiento esperado a partir de los datos
+            </h2>
+            <div class="space-y-4 text-secondary-foreground text-sm leading-relaxed">
+                <p>
+                    Se espera extraer patrones predictivos para cuantificar la importancia relativa (<em class="text-primary not-italic font-semibold">feature importance</em>) de las variables tecnológicas frente a las socioeconómicas.
+                </p>
+                <p>
+                    El análisis permitirá identificar perfiles de riesgo mediante modelos de clasificación y detectar agrupaciones geográficas vulnerables (algoritmos de <em class="text-primary not-italic font-semibold">clustering</em>). Esto proporcionará evidencia empírica estructurada que demuestre cómo la infraestructura digital condiciona los resultados académicos, sirviendo de insumo técnico para el diseño de estrategias de mitigación en el sector educativo local.
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <a href="{{ url_for('problema') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Anterior: 1. Planteamiento
+        </a>
+        <a href="{{ url_for('necesidades') }}" class="btn-primary text-sm">
+            Siguiente: 3. Necesidades de información
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa1\problema.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb / Navegación superior -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Entregables</span>
+        <span>/</span>
+        <span class="text-primary">Fase 1 · Planteamiento del Problema</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 01 · Entregable 1</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            1. Planteamiento del Problema
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Delimitación del contexto socioeducativo y justificación del uso de minería de datos para evaluar el impacto de la conectividad en el rendimiento académico.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Bloque 1 -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> La brecha digital como barrera educativa
+            </h2>
+            <div class="space-y-4 text-secondary-foreground leading-relaxed">
+                <p>
+                    En Colombia, el acceso a las tecnologías de la información y la comunicación (TIC) sigue siendo desigual. Aunque la cobertura ha mejorado en los últimos años, la brecha entre las zonas urbanas y las rurales (o los sectores de menor recursos) genera un desbalance directo en las oportunidades de aprendizaje de los estudiantes.
+                </p>
+                <p>
+                    Cuando analizamos los resultados históricos de las pruebas <strong>Saber 11</strong> del ICFES, es evidente que los puntajes más bajos se concentran en regiones con menor infraestructura tecnológica. Sin embargo, en la mayoría de los estudios previos esta variable se analiza de forma aislada, sin cruzarla con factores socioeconómicos clave como el estrato, la naturaleza del colegio o la disponibilidad real de un computador en casa.
+                </p>
+            </div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Enfoque del Proyecto y Aporte Técnico
+            </h2>
+            <div class="space-y-4 text-secondary-foreground leading-relaxed">
+                <p>
+                    Con este proyecto no buscamos simplemente repetir estadísticas ya conocidas, sino ir un paso más allá utilizando técnicas de minería de datos. Queremos procesar los microdatos oficiales del ICFES y cruzarlos con indicadores de conectividad municipal para construir modelos predictivos.
+                </p>
+                <p>
+                    Esto nos permitirá identificar patrones ocultos, medir con precisión matemática qué tanto peso tiene la conectividad frente a otras variables y detectar qué municipios presentan mayor riesgo de rezago académico por falta de infraestructura digital.
+                </p>
+            </div>
+        </div>
+
+        <!-- Tarjeta de Hipótesis / Alcance -->
+        <div class="card-base p-6 sm:p-8 border-primary/30 bg-primary/5 animate-on-scroll">
+            <span class="font-mono text-xs text-primary uppercase tracking-widest block mb-2">Hipótesis de Trabajo</span>
+            <p class="text-foreground font-medium leading-relaxed">
+                "Los estudiantes y municipios con mayor índice de acceso digital obtienen un rendimiento significativamente superior en las pruebas Saber 11, y este factor tecnológico mantiene un alto poder predictivo incluso al controlar las variables socioeconómicas tradicionales."
+            </p>
+        </div>
+
+    </div>
+
+    <!-- Barra de navegación inferior (Estilo Rocket) -->
+    <div class="mt-12 pt-6 border-t border-border flex items-center justify-between">
+        <span class="font-mono text-xs text-muted-foreground">Sección 1 de 6</span>
+        <a href="{{ url_for('preguntas') }}" class="btn-primary text-sm">
+            Siguiente: 2. Preguntas de Investigación
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa2\dimensiones.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Dimensiones de Calidad</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            3. Dimensiones de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Medición estandarizada del conjunto de datos mediante indicadores de Completitud, Unicidad, Validez y Consistencia para determinar su idoneidad analítica.
+        </p>
+    </div>
+
+    <!-- Grid de Dimensiones -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+        
+        <!-- 1. Completitud -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
+                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                    <span class="text-primary font-mono text-sm">01.</span> Completitud
+                </h2>
+                <span class="data-tag text-green-400 border-green-400/20 bg-green-400/10">Crítico</span>
+            </div>
+            <div class="space-y-4">
+                <div class="p-3 bg-muted/30 rounded border border-border/50">
+                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
+                    <p class="text-sm font-mono text-primary">((Total - Nulos) / Total) * 100</p>
+                </div>
+                <div class="text-sm text-secondary-foreground space-y-2">
+                    <p><strong class="text-foreground">Variables Objetivo:</strong> Cumplimiento del 100%. Las variables <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_global</code>, <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_matematicas</code> y <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_lectura_critica</code> no presentan valores nulos.</p>
+                    <p><strong class="text-foreground text-orange-400">Hallazgo de Riesgo:</strong> Las variables del cuestionario socioeconómico superan el 5% de tolerancia de nulos. Específicamente, <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_tieneinternet</code> (20.19%), <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_tienecomputador</code> (18.52%) y <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_estratovivienda</code> (17.98%).</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. Unicidad -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll" style="transition-delay: 100ms;">
+            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
+                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                    <span class="text-primary font-mono text-sm">02.</span> Unicidad
+                </h2>
+                <span class="data-tag text-green-400 border-green-400/20 bg-green-400/10">Óptimo</span>
+            </div>
+            <div class="space-y-4">
+                <div class="p-3 bg-muted/30 rounded border border-border/50">
+                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
+                    <p class="text-sm font-mono text-primary">((Total - Duplicados) / Total) * 100</p>
+                </div>
+                <div class="text-sm text-secondary-foreground space-y-2">
+                    <p><strong class="text-foreground">Estado Actual:</strong> <span class="text-xl font-bold text-foreground block my-1">100%</span></p>
+                    <p>Tras evaluar las 93 variables del dataset integrado sobre más de 4.5 millones de registros, no se encontraron filas exactamente duplicadas (0 registros). La entidad generadora (ICFES) aplica un control estricto de llave primaria.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Validez -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
+                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                    <span class="text-primary font-mono text-sm">03.</span> Validez
+                </h2>
+                <span class="data-tag text-orange-400 border-orange-400/20 bg-orange-400/10">Requiere Acción</span>
+            </div>
+            <div class="space-y-4">
+                <div class="p-3 bg-muted/30 rounded border border-border/50">
+                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
+                    <p class="text-sm font-mono text-primary">% Registros dentro de los dominios definidos</p>
+                </div>
+                <div class="text-sm text-secondary-foreground space-y-2">
+                    <p><strong class="text-foreground">Rangos Métricos:</strong> Excelente control central con solo <strong>1 registro</strong> fuera del dominio establecido [0, 500] en <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_global</code>.</p>
+                    <p><strong class="text-foreground text-orange-400">Valores Atípicos (Outliers):</strong> Violación severa de dominio en la variable <code class="text-xs text-primary bg-primary/10 px-1 rounded">estu_grado</code>. Se detectaron <strong>446,405 registros</strong> con valores inválidos (>11, como 20234.0), indicando errores sistemáticos en la homologación de años durante la consolidación de la data.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Consistencia -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll" style="transition-delay: 100ms;">
+            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
+                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                    <span class="text-primary font-mono text-sm">04.</span> Consistencia
+                </h2>
+                <span class="data-tag text-orange-400 border-orange-400/20 bg-orange-400/10">Requiere Acción</span>
+            </div>
+            <div class="space-y-4">
+                <div class="p-3 bg-muted/30 rounded border border-border/50">
+                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
+                    <p class="text-sm font-mono text-primary">Evaluación lógica y estructural de formatos</p>
+                </div>
+                <div class="text-sm text-secondary-foreground space-y-2">
+                    <p><strong class="text-foreground text-orange-400">Conflictos de Formato:</strong> La variable <code class="text-xs text-primary bg-primary/10 px-1 rounded">estu_fechanacimiento</code> presenta inconsistencias estructurales, conteniendo cadenas de texto con longitudes mezcladas de <strong>10 y 3 caracteres</strong>.</p>
+                    <p>Es obligatorio aplicar una transformación estructurada de fechas (Parse Date) para unificar formatos a estándar YYYY-MM-DD.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navegación de Etapa -->
+    <div class="pt-8 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('perfilamiento') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Anterior: Perfilamiento
+        </a>
+        <a href="{{ url_for('integracion') }}" class="btn-primary text-sm">
+            Siguiente: Inventario y Tratamiento
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa2\informe.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Informe Final</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Entregable Final</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            5. Informe Final de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Veredicto técnico sobre la idoneidad del conjunto de datos integrado (4,541,656 registros, 93 variables) para la predicción del desempeño académico.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        
+        <!-- Veredicto General -->
+        <div class="card-base p-6 sm:p-8 border-primary/40 bg-primary/5 animate-on-scroll">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center text-primary mt-1">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-foreground mb-2">Veredicto de Idoneidad: Aprobado con Reservas Técnicas</h2>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        El dataset <strong>es adecuado</strong> para continuar con el modelado de la Etapa 3. Las variables objetivo (<code class="bg-muted px-1 rounded text-xs text-primary">punt_global</code>, etc.) tienen una completitud y validez del ~100%, garantizando un target robusto. La unicidad es perfecta (0 duplicados). Los problemas detectados se concentran en las variables predictoras categóricas, los cuales son manejables mediante el plan de tratamiento establecido sin comprometer la viabilidad del estudio.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problemas vs Riesgos Aceptables (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Problemas Críticos a Resolver -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-orange-400">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    Requisitos Previos al Modelado
+                </h3>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Estandarización de Grados:</strong> Los 446,405 registros con <code class="bg-muted px-1 rounded text-xs">estu_grado > 11</code> deben ser purgados o transformados para evitar que los modelos (ej. Random Forest) los interpreten como una clase extra.</li>
+                    <li><strong class="text-foreground">Casteo de Fechas:</strong> La variable <code class="bg-muted px-1 rounded text-xs">estu_fechanacimiento</code> bloqueará la ejecución de modelos si no se unifica y se transforma a una variable numérica continua (Edad).</li>
+                </ul>
+            </div>
+
+            <!-- Riesgos Aceptables (Justificación) -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-primary">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    Riesgos Asumidos y Justificados
+                </h3>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Tolerancia en Completitud (20% Nulos):</strong> Se rechaza la eliminación de las filas con nulos en las variables de conectividad (<code class="bg-muted px-1 rounded text-xs">fami_tieneinternet</code>). Hacerlo reduciría la muestra en casi 1 millón de registros, alterando la distribución espacial (sesgo urbano-rural). La falta de respuesta será tratada como una categoría válida ("No informa").</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conclusión Cuantitativa -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2">Métricas Finales de Calidad</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div>
+                    <p class="text-2xl font-bold text-primary">100%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Completitud Target</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-primary">100%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Unicidad (0 Duplicados)</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-orange-400">90.1%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Validez Estructural</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-green-400">Apto</p>
+                    <p class="text-xs text-muted-foreground uppercase">Estado General</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('integracion') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Anterior: Inventario
+            </a>
+            <a href="{{ url_for('index') }}" class="btn-primary text-sm">
+                Finalizar Fase 2
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa2\integracion.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Inventario y Tratamiento</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            4. Inventario y Plan de Tratamiento
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Consolidación de las anomalías detectadas, análisis de causa raíz y definición de las estrategias de mitigación técnica (imputación, estandarización o exclusión) previo al modelado.
+        </p>
+    </div>
+
+    <!-- Matriz de Tratamiento -->
+    <div class="card-base p-0 overflow-hidden animate-on-scroll">
+        <div class="p-6 border-b border-border bg-muted/10">
+            <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                Matriz de Problemas y Acciones (Top 3 Críticos)
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                        <th class="py-4 pl-6 pr-4 font-semibold">Variable(s) / Dimensión</th>
+                        <th class="py-4 pr-4 font-semibold">Descripción y Evidencia</th>
+                        <th class="py-4 pr-4 font-semibold">Causa Raíz Analizada</th>
+                        <th class="py-4 pr-6 font-semibold">Acción de Tratamiento</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                    
+                    <!-- Problema 1: Nulos en Cuestionario -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_tieneinternet<br>fami_estratovivienda</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Alto porcentaje de valores faltantes en variables sociodemográficas.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 916,873 nulos (20.19%) en internet.</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Sesgo de Evasión:</strong> Omisión sistemática por parte del estudiante al diligenciar el formulario de autorreporte durante el registro.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Imputación / Conservación</strong>
+                            <p class="text-xs">Dado el alto volumen (>15%), eliminar registros sesgaría el modelo. Se creará la categoría <code class="bg-muted px-1 rounded">"No Reporta"</code> o se aplicará imputación por Moda/KNN en el pipeline de la Fase 3.</p>
+                        </td>
+                    </tr>
+
+                    <!-- Problema 2: Grados Inválidos (Outliers) -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">estu_grado</span>
+                            <span class="data-tag border-red-400/30 text-red-400 bg-red-400/10">Validez</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Valores numéricos que superan el dominio lógico de la educación media (máx 11).</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 446,405 registros con valor (e.g. 20234.0).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Error de Integración:</strong> Al unificar los datasets de distintos años, se concatenó el año de presentación con el grado o código de la institución.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Corrección / Estandarización</strong>
+                            <p class="text-xs">Aplicar regla de negocio (Regex/Truncamiento) para extraer el grado real si está contenido en la cadena, o reemplazar valores anómalos por el valor esperado (11) asumiendo la naturaleza de la prueba.</p>
+                        </td>
+                    </tr>
+
+                    <!-- Problema 3: Formatos de Fecha -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">estu_fechanacimiento</span>
+                            <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10">Consistencia</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Discrepancia estructural en las cadenas de texto de las fechas.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: Longitudes mixtas de 10 y 3 caracteres.</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Variación de Origen:</strong> Cambios en el sistema de captura del ICFES entre las cohortes 2019 y 2023.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Transformación</strong>
+                            <p class="text-xs">Casteo a formato <code class="bg-muted px-1 rounded">datetime</code> estándar (YYYY-MM-DD). Los registros de 3 caracteres se evaluarán para extracción de edad; si es imposible, se tratarán como nulos bajo imputación de mediana.</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Navegación de Etapa -->
+    <div class="pt-8 mt-10 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('dimensiones') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Anterior: Dimensiones
+        </a>
+        <a href="{{ url_for('informe') }}" class="btn-primary text-sm">
+            Siguiente: Informe Final
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa2\perfilamiento.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Perfilamiento</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            2. Perfilamiento de los Datos
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Análisis estadístico descriptivo y volumétrico del conjunto de datos integrado para identificar anomalías estructurales.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        <!-- Tarjetas de Volumetría -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-primary tracking-tight mb-1">> 4.5M</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Registros</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-accent tracking-tight mb-1">93</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Variables</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-foreground tracking-tight mb-1">0</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Duplicados Exactos</p>
+            </div>
+        </div>
+
+        <!-- Tabla de Perfilamiento -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">01.</span> Resumen por Variables (Muestra)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable</th>
+                            <th class="pb-3 pr-4">Tipo</th>
+                            <th class="pb-3 pr-4">% Nulos</th>
+                            <th class="pb-3 pr-4">Únicos</th>
+                            <th class="pb-3">Rango (Min - Max)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <!-- Target -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">punt_global</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">int64</td>
+                            <td class="py-3 pr-4 text-green-400">0.00%</td>
+                            <td class="py-3 pr-4">485</td>
+                            <td class="py-3 text-muted-foreground">0.0 - 500.0 (Promedio: 252.42)</td>
+                        </tr>
+                        <!-- Variables Predictoras Clave -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">fami_tieneinternet</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-orange-400">20.19%</td>
+                            <td class="py-3 pr-4">2</td>
+                            <td class="py-3 text-muted-foreground">Categórica binaria</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">cole_area_ubicacion</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-yellow-400">14.17%</td>
+                            <td class="py-3 pr-4">3</td>
+                            <td class="py-3 text-muted-foreground">Categórica</td>
+                        </tr>
+                        <!-- Variables con anomalías detectadas -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">estu_grado</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">float64</td>
+                            <td class="py-3 pr-4 text-yellow-400">13.97%</td>
+                            <td class="py-3 pr-4">7</td>
+                            <td class="py-3 text-accent font-bold">10.0 - 20234.0 (Outlier)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">estu_fechanacimiento</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-green-400">0.00%</td>
+                            <td class="py-3 pr-4">22,116</td>
+                            <td class="py-3 text-muted-foreground">Requiere estandarización</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Navegación de Etapa -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('proposito') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Anterior: Propósito
+            </a>
+            <a href="{{ url_for('dimensiones') }}" class="btn-primary text-sm">
+                Siguiente: Dimensiones
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+```
+
+### Archivo: .\templates\etapa2\proposito.html
+```
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span>Etapa 2 - Calidad de Datos</span>
+        <span>/</span>
+        <span class="text-primary">Propósito y Requisitos</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            1. Propósito y Requisitos de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Evaluación de la idoneidad del dataset integrado (Saber 11, MinTIC, DANE) frente a los objetivos de investigación sobre la brecha digital.
+        </p>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="space-y-8">
+        
+        <!-- Propósito -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Propósito del Conjunto de Datos
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-4">
+                El conjunto de datos integrado, compuesto por más de 2.1 millones de registros y 47 variables, tiene como objetivo cuantificar el impacto de la brecha digital en el desempeño académico de los estudiantes en Colombia. La información servirá para resolver tres preguntas de investigación principales:
+            </p>
+            <ul class="list-disc list-inside space-y-2 text-sm text-secondary-foreground pl-2">
+                <li>Impacto del acceso concurrente a internet y computador en los resultados de las pruebas.</li>
+                <li>Diferencias en el rendimiento académico entre zonas urbanas y rurales.</li>
+                <li>Efecto del capital cultural del núcleo familiar como mitigador de la brecha tecnológica.</li>
+            </ul>
+        </div>
+
+        <!-- Requisitos de Calidad -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Requisitos de Calidad
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-4">
+                Para garantizar que los datos sean adecuados para el modelamiento y respondan al problema de investigación, se establecen los siguientes parámetros:
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Completitud</strong>
+                    <span class="text-sm text-secondary-foreground">Variables objetivo (ej. PUNT_GLOBAL) exigen 100% de llenado. Predictoras (ej. FAMI_TIENEINTERNET) tolerarán un máximo de 5% de nulos.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Validez</strong>
+                    <span class="text-sm text-secondary-foreground">Los puntajes académicos deben enmarcarse estrictamente en el rango métrico establecido de 0 a 500.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Consistencia</strong>
+                    <span class="text-sm text-secondary-foreground">Homologación estandarizada de categorías sociodemográficas cruzadas entre ICFES, MinTIC y DANE.</span>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <strong class="text-foreground block mb-1">Cobertura</strong>
+                    <span class="text-sm text-secondary-foreground">Representatividad a nivel nacional abarcando ininterrumpidamente las cohortes de 2019 a 2025.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problemas e Idoneidad (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="card-base p-6 animate-on-scroll border-l-4 border-l-accent">
+                <h3 class="text-base font-bold text-foreground mb-3">Riesgos Anticipados</h3>
+                <ul class="list-disc list-inside space-y-2 text-sm text-secondary-foreground">
+                    <li>Ausencia de datos por evasión en el cuestionario de inscripción.</li>
+                    <li>Variaciones en la denominación geográfica entre entidades gubernamentales a lo largo de los años.</li>
+                    <li>Valores atípicos derivados de errores de digitación en la captura original.</li>
+                </ul>
+            </div>
+            
+            <div class="card-base p-6 animate-on-scroll border-l-4 border-l-primary">
+                <h3 class="text-base font-bold text-foreground mb-3">Idoneidad de los Datos</h3>
+                <p class="text-sm text-secondary-foreground leading-relaxed">
+                    El dataset es adecuado. El volumen estructural y la granularidad capturan la varianza necesaria para evaluar el desempeño académico frente a los factores tecnológicos y demográficos requeridos.
+                </p>
+            </div>
+        </div>
+
+    </div>
+    <!-- Navegación de Etapa -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('index') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Volver al Panel
+            </a>
+            <a href="{{ url_for('perfilamiento') }}" class="btn-primary text-sm">
+                Siguiente: Perfilamiento
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+        </div>
+</div>
+{% endblock %}
+```

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Perfilamiento</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            2. Perfilamiento de los Datos
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Análisis estadístico descriptivo y volumétrico del conjunto de datos integrado para identificar anomalías estructurales.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        <!-- Tarjetas de Volumetría -->
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-primary tracking-tight mb-1">> 4.5M</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Registros</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-accent tracking-tight mb-1">93</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Variables</p>
+            </div>
+            <div class="card-base p-6 text-center">
+                <p class="text-3xl font-bold text-foreground tracking-tight mb-1">0</p>
+                <p class="font-mono text-xs text-muted-foreground uppercase">Duplicados Exactos</p>
+            </div>
+        </div>
+
+        <!-- Tabla de Perfilamiento -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2 border-b border-border pb-3">
+                <span class="text-primary font-mono text-sm">01.</span> Resumen por Variables (Muestra)
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                            <th class="pb-3 pr-4">Variable</th>
+                            <th class="pb-3 pr-4">Tipo</th>
+                            <th class="pb-3 pr-4">% Nulos</th>
+                            <th class="pb-3 pr-4">Únicos</th>
+                            <th class="pb-3">Rango (Min - Max)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <!-- Target -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">punt_global</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">int64</td>
+                            <td class="py-3 pr-4 text-green-400">0.00%</td>
+                            <td class="py-3 pr-4">485</td>
+                            <td class="py-3 text-muted-foreground">0.0 - 500.0 (Promedio: 252.42)</td>
+                        </tr>
+                        <!-- Variables Predictoras Clave -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">fami_tieneinternet</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-orange-400">20.19%</td>
+                            <td class="py-3 pr-4">2</td>
+                            <td class="py-3 text-muted-foreground">Categórica binaria</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">cole_area_ubicacion</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-yellow-400">14.17%</td>
+                            <td class="py-3 pr-4">3</td>
+                            <td class="py-3 text-muted-foreground">Categórica</td>
+                        </tr>
+                        <!-- Variables con anomalías detectadas -->
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">estu_grado</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">float64</td>
+                            <td class="py-3 pr-4 text-yellow-400">13.97%</td>
+                            <td class="py-3 pr-4">7</td>
+                            <td class="py-3 text-accent font-bold">10.0 - 20234.0 (Outlier)</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pr-4 font-semibold text-foreground">estu_fechanacimiento</td>
+                            <td class="py-3 pr-4 font-mono text-xs text-muted-foreground">object</td>
+                            <td class="py-3 pr-4 text-green-400">0.00%</td>
+                            <td class="py-3 pr-4">22,116</td>
+                            <td class="py-3 text-muted-foreground">Requiere estandarización</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Navegación de Etapa -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('proposito') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Anterior: Propósito
+            </a>
+            <a href="{{ url_for('dimensiones') }}" class="btn-primary text-sm">
+                Siguiente: Dimensiones
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}
