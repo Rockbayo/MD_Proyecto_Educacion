@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Inventario y Tratamiento</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            4. Inventario y Plan de Tratamiento
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Consolidación de las anomalías detectadas, análisis de causa raíz y definición de las estrategias de mitigación técnica (imputación, estandarización o exclusión) previo al modelado.
+        </p>
+    </div>
+
+    <!-- Matriz de Tratamiento -->
+    <div class="card-base p-0 overflow-hidden animate-on-scroll">
+        <div class="p-6 border-b border-border bg-muted/10">
+            <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+                Matriz de Problemas y Acciones (Top 3 Críticos)
+            </h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase">
+                        <th class="py-4 pl-6 pr-4 font-semibold">Variable(s) / Dimensión</th>
+                        <th class="py-4 pr-4 font-semibold">Descripción y Evidencia</th>
+                        <th class="py-4 pr-4 font-semibold">Causa Raíz Analizada</th>
+                        <th class="py-4 pr-6 font-semibold">Acción de Tratamiento</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                    
+                    <!-- Problema 1: Nulos en Cuestionario -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_tieneinternet<br>fami_estratovivienda</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Alto porcentaje de valores faltantes en variables sociodemográficas.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 916,873 nulos (20.19%) en internet.</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Sesgo de Evasión:</strong> Omisión sistemática por parte del estudiante al diligenciar el formulario de autorreporte durante el registro.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Imputación / Conservación</strong>
+                            <p class="text-xs">Dado el alto volumen (>15%), eliminar registros sesgaría el modelo. Se creará la categoría <code class="bg-muted px-1 rounded">"No Reporta"</code> o se aplicará imputación por Moda/KNN en el pipeline de la Fase 3.</p>
+                        </td>
+                    </tr>
+
+                    <!-- Problema 2: Grados Inválidos (Outliers) -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">estu_grado</span>
+                            <span class="data-tag border-red-400/30 text-red-400 bg-red-400/10">Validez</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Valores numéricos que superan el dominio lógico de la educación media (máx 11).</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 446,405 registros con valor (e.g. 20234.0).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Error de Integración:</strong> Al unificar los datasets de distintos años, se concatenó el año de presentación con el grado o código de la institución.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Corrección / Estandarización</strong>
+                            <p class="text-xs">Aplicar regla de negocio (Regex/Truncamiento) para extraer el grado real si está contenido en la cadena, o reemplazar valores anómalos por el valor esperado (11) asumiendo la naturaleza de la prueba.</p>
+                        </td>
+                    </tr>
+
+                    <!-- Problema 3: Formatos de Fecha -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">estu_fechanacimiento</span>
+                            <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10">Consistencia</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-2">Discrepancia estructural en las cadenas de texto de las fechas.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: Longitudes mixtas de 10 y 3 caracteres.</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <strong class="text-foreground block mb-1">Variación de Origen:</strong> Cambios en el sistema de captura del ICFES entre las cohortes 2019 y 2023.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Transformación</strong>
+                            <p class="text-xs">Casteo a formato <code class="bg-muted px-1 rounded">datetime</code> estándar (YYYY-MM-DD). Los registros de 3 caracteres se evaluarán para extracción de edad; si es imposible, se tratarán como nulos bajo imputación de mediana.</p>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Navegación de Etapa -->
+    <div class="pt-8 mt-10 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('dimensiones') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Anterior: Dimensiones
+        </a>
+        <a href="{{ url_for('informe') }}" class="btn-primary text-sm">
+            Siguiente: Informe Final
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

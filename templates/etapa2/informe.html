@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 2 · Informe Final</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 02 · Entregable Final</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            5. Informe Final de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed">
+            Veredicto técnico sobre la idoneidad del conjunto de datos integrado (4,541,656 registros, 93 variables) para la predicción del desempeño académico.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        
+        <!-- Veredicto General -->
+        <div class="card-base p-6 sm:p-8 border-primary/40 bg-primary/5 animate-on-scroll">
+            <div class="flex items-start gap-4">
+                <div class="w-12 h-12 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center text-primary mt-1">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-bold text-foreground mb-2">Veredicto de Idoneidad: Aprobado con Reservas Técnicas</h2>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        El dataset <strong>es adecuado</strong> para continuar con el modelado de la Etapa 3. Las variables objetivo (<code class="bg-muted px-1 rounded text-xs text-primary">punt_global</code>, etc.) tienen una completitud y validez del ~100%, garantizando un target robusto. La unicidad es perfecta (0 duplicados). Los problemas detectados se concentran en las variables predictoras categóricas, los cuales son manejables mediante el plan de tratamiento establecido sin comprometer la viabilidad del estudio.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Problemas vs Riesgos Aceptables (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Problemas Críticos a Resolver -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-orange-400">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    Requisitos Previos al Modelado
+                </h3>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Estandarización de Grados:</strong> Los 446,405 registros con <code class="bg-muted px-1 rounded text-xs">estu_grado > 11</code> deben ser purgados o transformados para evitar que los modelos (ej. Random Forest) los interpreten como una clase extra.</li>
+                    <li><strong class="text-foreground">Casteo de Fechas:</strong> La variable <code class="bg-muted px-1 rounded text-xs">estu_fechanacimiento</code> bloqueará la ejecución de modelos si no se unifica y se transforma a una variable numérica continua (Edad).</li>
+                </ul>
+            </div>
+
+            <!-- Riesgos Aceptables (Justificación) -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-primary">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    Riesgos Asumidos y Justificados
+                </h3>
+                <ul class="space-y-3 text-sm text-secondary-foreground">
+                    <li><strong class="text-foreground">Tolerancia en Completitud (20% Nulos):</strong> Se rechaza la eliminación de las filas con nulos en las variables de conectividad (<code class="bg-muted px-1 rounded text-xs">fami_tieneinternet</code>). Hacerlo reduciría la muestra en casi 1 millón de registros, alterando la distribución espacial (sesgo urbano-rural). La falta de respuesta será tratada como una categoría válida ("No informa").</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Conclusión Cuantitativa -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2">Métricas Finales de Calidad</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+                <div>
+                    <p class="text-2xl font-bold text-primary">100%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Completitud Target</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-primary">100%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Unicidad (0 Duplicados)</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-orange-400">90.1%</p>
+                    <p class="text-xs text-muted-foreground uppercase">Validez Estructural</p>
+                </div>
+                <div>
+                    <p class="text-2xl font-bold text-green-400">Apto</p>
+                    <p class="text-xs text-muted-foreground uppercase">Estado General</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navegación -->
+        <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+            <a href="{{ url_for('integracion') }}" class="btn-ghost text-sm">
+                <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                Anterior: Inventario
+            </a>
+            <a href="{{ url_for('index') }}" class="btn-primary text-sm">
+                Finalizar Fase 2
+                <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

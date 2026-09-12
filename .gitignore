@@ -1,0 +1,23 @@
+# Entornos virtuales y caché de Python
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+
+# Archivos de Datos (Ignorar contenido para no saturar GitHub)
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+
+# Reportes y resultados (opcional, descomentar si no quieres subirlos)
+# data/reports/*.csv
+
+# Variables de entorno
+.env
+
+# Archivos de IDEs y SO
+.vscode/
+.idea/
+.DS_Store

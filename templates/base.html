@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EduDataCO — Educación y Desempeño Académico</title>
+    <title>EduMetricsCO — Educación y Desempeño Académico</title>
     
     <link rel="icon" href="{{ url_for('static', filename='assets/images/favicon.ico') }}" type="image/x-icon">
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -41,15 +41,14 @@
     <!-- Header -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent border-b border-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative z-10">
+            <!-- Retorno al Index -->
             <a href="{{ url_for('index') }}" class="flex items-center gap-2.5 group">
                 <img src="{{ url_for('static', filename='assets/images/app_logo.png') }}" alt="EduDataCO Logo" class="w-8 h-8 object-contain">
-                <span class="font-mono text-sm font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors hidden sm:block">EduDataCO</span>
+                <span class="font-mono text-sm font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors hidden sm:block">EduMetricsCO</span>
             </a>
-            <nav class="hidden md:flex items-center gap-4">
-                <a href="{{ url_for('index') }}" class="text-sm font-medium transition-colors text-muted-foreground hover:text-foreground">Inicio</a>
-                <a href="{{ url_for('problema') }}" class="text-sm font-medium transition-colors text-muted-foreground hover:text-foreground">Entregables</a>
-            </nav>
-            <div class="hidden md:flex items-center gap-3">
+            
+            <!-- Bloque Derecho -->
+            <div class="hidden md:flex items-center gap-3 ml-auto">
                 <span class="phase-badge">Semestre 2026-II</span>
                 <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="btn-ghost text-xs py-1.5 px-3 h-8 font-mono">GitHub</a>
             </div>
