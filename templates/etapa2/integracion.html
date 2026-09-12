@@ -21,80 +21,213 @@
         </p>
     </div>
 
-    <!-- Matriz de Tratamiento -->
+    <!-- Matriz de Tratamiento (10 Variables Clave) -->
     <div class="card-base p-0 overflow-hidden animate-on-scroll">
         <div class="p-6 border-b border-border bg-muted/10">
             <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
                 <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
-                Matriz de Problemas y Acciones (Top 3 Críticos)
+                Matriz de Problemas, Causas y Plan de Tratamiento
             </h2>
         </div>
         <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-sm">
                 <thead>
-                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase">
-                        <th class="py-4 pl-6 pr-4 font-semibold">Variable(s) / Dimensión</th>
-                        <th class="py-4 pr-4 font-semibold">Descripción y Evidencia</th>
-                        <th class="py-4 pr-4 font-semibold">Causa Raíz Analizada</th>
-                        <th class="py-4 pr-6 font-semibold">Acción de Tratamiento</th>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase tracking-wider">
+                        <th class="py-4 pl-6 pr-4 font-semibold w-1/5">Variable y Dimensión</th>
+                        <th class="py-4 pr-4 font-semibold w-1/4">Descripción y Evidencia</th>
+                        <th class="py-4 pr-4 font-semibold w-1/4">Causa Raíz e Impacto</th>
+                        <th class="py-4 pr-6 font-semibold w-1/4">Acción de Tratamiento</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/60 text-secondary-foreground">
                     
-                    <!-- Problema 1: Nulos en Cuestionario -->
+                    <!-- 1. ESTU_CONSECUTIVO -->
                     <tr class="hover:bg-muted/10 transition-colors">
                         <td class="py-4 pl-6 pr-4 align-top">
-                            <span class="font-semibold text-foreground block mb-1">fami_tieneinternet<br>fami_estratovivienda</span>
-                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                            <span class="font-semibold text-foreground block mb-1">estu_consecutivo</span>
+                            <span class="data-tag border-green-400/30 text-green-400 bg-green-400/10">Unicidad</span>
                         </td>
                         <td class="py-4 pr-4 align-top">
-                            <p class="mb-2">Alto porcentaje de valores faltantes en variables sociodemográficas.</p>
-                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 916,873 nulos (20.19%) en internet.</p>
+                            <p class="mb-1">Estructura perfecta. No hay registros repetidos.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 0 duplicados exactos.</p>
                         </td>
-                        <td class="py-4 pr-4 align-top">
-                            <strong class="text-foreground block mb-1">Sesgo de Evasión:</strong> Omisión sistemática por parte del estudiante al diligenciar el formulario de autorreporte durante el registro.
+                        <td class="py-4 pr-4 align-top text-sm">
+                            Generación centralizada automática por el sistema de inscripción del ICFES. Impacto positivo.
                         </td>
                         <td class="py-4 pr-6 align-top">
-                            <strong class="text-primary block mb-1">Imputación / Conservación</strong>
-                            <p class="text-xs">Dado el alto volumen (>15%), eliminar registros sesgaría el modelo. Se creará la categoría <code class="bg-muted px-1 rounded">"No Reporta"</code> o se aplicará imputación por Moda/KNN en el pipeline de la Fase 3.</p>
+                            <strong class="text-green-400 block mb-1">Conservar</strong>
+                            <p class="text-xs">Se mantiene intacta como índice principal (Index) en la fase de modelado.</p>
                         </td>
                     </tr>
 
-                    <!-- Problema 2: Grados Inválidos (Outliers) -->
+                    <!-- 2. PUNT_GLOBAL -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">punt_global</span>
+                            <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10">Validez</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Registro que excede el límite oficial de calificación (0-500).</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 1 registro fuera de rango.</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Error de Transformación:</strong> Falla en la agregación de resultados o cálculo anómalo del sistema. Puede distorsionar los pesos del modelo.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Eliminar / Corregir</strong>
+                            <p class="text-xs">Por ser un caso aislado (1 entre 4.5M), se eliminará la fila para no afectar la distribución normal de la variable objetivo.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 3. FAMI_TIENEINTERNET -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_tieneinternet</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Supera la tolerancia del 5% de datos faltantes permitida.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 916,873 nulos (20.19%).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Sesgo de Evasión:</strong> Cuestionario voluntario. Impacto alto; si se elimina se pierde el 20% de la muestra.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Imputar / Conservar</strong>
+                            <p class="text-xs">Crear la categoría estructurada <code class="bg-muted px-1 rounded">"NO_INFORMA"</code>. La abstención en sí misma es un patrón válido de análisis.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 4. FAMI_TIENECOMPUTADOR -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_tienecomputador</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Omisión de respuesta moderada-alta en infraestructura doméstica.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 841,169 nulos (18.52%).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Captura Incompleta:</strong> Los encuestados omiten secciones de hardware. Reduce la calidad de las correlaciones TIC.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Imputar (Correlacional)</strong>
+                            <p class="text-xs">Aplicar imputación basada en la variable <em>fami_tieneinternet</em> o clasificación K-NN según estrato si el % no baja del umbral.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 5. FAMI_ESTRATOVIVIENDA -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_estratovivienda</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Falta de clasificación socioeconómica en zonas rurales.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 816,746 nulos (17.98%).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Origen Rural:</strong> Falta de estratificación oficial en fincas y veredas. Sesgo urbano en el modelo si se elimina.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Estandarizar</strong>
+                            <p class="text-xs">Reemplazar valores nulos por la etiqueta formal <code class="bg-muted px-1 rounded">"Sin Estrato"</code>, validando contra <em>cole_area_ubicacion</em>.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 6. COLE_AREA_UBICACION -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">cole_area_ubicacion</span>
+                            <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10">Consistencia</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Faltantes en la tipificación geográfica de la sede escolar.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 643,758 nulos (14.17%).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Falla de Integración:</strong> Discrepancia entre la base de inscritos y el Directorio Único de Establecimientos (DUE).
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Homologar</strong>
+                            <p class="text-xs">Cruzar el ID del colegio (<code class="bg-muted px-1 rounded">cole_codigo_icfes</code>) con el dataset maestro del MEN (DUE) para rellenar la ubicación exacta.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 7. ESTU_GRADO -->
                     <tr class="hover:bg-muted/10 transition-colors">
                         <td class="py-4 pl-6 pr-4 align-top">
                             <span class="font-semibold text-foreground block mb-1">estu_grado</span>
                             <span class="data-tag border-red-400/30 text-red-400 bg-red-400/10">Validez</span>
                         </td>
                         <td class="py-4 pr-4 align-top">
-                            <p class="mb-2">Valores numéricos que superan el dominio lógico de la educación media (máx 11).</p>
-                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 446,405 registros con valor (e.g. 20234.0).</p>
+                            <p class="mb-1">Valores atípicos numéricos absurdos para educación media.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 446,405 valores anómalos (>11).</p>
                         </td>
-                        <td class="py-4 pr-4 align-top">
-                            <strong class="text-foreground block mb-1">Error de Integración:</strong> Al unificar los datasets de distintos años, se concatenó el año de presentación con el grado o código de la institución.
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Error de Consolidación:</strong> Concatenación del código del año o de la IE con el grado durante la extracción.
                         </td>
                         <td class="py-4 pr-6 align-top">
-                            <strong class="text-primary block mb-1">Corrección / Estandarización</strong>
-                            <p class="text-xs">Aplicar regla de negocio (Regex/Truncamiento) para extraer el grado real si está contenido en la cadena, o reemplazar valores anómalos por el valor esperado (11) asumiendo la naturaleza de la prueba.</p>
+                            <strong class="text-primary block mb-1">Transformar / Corregir</strong>
+                            <p class="text-xs">Aplicar regla <em>Regex</em>. Si no es recuperable, y corresponde a calendario regular, forzar valor 11; si es validante, eliminar.</p>
                         </td>
                     </tr>
 
-                    <!-- Problema 3: Formatos de Fecha -->
+                    <!-- 8. ESTU_FECHANACIMIENTO -->
                     <tr class="hover:bg-muted/10 transition-colors">
                         <td class="py-4 pl-6 pr-4 align-top">
                             <span class="font-semibold text-foreground block mb-1">estu_fechanacimiento</span>
                             <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10">Consistencia</span>
                         </td>
                         <td class="py-4 pr-4 align-top">
-                            <p class="mb-2">Discrepancia estructural en las cadenas de texto de las fechas.</p>
-                            <p class="font-mono text-xs text-muted-foreground">Evidencia: Longitudes mixtas de 10 y 3 caracteres.</p>
+                            <p class="mb-1">Discrepancia en longitudes y formatos de texto.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: Cadenas de 10 vs 3 caracteres.</p>
                         </td>
-                        <td class="py-4 pr-4 align-top">
-                            <strong class="text-foreground block mb-1">Variación de Origen:</strong> Cambios en el sistema de captura del ICFES entre las cohortes 2019 y 2023.
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Cambios de Captura:</strong> Migración de formato D/M/Y a captura de edad directa en distintas cohortes.
                         </td>
                         <td class="py-4 pr-6 align-top">
-                            <strong class="text-primary block mb-1">Transformación</strong>
-                            <p class="text-xs">Casteo a formato <code class="bg-muted px-1 rounded">datetime</code> estándar (YYYY-MM-DD). Los registros de 3 caracteres se evaluarán para extracción de edad; si es imposible, se tratarán como nulos bajo imputación de mediana.</p>
+                            <strong class="text-primary block mb-1">Estandarizar</strong>
+                            <p class="text-xs">Realizar casteo a Datetime para calcular "Edad en años" o tomar los 2 dígitos como edad directa en los formatos cortos.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 9. FAMI_EDUCACIONPADRE -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">fami_educacionpadre</span>
+                            <span class="data-tag border-orange-400/30 text-orange-400 bg-orange-400/10">Completitud</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Alta omisión del nivel educativo de los padres.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 907,694 nulos (19.99%).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Desconocimiento:</strong> El estudiante ignora la información. El impacto es la reducción de muestras en el cruce de capital cultural.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Estandarizar</strong>
+                            <p class="text-xs">Se clasificará categóricamente como <code class="bg-muted px-1 rounded">"No Sabe"</code>, alineado con las convenciones de la OCDE/PISA.</p>
+                        </td>
+                    </tr>
+
+                    <!-- 10. DESEMP_INGLES -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-semibold text-foreground block mb-1">desemp_ingles</span>
+                            <span class="data-tag border-green-400/30 text-green-400 bg-green-400/10">Validez</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top">
+                            <p class="mb-1">Casi total completitud y validez en los rangos MCER.</p>
+                            <p class="font-mono text-xs text-muted-foreground">Evidencia: 0.7% nulos (31,848 casos).</p>
+                        </td>
+                        <td class="py-4 pr-4 align-top text-sm">
+                            <strong class="text-foreground">Anomalía de sistema:</strong> Pruebas anuladas o no evaluadas por discapacidad auditiva comprobada.
+                        </td>
+                        <td class="py-4 pr-6 align-top">
+                            <strong class="text-primary block mb-1">Eliminar</strong>
+                            <p class="text-xs">Dada la baja incidencia (&lt;1%), se realizará eliminación por fila (Drop NA) al entrenar el modelo específico de clasificación de Inglés.</p>
                         </td>
                     </tr>
 

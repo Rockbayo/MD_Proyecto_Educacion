@@ -41,30 +41,75 @@
         <!-- Problemas vs Riesgos Aceptables (Grid) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <!-- Problemas Críticos a Resolver -->
-            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-orange-400">
-                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
-                    Requisitos Previos al Modelado
-                </h3>
-                <ul class="space-y-3 text-sm text-secondary-foreground">
-                    <li><strong class="text-foreground">Estandarización de Grados:</strong> Los 446,405 registros con <code class="bg-muted px-1 rounded text-xs">estu_grado > 11</code> deben ser purgados o transformados para evitar que los modelos (ej. Random Forest) los interpreten como una clase extra.</li>
-                    <li><strong class="text-foreground">Casteo de Fechas:</strong> La variable <code class="bg-muted px-1 rounded text-xs">estu_fechanacimiento</code> bloqueará la ejecución de modelos si no se unifica y se transforma a una variable numérica continua (Edad).</li>
-                </ul>
-            </div>
-
-            <!-- Riesgos Aceptables (Justificación) -->
-            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-primary">
-                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
-                    <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    Riesgos Asumidos y Justificados
-                </h3>
-                <ul class="space-y-3 text-sm text-secondary-foreground">
-                    <li><strong class="text-foreground">Tolerancia en Completitud (20% Nulos):</strong> Se rechaza la eliminación de las filas con nulos en las variables de conectividad (<code class="bg-muted px-1 rounded text-xs">fami_tieneinternet</code>). Hacerlo reduciría la muestra en casi 1 millón de registros, alterando la distribución espacial (sesgo urbano-rural). La falta de respuesta será tratada como una categoría válida ("No informa").</li>
-                </ul>
+            <!-- Adecuación por Niveles Analíticos -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Idoneidad del Propósito por Nivel Escalar
+            </h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase tracking-wider">
+                            <th class="py-4 pl-4 pr-4 font-semibold w-1/5">Nivel de Análisis</th>
+                            <th class="py-4 pr-4 font-semibold w-1/3">Cumplimiento del Propósito</th>
+                            <th class="py-4 pr-4 font-semibold w-1/4">Brecha / Riesgo Detectado</th>
+                            <th class="py-4 pr-4 font-semibold w-1/4">Plan de Acción (Etapa 3)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <!-- Global -->
+                        <tr class="hover:bg-muted/10 transition-colors">
+                            <td class="py-4 pl-4 pr-4 align-top">
+                                <span class="data-tag border-blue-400/30 text-blue-400 bg-blue-400/10 block w-fit mb-1">Global (OCDE/PISA)</span>
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-foreground">Parcial.</strong> Permite contrastar variables de capital cultural y acceso tecnológico del hogar frente a los estándares internacionales.
+                            </td>
+                            <td class="py-4 pr-4 align-top text-orange-400">
+                                Incompatibilidad de escalas de medición. El puntaje ICFES (0-500) no cruza directamente con el índice WLE (estatus económico y TIC) de PISA.
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-primary block mb-1">Homologación y Normalización</strong>
+                                Transformación de los puntajes globales y variables socioeconómicas a <code class="bg-muted px-1 rounded text-xs">Z-scores</code> y percentiles para lograr paridad métrica.
+                            </td>
+                        </tr>
+                        <!-- Nacional -->
+                        <tr class="hover:bg-muted/10 transition-colors">
+                            <td class="py-4 pl-4 pr-4 align-top">
+                                <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10 block w-fit mb-1">Nacional (Colombia)</span>
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-foreground">Óptimo.</strong> Cumplimiento total en la llave primaria (<code class="text-xs text-primary">estu_consecutivo</code>) y target de rendimiento (<code class="text-xs text-primary">punt_global</code>).
+                            </td>
+                            <td class="py-4 pr-4 align-top text-orange-400">
+                                Sesgo introducido por 446k registros con grados atípicos (>11) y 20% de nulos en la declaración de internet/computador en el hogar.
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-primary block mb-1">Filtrado e Imputación</strong>
+                                Purgar anomalías de <code class="text-xs text-primary">estu_grado</code> para aislar educación media regular. Imputar nulos tecnológicos con la categoría categórica estructurada "No Informa".
+                            </td>
+                        </tr>
+                        <!-- Regional -->
+                        <tr class="hover:bg-muted/10 transition-colors">
+                            <td class="py-4 pl-4 pr-4 align-top">
+                                <span class="data-tag border-green-400/30 text-green-400 bg-green-400/10 block w-fit mb-1">Regional (Municipal)</span>
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-foreground">Alto.</strong> La granularidad permite clustering geográfico y análisis de varianza (Urbano vs Rural).
+                            </td>
+                            <td class="py-4 pr-4 align-top text-orange-400">
+                                Deficiencias espaciales con 14.17% de nulos en <code class="text-xs text-primary">cole_area_ubicacion</code> y falta de estrato socioeconómico formal en predios de la ruralidad dispersa.
+                            </td>
+                            <td class="py-4 pr-4 align-top">
+                                <strong class="text-primary block mb-1">Integración Externa</strong>
+                                Cruce relacional utilizando el <code class="text-xs text-primary">cole_codigo_icfes</code> contra el Directorio Único de Establecimientos (DUE) del MEN y códigos DIVIPOLA del DANE.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
         <!-- Conclusión Cuantitativa -->
         <div class="card-base p-6 sm:p-8 animate-on-scroll">
             <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2">Métricas Finales de Calidad</h3>

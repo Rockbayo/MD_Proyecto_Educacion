@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="max-w-5xl mx-auto py-16 px-4 sm:px-6">
+<div class="max-w-7xl mx-auto py-16 px-4 sm:px-6">
     
     <!-- Breadcrumb -->
     <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
@@ -14,100 +14,259 @@
     <div class="mb-10">
         <span class="phase-badge block mb-3 w-fit">Fase 02 · Diagnóstico</span>
         <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
-            3. Dimensiones de Calidad
+            3. Dimensiones de Calidad (Análisis de 10 Variables Clave)
         </h1>
-        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
-            Medición estandarizada del conjunto de datos mediante indicadores de Completitud, Unicidad, Validez y Consistencia para determinar su idoneidad analítica.
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl">
+            Evaluación técnica de 10 variables críticas para el modelo predictivo. Se analizan bajo 6 dimensiones de calidad (Completitud, Unicidad, Validez, Consistencia, Actualidad y Trazabilidad) para determinar su aporte empírico al conocimiento sobre la brecha digital.
         </p>
     </div>
 
-    <!-- Grid de Dimensiones -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
-        
-        <!-- 1. Completitud -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
-                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
-                    <span class="text-primary font-mono text-sm">01.</span> Completitud
-                </h2>
-                <span class="data-tag text-green-400 border-green-400/20 bg-green-400/10">Crítico</span>
-            </div>
-            <div class="space-y-4">
-                <div class="p-3 bg-muted/30 rounded border border-border/50">
-                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
-                    <p class="text-sm font-mono text-primary">((Total - Nulos) / Total) * 100</p>
-                </div>
-                <div class="text-sm text-secondary-foreground space-y-2">
-                    <p><strong class="text-foreground">Variables Objetivo:</strong> Cumplimiento del 100%. Las variables <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_global</code>, <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_matematicas</code> y <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_lectura_critica</code> no presentan valores nulos.</p>
-                    <p><strong class="text-foreground text-orange-400">Hallazgo de Riesgo:</strong> Las variables del cuestionario socioeconómico superan el 5% de tolerancia de nulos. Específicamente, <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_tieneinternet</code> (20.19%), <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_tienecomputador</code> (18.52%) y <code class="text-xs text-primary bg-primary/10 px-1 rounded">fami_estratovivienda</code> (17.98%).</p>
-                </div>
-            </div>
+    <!-- Matriz de 10 Variables -->
+    <div class="card-base p-0 overflow-hidden animate-on-scroll">
+        <div class="p-6 border-b border-border bg-muted/10">
+            <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                Matriz de Diagnóstico y Aporte al Conocimiento
+            </h2>
         </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-sm">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase tracking-wider">
+                        <th class="py-4 pl-6 pr-4 font-semibold w-1/4">Variable y Rol</th>
+                        <th class="py-4 pr-4 font-semibold w-1/2">Evaluación de las 6 Dimensiones de Calidad</th>
+                        <th class="py-4 pr-6 font-semibold w-1/4">Aporte al Nivel de Conocimiento</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/60 text-secondary-foreground">
 
-        <!-- 2. Unicidad -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll" style="transition-delay: 100ms;">
-            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
-                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
-                    <span class="text-primary font-mono text-sm">02.</span> Unicidad
-                </h2>
-                <span class="data-tag text-green-400 border-green-400/20 bg-green-400/10">Óptimo</span>
-            </div>
-            <div class="space-y-4">
-                <div class="p-3 bg-muted/30 rounded border border-border/50">
-                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
-                    <p class="text-sm font-mono text-primary">((Total - Duplicados) / Total) * 100</p>
-                </div>
-                <div class="text-sm text-secondary-foreground space-y-2">
-                    <p><strong class="text-foreground">Estado Actual:</strong> <span class="text-xl font-bold text-foreground block my-1">100%</span></p>
-                    <p>Tras evaluar las 93 variables del dataset integrado sobre más de 4.5 millones de registros, no se encontraron filas exactamente duplicadas (0 registros). La entidad generadora (ICFES) aplica un control estricto de llave primaria.</p>
-                </div>
-            </div>
+                    <!-- 1. ESTU_CONSECUTIVO -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">estu_consecutivo</span>
+                            <span class="font-mono text-xs text-muted-foreground">Llave Primaria (ID)</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Comp: 100%</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Unic: 100% (0 Duplicados)</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Regex estandar</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Alfanumérica</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: 2019-2023</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: ICFES</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-slate-500/10 text-slate-400 border border-slate-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Evidente</span><br>
+                            Aporta datos transaccionales directos. Garantiza la unicidad y el conteo exacto de evaluados, base para cualquier agregación posterior.
+                        </td>
+                    </tr>
+
+                    <!-- 2. PUNT_GLOBAL -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">punt_global</span>
+                            <span class="font-mono text-xs text-primary">Target (Dependiente)</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Comp: 100%</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Val: [0-500] (1 anomalía)</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Numérica continua</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Histórica</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: ICFES Estandar</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-purple-500/10 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Profundo</span><br>
+                            Variable objetivo central. Permite la inferencia predictiva y el entrenamiento de modelos supervisados (ej. Regresión Lineal, Random Forest).
+                        </td>
+                    </tr>
+
+                    <!-- 3. FAMI_TIENEINTERNET -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">fami_tieneinternet</span>
+                            <span class="font-mono text-xs text-accent">Feature (Brecha Digital)</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Comp: 79.8% (20% nulos)</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Binario (Si/No)</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Estándar DANE</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Dinámica anual</span>
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Traz: Autorreporte</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Oculto</span><br>
+                            Revela patrones no triviales mediante reglas de asociación, conectando la exclusión de la red con probabilidades de bajo desempeño.
+                        </td>
+                    </tr>
+
+                    <!-- 4. FAMI_TIENECOMPUTADOR -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">fami_tienecomputador</span>
+                            <span class="font-mono text-xs text-accent">Feature (Infraestructura)</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Comp: 81.4% (18.5% nulos)</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Binario (Si/No)</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Estándar DANE</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Dinámica anual</span>
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Traz: Autorreporte</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-teal-500/10 text-teal-400 border border-teal-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Multidimensional</span><br>
+                            Al cruzarse con el acceso a internet, permite construir cubos OLAP o índices compuestos para evaluar la calidad real de la conectividad.
+                        </td>
+                    </tr>
+
+                    <!-- 5. FAMI_ESTRATOVIVIENDA -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">fami_estratovivienda</span>
+                            <span class="font-mono text-xs text-muted-foreground">Covariable (Económica)</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Comp: 82.0% (17.9% nulos)</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: [1-6, Sin estrato]</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Ordinal</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Regulación local</span>
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Traz: Autorreporte</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Oculto</span><br>
+                            Facilita el descubrimiento de clústeres sociodemográficos (agrupamiento), separando el efecto de la pobreza económica de la pobreza digital.
+                        </td>
+                    </tr>
+
+                    <!-- 6. COLE_AREA_UBICACION -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">cole_area_ubicacion</span>
+                            <span class="font-mono text-xs text-muted-foreground">Variable Espacial</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Comp: 85.8% (14.1% nulos)</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Urbano/Rural</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Catálogo DUE</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Resolución MEN</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: Institucional</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-teal-500/10 text-teal-400 border border-teal-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Multidimensional</span><br>
+                            Permite la visualización cruzada y el análisis geolocalizado, contrastando la penalización del rendimiento en zonas rurales vs urbanas.
+                        </td>
+                    </tr>
+
+                    <!-- 7. ESTU_GRADO -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">estu_grado</span>
+                            <span class="font-mono text-xs text-muted-foreground">Filtro de Población</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Comp: 86.0%</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Val: Inválida (Valores >11)</span>
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Cons: Mezcla de años/grados</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: 2019-2023</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: ICFES</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-slate-500/10 text-slate-400 border border-slate-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Evidente</span><br>
+                            Define la validez de la muestra. Filtrar correctamente esta variable asegura que las estadísticas reportadas correspondan al grupo demográfico real.
+                        </td>
+                    </tr>
+
+                    <!-- 8. ESTU_FECHANACIMIENTO -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">estu_fechanacimiento</span>
+                            <span class="font-mono text-xs text-muted-foreground">Demográfica</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Comp: 100%</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Edad biológica lógica</span>
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Cons: Cadenas rotas (3 vs 10 char)</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Permanente</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: Reg. Civil</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-teal-500/10 text-teal-400 border border-teal-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Multidimensional</span><br>
+                            Suministra la dimensión de tiempo para derivar la variable "Edad/Rezago Escolar" y analizar cortes transversales por cohortes.
+                        </td>
+                    </tr>
+
+                    <!-- 9. FAMI_EDUCACIONPADRE -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">fami_educacionpadre</span>
+                            <span class="font-mono text-xs text-muted-foreground">Capital Cultural</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-red-500/10 text-red-400 border border-red-500/20 px-2 py-0.5 rounded">Comp: 79.9% (20% nulos)</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Categorías ISCED</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Ordinal</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Histórica</span>
+                                <span class="bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 px-2 py-0.5 rounded">Traz: Autorreporte</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-purple-500/10 text-purple-400 border border-purple-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Profundo</span><br>
+                            Insumo para evaluación prescriptiva: Modelar de forma compleja si el capital cultural de los padres mitiga los efectos de la falta de TIC.
+                        </td>
+                    </tr>
+
+                    <!-- 10. DESEMP_INGLES -->
+                    <tr class="hover:bg-muted/10 transition-colors">
+                        <td class="py-4 pl-6 pr-4 align-top">
+                            <span class="font-bold text-foreground block">desemp_ingles</span>
+                            <span class="font-mono text-xs text-primary">Target Específico</span>
+                        </td>
+                        <td class="py-4 pr-4 align-top space-y-2">
+                            <div class="flex flex-wrap gap-2 text-xs">
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Comp: 99.3%</span>
+                                <span class="bg-muted text-muted-foreground border border-border px-2 py-0.5 rounded">Unic: N/A</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Val: Escalas MCER (A- a B+)</span>
+                                <span class="bg-green-500/10 text-green-400 border border-green-500/20 px-2 py-0.5 rounded">Cons: Nominal Multiclase</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Act: Estandarizado</span>
+                                <span class="bg-blue-500/10 text-blue-400 border border-blue-500/20 px-2 py-0.5 rounded">Traz: Algoritmo ICFES</span>
+                            </div>
+                        </td>
+                        <td class="py-4 pr-6 align-top text-sm">
+                            <span class="inline-block bg-indigo-500/10 text-indigo-400 border border-indigo-500/20 px-1.5 py-0.5 rounded text-xs font-mono mb-1.5">Conocimiento: Oculto</span><br>
+                            Permite descubrir correlaciones latentes entre el autoaprendizaje mediante conectividad y el dominio de un segundo idioma.
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
         </div>
-
-        <!-- 3. Validez -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
-                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
-                    <span class="text-primary font-mono text-sm">03.</span> Validez
-                </h2>
-                <span class="data-tag text-orange-400 border-orange-400/20 bg-orange-400/10">Requiere Acción</span>
-            </div>
-            <div class="space-y-4">
-                <div class="p-3 bg-muted/30 rounded border border-border/50">
-                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
-                    <p class="text-sm font-mono text-primary">% Registros dentro de los dominios definidos</p>
-                </div>
-                <div class="text-sm text-secondary-foreground space-y-2">
-                    <p><strong class="text-foreground">Rangos Métricos:</strong> Excelente control central con solo <strong>1 registro</strong> fuera del dominio establecido [0, 500] en <code class="text-xs text-primary bg-primary/10 px-1 rounded">punt_global</code>.</p>
-                    <p><strong class="text-foreground text-orange-400">Valores Atípicos (Outliers):</strong> Violación severa de dominio en la variable <code class="text-xs text-primary bg-primary/10 px-1 rounded">estu_grado</code>. Se detectaron <strong>446,405 registros</strong> con valores inválidos (>11, como 20234.0), indicando errores sistemáticos en la homologación de años durante la consolidación de la data.</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- 4. Consistencia -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll" style="transition-delay: 100ms;">
-            <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
-                <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
-                    <span class="text-primary font-mono text-sm">04.</span> Consistencia
-                </h2>
-                <span class="data-tag text-orange-400 border-orange-400/20 bg-orange-400/10">Requiere Acción</span>
-            </div>
-            <div class="space-y-4">
-                <div class="p-3 bg-muted/30 rounded border border-border/50">
-                    <p class="font-mono text-xs text-muted-foreground mb-1">MÉTRICA / FÓRMULA</p>
-                    <p class="text-sm font-mono text-primary">Evaluación lógica y estructural de formatos</p>
-                </div>
-                <div class="text-sm text-secondary-foreground space-y-2">
-                    <p><strong class="text-foreground text-orange-400">Conflictos de Formato:</strong> La variable <code class="text-xs text-primary bg-primary/10 px-1 rounded">estu_fechanacimiento</code> presenta inconsistencias estructurales, conteniendo cadenas de texto con longitudes mezcladas de <strong>10 y 3 caracteres</strong>.</p>
-                    <p>Es obligatorio aplicar una transformación estructurada de fechas (Parse Date) para unificar formatos a estándar YYYY-MM-DD.</p>
-                </div>
-            </div>
-        </div>
-
     </div>
 
     <!-- Navegación de Etapa -->
-    <div class="pt-8 border-t border-border flex justify-between items-center animate-on-scroll">
+    <div class="pt-8 mt-10 border-t border-border flex justify-between items-center animate-on-scroll">
         <a href="{{ url_for('perfilamiento') }}" class="btn-ghost text-sm">
             <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             Anterior: Perfilamiento
