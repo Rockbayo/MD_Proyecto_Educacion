@@ -26,19 +26,23 @@
     <!-- Contenido Principal -->
     <div class="space-y-8">
         
-        <!-- Propósito -->
+        <!-- Propósito de la Calidad -->
         <div class="card-base p-6 sm:p-8 animate-on-scroll">
             <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-                <span class="text-primary font-mono text-sm">01.</span> Propósito del Conjunto de Datos
+                <span class="text-primary font-mono text-sm">01.</span> Propósito de la Calidad de Datos
             </h2>
             <p class="text-sm text-secondary-foreground leading-relaxed mb-4">
-                El conjunto de datos integrado, compuesto por <strong>más de 4.5 millones de registros y 93 variables</strong>, tiene como objetivo cuantificar el impacto de la brecha digital en el desempeño académico de los estudiantes en Colombia. La información servirá para resolver tres preguntas de investigación principales:
+                El propósito de esta evaluación no es simplemente obtener un archivo "limpio", sino <strong>determinar si los datos son adecuados y confiables</strong> para responder a nuestro problema de investigación. Buscamos garantizar que las 93 variables y los 4.5 millones de registros posean la integridad estadística necesaria para que los futuros modelos de Machine Learning no hereden sesgos geográficos o socioeconómicos por mala captura de origen.
             </p>
-            <ul class="list-disc list-inside space-y-2 text-sm text-secondary-foreground pl-2">
-                <li>Impacto del acceso concurrente a internet y computador en los resultados de las pruebas.</li>
-                <li>Diferencias en el rendimiento académico entre zonas urbanas y rurales.</li>
-                <li>Efecto del capital cultural del núcleo familiar como mitigador de la brecha tecnológica.</li>
-            </ul>
+            <div class="flex items-start gap-3 mt-4 p-4 rounded-lg bg-primary/10 border border-primary/20">
+                <svg class="w-5 h-5 text-primary flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" /></svg>
+                <div>
+                    <strong class="text-foreground block mb-1 text-sm">Fuente Oficial de los Microdatos</strong>
+                    <a href="https://icfesgovco.sharepoint.com/sites/BasesDataIcfes/Documentos%20compartidos/Forms/AllItems.aspx?id=%2Fsites%2FBasesDataIcfes%2FDocumentos%20compartidos%2F01%5FExamen%20Saber%2011%C2%B0%2F01%5FBases%20Nacionales&viewid=855dca45%2D1375%2D46fc%2Da193%2D56c6c4ea561e&ga=1" target="_blank" class="text-xs text-accent hover:text-primary transition-colors underline break-all">
+                        Acceder al repositorio original (SharePoint ICFES - Bases Nacionales)
+                    </a>
+                </div>
+            </div>
         </div>
 
         <!-- Requisitos de Calidad -->
