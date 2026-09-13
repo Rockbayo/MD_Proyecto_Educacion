@@ -10,6 +10,20 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     
+    <!-- Tema inicial -->
+    <script>
+        (function() {
+            const savedTheme = localStorage.getItem('edumetrics_theme') || 'dark';
+            if (savedTheme === 'light') {
+                document.documentElement.classList.remove('dark');
+                document.documentElement.classList.add('light');
+            } else {
+                document.documentElement.classList.add('dark');
+                document.documentElement.classList.remove('light');
+            }
+        })();
+    </script>
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -17,14 +31,14 @@
             theme: {
                 extend: {
                     colors: {
-                        background: '#0D1117',
-                        foreground: '#E2E8F0',
-                        primary: { DEFAULT: '#00B4D8', foreground: '#0D1117' },
-                        secondary: { DEFAULT: '#0F1D2E', foreground: '#CBD5E1' },
-                        accent: { DEFAULT: '#48CAE4', foreground: '#0D1117' },
-                        muted: { DEFAULT: '#1A2535', foreground: '#64748B' },
-                        card: { DEFAULT: '#111827', foreground: '#E2E8F0' },
-                        border: '#1E293B',
+                        background: 'var(--background)',
+                        foreground: 'var(--foreground)',
+                        primary: { DEFAULT: 'var(--primary)', foreground: 'var(--primary-foreground)' },
+                        secondary: { DEFAULT: 'var(--secondary)', foreground: 'var(--secondary-foreground)' },
+                        accent: { DEFAULT: 'var(--accent)', foreground: 'var(--accent-foreground)' },
+                        muted: { DEFAULT: 'var(--muted)', foreground: 'var(--muted-foreground)' },
+                        card: { DEFAULT: 'var(--card)', foreground: 'var(--card-foreground)' },
+                        border: 'var(--border)',
                     },
                     fontFamily: {
                         sans: ['"DM Sans"', 'sans-serif'],
@@ -36,8 +50,11 @@
     </script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
 </head>
-<body class="bg-[#0D1117] min-h-screen flex flex-col relative overflow-x-hidden m-0 p-0 text-foreground font-sans">
+<body class="bg-background min-h-screen flex flex-col relative overflow-x-hidden m-0 p-0 text-foreground font-sans">
     
+    <!-- Barra de scroll -->
+    <div id="scrollProgress" class="fixed top-0 left-0 h-1 bg-gradient-to-r from-primary via-accent to-primary z-[60] transition-all duration-75 w-0"></div>
+
     <!-- Header -->
     <header id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent border-b border-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between relative z-10">
@@ -47,9 +64,16 @@
                 <span class="font-mono text-sm font-semibold tracking-tight text-foreground group-hover:text-primary transition-colors hidden sm:block">EduMetricsCO</span>
             </a>
             
-            <!-- Bloque Derecho -->
-            <div class="hidden md:flex items-center gap-3 ml-auto">
-                <span class="phase-badge">Semestre 2026-II</span>
+            <!-- Acciones nav -->
+            <div class="flex items-center gap-2.5 ml-auto">
+                <span class="phase-badge hidden sm:inline-block">Semestre 2026-II</span>
+                
+                <!-- Toggle tema -->
+                <button id="themeToggle" type="button" class="btn-ghost text-xs py-1.5 px-3 h-8 font-mono flex items-center gap-1.5" title="Alternar tema">
+                    <span id="themeIcon">🌙</span>
+                    <span id="themeText" class="hidden sm:inline">Oscuro</span>
+                </button>
+                
                 <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion" target="_blank" class="btn-ghost text-xs py-1.5 px-3 h-8 font-mono">GitHub</a>
             </div>
         </div>
@@ -90,6 +114,52 @@
             document.querySelectorAll('.animate-on-scroll').forEach((el) => {
                 observer.observe(el);
             });
+        });
+
+        // Modo claro / oscuro
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
+        const themeText = document.getElementById('themeText');
+
+        function syncThemeUI(theme) {
+            if (theme === 'light') {
+                themeIcon.textContent = '☀️';
+                if (themeText) themeText.textContent = 'Claro';
+            } else {
+                themeIcon.textContent = '🌙';
+                if (themeText) themeText.textContent = 'Oscuro';
+            }
+        }
+
+        const currentTheme = localStorage.getItem('edumetrics_theme') || 'dark';
+        syncThemeUI(currentTheme);
+
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                const isDark = document.documentElement.classList.contains('dark');
+                if (isDark) {
+                    document.documentElement.classList.remove('dark');
+                    document.documentElement.classList.add('light');
+                    localStorage.setItem('edumetrics_theme', 'light');
+                    syncThemeUI('light');
+                } else {
+                    document.documentElement.classList.remove('light');
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('edumetrics_theme', 'dark');
+                    syncThemeUI('dark');
+                }
+            });
+        }
+
+        // Progreso de lectura
+        window.addEventListener('scroll', () => {
+            const progressBar = document.getElementById('scrollProgress');
+            if (progressBar) {
+                const winScroll = document.documentElement.scrollTop || document.body.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
+            }
         });
     </script>
 </body>
