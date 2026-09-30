@@ -21,3 +21,6 @@ data/processed/*
 .vscode/
 .idea/
 .DS_Store
+
+# proyecto SSIS
+ETL_Edumetrics/*
