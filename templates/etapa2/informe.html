@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6">
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
     
     <!-- Breadcrumb -->
     <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
@@ -16,34 +16,49 @@
         <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
             5. Informe Final de Calidad
         </h1>
-        <p class="text-secondary-foreground leading-relaxed">
-            Veredicto técnico sobre la idoneidad del conjunto de datos integrado (4,541,656 registros, 93 variables) para la predicción del desempeño académico.
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl">
+            Veredicto técnico integral sobre la idoneidad del conjunto de datos (4,541,656 registros, 93 variables). Síntesis de dimensiones afectadas, riesgos asumidos y requisitos obligatorios antes de proceder a la fase de modelado de datos.
         </p>
     </div>
 
     <div class="space-y-8">
         
-        <!-- Veredicto General -->
+        <!-- 1. Veredicto General con Métricas -->
         <div class="card-base p-6 sm:p-8 border-primary/40 bg-primary/5 animate-on-scroll">
-            <div class="flex items-start gap-4">
-                <div class="w-12 h-12 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center text-primary mt-1">
-                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+            <div class="flex items-start gap-5">
+                <div class="w-14 h-14 rounded-full bg-primary/20 border border-primary/30 flex-shrink-0 flex items-center justify-center text-primary mt-1">
+                    <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 </div>
-                <div>
-                    <h2 class="text-xl font-bold text-foreground mb-2">Veredicto de Idoneidad: Aprobado con Reservas Técnicas</h2>
-                    <p class="text-sm text-secondary-foreground leading-relaxed">
-                        El dataset <strong>es adecuado</strong> para continuar con el modelado de la Etapa 3. Las variables objetivo (<code class="bg-muted px-1 rounded text-xs text-primary">punt_global</code>, etc.) tienen una completitud y validez del ~100%, garantizando un target robusto. La unicidad es perfecta (0 duplicados). Los problemas detectados se concentran en las variables predictoras categóricas, los cuales son manejables mediante el plan de tratamiento establecido sin comprometer la viabilidad del estudio.
+                <div class="flex-grow">
+                    <h2 class="text-2xl font-bold text-foreground mb-2">Veredicto: Aprobado con Reservas Técnicas</h2>
+                    <p class="text-sm text-secondary-foreground leading-relaxed mb-6">
+                        El dataset <strong>es metodológicamente adecuado</strong> para avanzar a la Etapa 3. La completitud y validez de las variables objetivo (rendimiento académico) garantizan una base predictiva sólida. Los problemas estructurales detectados se limitan a covariables sociodemográficas y de identificación, los cuales tienen rutas de mitigación establecidas mediante imputación y estandarización.
                     </p>
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center border-t border-primary/20 pt-6">
+                        <div>
+                            <p class="text-2xl font-bold text-primary">100%</p>
+                            <p class="text-xs text-muted-foreground uppercase tracking-widest mt-1">Completitud Target</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-primary">100%</p>
+                            <p class="text-xs text-muted-foreground uppercase tracking-widest mt-1">Unicidad (0 Dupl.)</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-orange-400">90.1%</p>
+                            <p class="text-xs text-muted-foreground uppercase tracking-widest mt-1">Validez General</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold text-green-400">Viable</p>
+                            <p class="text-xs text-muted-foreground uppercase tracking-widest mt-1">Estado de Modelado</p>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- Problemas vs Riesgos Aceptables (Grid) -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <!-- Adecuación por Niveles Analíticos -->
+        <!-- 2. Adecuación por Niveles Analíticos (Global, Nacional, Regional) -->
         <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2 flex items-center gap-2">
+            <h3 class="text-lg font-bold text-foreground mb-4 border-b border-border pb-3 flex items-center gap-2">
                 <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 Idoneidad del Propósito por Nivel Escalar
             </h3>
@@ -58,78 +73,92 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-border/60 text-secondary-foreground">
-                        <!-- Global -->
                         <tr class="hover:bg-muted/10 transition-colors">
                             <td class="py-4 pl-4 pr-4 align-top">
                                 <span class="data-tag border-blue-400/30 text-blue-400 bg-blue-400/10 block w-fit mb-1">Global (OCDE/PISA)</span>
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-foreground">Parcial.</strong> Permite contrastar variables de capital cultural y acceso tecnológico del hogar frente a los estándares internacionales.
+                                <strong class="text-foreground">Parcial.</strong> Permite contrastar capital cultural y acceso TIC frente a estándares internacionales.
                             </td>
                             <td class="py-4 pr-4 align-top text-orange-400">
-                                Incompatibilidad de escalas de medición. El puntaje ICFES (0-500) no cruza directamente con el índice WLE (estatus económico y TIC) de PISA.
+                                Incompatibilidad de escalas métricas. Puntajes ICFES vs Índice WLE PISA.
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-primary block mb-1">Homologación y Normalización</strong>
-                                Transformación de los puntajes globales y variables socioeconómicas a <code class="bg-muted px-1 rounded text-xs">Z-scores</code> y percentiles para lograr paridad métrica.
+                                Transformación a <code class="bg-muted px-1 rounded text-xs text-primary">Z-scores</code> para paridad.
                             </td>
                         </tr>
-                        <!-- Nacional -->
                         <tr class="hover:bg-muted/10 transition-colors">
                             <td class="py-4 pl-4 pr-4 align-top">
                                 <span class="data-tag border-yellow-400/30 text-yellow-400 bg-yellow-400/10 block w-fit mb-1">Nacional (Colombia)</span>
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-foreground">Óptimo.</strong> Cumplimiento total en la llave primaria (<code class="text-xs text-primary">estu_consecutivo</code>) y target de rendimiento (<code class="text-xs text-primary">punt_global</code>).
+                                <strong class="text-foreground">Óptimo.</strong> Cumplimiento total en llaves primarias y target de rendimiento.
                             </td>
                             <td class="py-4 pr-4 align-top text-orange-400">
-                                Sesgo introducido por 446k registros con grados atípicos (>11) y 20% de nulos en la declaración de internet/computador en el hogar.
+                                Sesgo poblacional (grados atípicos) y nulos en el cuestionario TIC.
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-primary block mb-1">Filtrado e Imputación</strong>
-                                Purgar anomalías de <code class="text-xs text-primary">estu_grado</code> para aislar educación media regular. Imputar nulos tecnológicos con la categoría categórica estructurada "No Informa".
+                                Purgar <code class="bg-muted px-1 rounded text-xs text-primary">estu_grado > 11</code> y tipificar nulos.
                             </td>
                         </tr>
-                        <!-- Regional -->
                         <tr class="hover:bg-muted/10 transition-colors">
                             <td class="py-4 pl-4 pr-4 align-top">
                                 <span class="data-tag border-green-400/30 text-green-400 bg-green-400/10 block w-fit mb-1">Regional (Municipal)</span>
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-foreground">Alto.</strong> La granularidad permite clustering geográfico y análisis de varianza (Urbano vs Rural).
+                                <strong class="text-foreground">Alto.</strong> Granularidad suficiente para clustering y ANOVA espacial.
                             </td>
                             <td class="py-4 pr-4 align-top text-orange-400">
-                                Deficiencias espaciales con 14.17% de nulos en <code class="text-xs text-primary">cole_area_ubicacion</code> y falta de estrato socioeconómico formal en predios de la ruralidad dispersa.
+                                14.17% de nulos en codificación de zona (Urbano/Rural) e Institución.
                             </td>
                             <td class="py-4 pr-4 align-top">
-                                <strong class="text-primary block mb-1">Integración Externa</strong>
-                                Cruce relacional utilizando el <code class="text-xs text-primary">cole_codigo_icfes</code> contra el Directorio Único de Establecimientos (DUE) del MEN y códigos DIVIPOLA del DANE.
+                                Homologar relacionalmente usando cruce con Directorio DUE (MEN).
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <!-- Conclusión Cuantitativa -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <h3 class="text-base font-bold text-foreground mb-4 border-b border-border pb-2">Métricas Finales de Calidad</h3>
-            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
-                <div>
-                    <p class="text-2xl font-bold text-primary">100%</p>
-                    <p class="text-xs text-muted-foreground uppercase">Completitud Target</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-bold text-primary">100%</p>
-                    <p class="text-xs text-muted-foreground uppercase">Unicidad (0 Duplicados)</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-bold text-orange-400">90.1%</p>
-                    <p class="text-xs text-muted-foreground uppercase">Validez Estructural</p>
-                </div>
-                <div>
-                    <p class="text-2xl font-bold text-green-400">Apto</p>
-                    <p class="text-xs text-muted-foreground uppercase">Estado General</p>
-                </div>
+
+        <!-- 3. Problemas y Riesgos (Grid) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            
+            <!-- Problemas Críticos a Resolver -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-orange-400">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-orange-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+                    Requisitos Obligatorios Previos al Modelado
+                </h3>
+                <p class="text-xs text-muted-foreground mb-4">Problemas de Validez y Consistencia que colapsarían los algoritmos si no se resuelven.</p>
+                <ul class="space-y-4 text-sm text-secondary-foreground">
+                    <li class="p-3 bg-muted/20 rounded border border-border">
+                        <strong class="text-foreground block mb-1">Estandarización de Grados (Validez)</strong>
+                        Se detectaron 446,405 registros con <code class="bg-muted px-1 rounded text-xs text-primary">estu_grado > 11</code>. Deben purgarse para que el modelo no aprenda características de validantes o poblaciones atípicas.
+                    </li>
+                    <li class="p-3 bg-muted/20 rounded border border-border">
+                        <strong class="text-foreground block mb-1">Casteo de Fechas (Consistencia)</strong>
+                        La variable <code class="bg-muted px-1 rounded text-xs text-primary">estu_fechanacimiento</code> tiene cadenas rotas. Debe unificarse mediante Parse Date para calcular la Edad como variable numérica continua.
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Riesgos Aceptables (Justificación) -->
+            <div class="card-base p-6 animate-on-scroll border-t-4 border-t-green-400">
+                <h3 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
+                    <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                    Riesgos Aceptables y Justificación
+                </h3>
+                <p class="text-xs text-muted-foreground mb-4">Problemas de Completitud cuya corrección destructiva (Drop NA) causaría un daño mayor.</p>
+                <ul class="space-y-4 text-sm text-secondary-foreground">
+                    <li class="p-3 bg-muted/20 rounded border border-border">
+                        <strong class="text-foreground block mb-1">Tolerancia en Variables TIC (20% Nulos)</strong>
+                        Se asume el riesgo en <code class="bg-muted px-1 rounded text-xs text-primary">fami_tieneinternet</code>. Eliminar 900k filas sesgaría el modelo destruyendo la representatividad rural. Se justifica su preservación codificando el valor faltante como "No Informa".
+                    </li>
+                    <li class="p-3 bg-muted/20 rounded border border-border">
+                        <strong class="text-foreground block mb-1">Riesgo para Siguientes Etapas</strong>
+                        La codificación de nulos obligará a utilizar modelos basados en árboles (Random Forest, XGBoost) que manejan mejor la asimetría de categorías derivadas de la ausencia de respuesta.
+                    </li>
+                </ul>
             </div>
         </div>
 
@@ -139,8 +168,8 @@
                 <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                 Anterior: Inventario
             </a>
-            <a href="{{ url_for('index') }}" class="btn-primary text-sm">
-                Finalizar Fase 2
+            <a href="{{ url_for('index') }}" class="btn-primary text-sm bg-green-600 hover:bg-green-500 border-none">
+                Finalizar Fase 2 · Volver al Inicio
                 <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" /></svg>
             </a>
         </div>

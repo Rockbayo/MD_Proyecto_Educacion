@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 3 · Arquitectura SSIS</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 03 · Transformación de Datos</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            1. Diseño de Arquitectura ETL en SSIS
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl">
+            Estructuración del Flujo de Control y Flujo de Datos implementando las reglas de negocio, limpieza y enriquecimiento geográfico sin depender de scripts en tiempo de ejecución.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        
+        <!-- Flujo de Control -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll border-t-4 border-t-primary">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Flujo de Control (Control Flow)
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-6">
+                Orquestación secuencial que garantiza la integridad referencial y la idempotencia del proceso ETL:
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <div class="bg-muted/20 p-4 rounded border border-border">
+                    <strong class="text-primary block mb-1 text-sm">1. Execute SQL Task</strong>
+                    <span class="text-xs text-secondary-foreground">Truncado de tablas en `EduMetrics_Staging` para evitar duplicidad de llaves primarias en recargas.</span>
+                </div>
+                <div class="bg-muted/20 p-4 rounded border border-border">
+                    <strong class="text-primary block mb-1 text-sm">2. Carga Dimensión DUE</strong>
+                    <span class="text-xs text-secondary-foreground">Ingesta y tipificación Unicode (`DT_WSTR`) de la dimensión geográfica oficial. Tarea prerrequisito.</span>
+                </div>
+                <div class="bg-muted/20 p-4 rounded border border-border">
+                    <strong class="text-primary block mb-1 text-sm">3. Limpieza Saber 11</strong>
+                    <span class="text-xs text-secondary-foreground">Data Flow principal que procesa la muestra masiva aplicando filtros y cruces referenciales.</span>
+                </div>
+            </div>
+            <!-- Placeholder para captura 1 -->
+            <div class="aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
+                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: Lienzo general del Control Flow]</p>
+                <!-- <img src="{{ url_for('static', filename='assets/images/etapa3/control_flow.png') }}" class="w-full h-full object-cover rounded-lg" alt="Control Flow SSIS"> -->
+            </div>
+        </div>
+
+        <!-- Flujo de Datos Principal -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Flujo de Datos (DFT_Limpieza_Saber11)
+            </h2>
+            <div class="overflow-x-auto mb-6">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pl-4 pr-4 font-semibold w-1/4">Componente</th>
+                            <th class="py-3 pr-4 font-semibold">Configuración y Función Técnica</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag">Data Conversion</span></td>
+                            <td class="py-3 pr-4 text-xs">Transformación de `UTF-8` (65001) a cadenas Unicode (`DT_WSTR`) para prevenir conflictos de *Code Page Mismatch* y pérdida de tildes/eñes.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag">Conditional Split</span></td>
+                            <td class="py-3 pr-4 text-xs">Filtro lógico: <code class="bg-muted px-1 rounded text-primary">estu_grado <= 11</code>. Deriva los registros válidos al flujo principal y enruta los atípicos a la tabla de auditoría.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag">Lookup</span></td>
+                            <td class="py-3 pr-4 text-xs">Modo <em>Ignore failure</em> (LEFT JOIN). Cruza `cole_codigo_icfes` contra la dimensión DUE para rescatar `cole_area_ubicacion_oficial`.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag">OLE DB Destination</span></td>
+                            <td class="py-3 pr-4 text-xs">Inserción con carga rápida (*Fast Load*) mapeando tipos numéricos nativos (`DT_I8` a `BIGINT`) y textos a `NVARCHAR`.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Placeholder para captura 2 -->
+            <div class="aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
+                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: Flujo de datos principal / Bifurcación]</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navegación -->
+    <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('index') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Panel Principal
+        </a>
+        <a href="{{ url_for('iteraciones') }}" class="btn-primary text-sm">
+            Siguiente: Iteraciones y Resultados
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

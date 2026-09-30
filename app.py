@@ -61,5 +61,20 @@ def integracion():
 def informe():
     return render_template('etapa2/informe.html')
 
+# ==========================================
+# RUTAS ETAPA 3: ETL Y TRANSFORMACIÓN (SSIS)
+# ==========================================
+@app.route('/etapa3/arquitectura')
+def arquitectura():
+    return render_template('etapa3/arquitectura.html')
+
+@app.route('/etapa3/iteraciones')
+def iteraciones():
+    return render_template('etapa3/iteraciones.html')
+
+@app.route('/etapa3/publicacion')
+def publicacion():
+    return render_template('etapa3/publicacion.html')
+
 if __name__ == '__main__':
     app.run(debug=True)
