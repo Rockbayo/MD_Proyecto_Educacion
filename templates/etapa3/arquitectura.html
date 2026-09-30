@@ -45,10 +45,13 @@
                     <span class="text-xs text-secondary-foreground">Data Flow principal que procesa la muestra masiva aplicando filtros y cruces referenciales.</span>
                 </div>
             </div>
-            <!-- Placeholder para captura 1 -->
-            <div class="aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
-                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: Lienzo general del Control Flow]</p>
-                <!-- <img src="{{ url_for('static', filename='assets/images/etapa3/control_flow.png') }}" class="w-full h-full object-cover rounded-lg" alt="Control Flow SSIS"> -->
+            <!-- Captura Control Flow -->
+            <div class="w-full bg-card border border-border rounded-lg overflow-hidden shadow-md mt-6">
+                <div class="p-3 bg-muted/30 border-b border-border text-xs font-mono text-muted-foreground flex items-center justify-between">
+                    <span>Lienzo del Flujo de Control (Control Flow en SSIS)</span>
+                    <span class="text-primary font-semibold">SSIS Package</span>
+                </div>
+                <img src="{{ url_for('static', filename='assets/images/flujo_control.png') }}" class="w-full h-auto object-contain rounded-b-lg" alt="Control Flow SSIS">
             </div>
         </div>
 
@@ -85,9 +88,23 @@
                     </tbody>
                 </table>
             </div>
-            <!-- Placeholder para captura 2 -->
-            <div class="aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
-                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: Flujo de datos principal / Bifurcación]</p>
+            <!-- Capturas Flujo de Datos -->
+            <div class="space-y-6 mt-6">
+                <div class="w-full bg-card border border-border rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 bg-muted/30 border-b border-border text-xs font-mono text-muted-foreground flex items-center justify-between">
+                        <span>Lienzo del Flujo de Datos (Data Flow - Fase 1)</span>
+                        <span class="text-primary font-semibold">SSIS Data Flow</span>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/images/flujo_datos.png') }}" class="w-full h-auto object-contain rounded-b-lg" alt="Flujo de Datos SSIS">
+                </div>
+
+                <div class="w-full bg-card border border-border rounded-lg overflow-hidden shadow-md">
+                    <div class="p-3 bg-muted/30 border-b border-border text-xs font-mono text-muted-foreground flex items-center justify-between">
+                        <span>Lienzo del Flujo de Datos (Data Flow - Fase 2 y Transformaciones)</span>
+                        <span class="text-primary font-semibold">SSIS Data Flow</span>
+                    </div>
+                    <img src="{{ url_for('static', filename='assets/images/flujo_datos_2.png') }}" class="w-full h-auto object-contain rounded-b-lg" alt="Flujo de Datos SSIS - Detalle">
+                </div>
             </div>
         </div>
 
