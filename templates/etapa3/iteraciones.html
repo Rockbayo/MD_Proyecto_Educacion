@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('arquitectura') }}" class="hover:text-primary transition-colors">Arquitectura SSIS</a>
+        <span>/</span>
+        <span class="text-primary">Iteraciones y Resultados</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 03 · Transformación de Datos</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            2. Iteraciones y Resultados de Calidad
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl">
+            Registro de la estabilización del pipeline ETL, manejo de excepciones y comparativa de los indicadores de calidad tras aplicar las reglas de tratamiento.
+        </p>
+    </div>
+
+    <div class="space-y-8">
+        
+        <!-- Registro de Iteraciones -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">01.</span> Registro de Iteraciones en SSIS
+            </h2>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse text-sm">
+                    <thead>
+                        <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono text-xs uppercase tracking-wider">
+                            <th class="py-3 pl-4 pr-4 font-semibold w-1/6">Iteración</th>
+                            <th class="py-3 pr-4 font-semibold w-2/5">Ajustes Aplicados</th>
+                            <th class="py-3 pr-4 font-semibold">Resultados y Hallazgos</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60 text-secondary-foreground">
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag text-red-400 bg-red-400/10 border-red-400/30">Iteración 1</span></td>
+                            <td class="py-3 pr-4 text-xs">Carga inicial directa del CSV plano (1M) a Staging.</td>
+                            <td class="py-3 pr-4 text-xs"><strong>Fallo:</strong> Colapso por *Code Page Mismatch* (65001 vs 1252) y truncamiento en `zona` del DUE por categoría anómala `URBANARURAL`.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag text-yellow-400 bg-yellow-400/10 border-yellow-400/30">Iteración 2</span></td>
+                            <td class="py-3 pr-4 text-xs">Preprocesamiento del DUE (Python) y casteo a `DT_WSTR` en SSIS para caracteres especiales.</td>
+                            <td class="py-3 pr-4 text-xs"><strong>Éxito Parcial:</strong> Flujo compila y las tildes se visualizan correctamente, pero se identifica ingreso a destino de valores atípicos absurdos en `estu_grado`.</td>
+                        </tr>
+                        <tr>
+                            <td class="py-3 pl-4 pr-4"><span class="data-tag text-green-400 bg-green-400/10 border-green-400/30">Iteración 3</span></td>
+                            <td class="py-3 pr-4 text-xs">Implementación de *Conditional Split* (`estu_grado <= 11`) derivando outliers a tabla de auditoría.</td>
+                            <td class="py-3 pr-4 text-xs"><strong>Éxito Total:</strong> Separación efectiva sin detener pipeline. Cero registros perdidos. Idempotencia validada.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <!-- Placeholder captura 3 -->
+            <div class="mt-4 aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
+                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: Execution Results en Visual Studio con checks verdes]</p>
+            </div>
+        </div>
+
+        <!-- Volumetría Final -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">02.</span> Consolidado Volumétrico (Base 1,000,000 Muestra)
+            </h2>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                <div class="bg-muted/20 p-5 rounded-lg border border-border text-center">
+                    <p class="text-2xl font-bold text-foreground tracking-tight mb-1">1,000,000</p>
+                    <p class="font-mono text-xs text-muted-foreground uppercase">Muestra Inicial</p>
+                </div>
+                <div class="bg-primary/10 p-5 rounded-lg border border-primary/30 text-center">
+                    <p class="text-2xl font-bold text-primary tracking-tight mb-1">761,173</p>
+                    <p class="font-mono text-xs text-primary uppercase">Registros Válidos</p>
+                </div>
+                <div class="bg-orange-400/10 p-5 rounded-lg border border-orange-400/30 text-center">
+                    <p class="text-2xl font-bold text-orange-400 tracking-tight mb-1">238,827</p>
+                    <p class="font-mono text-xs text-orange-400 uppercase">Errores Auditoría</p>
+                </div>
+                <div class="bg-muted/20 p-5 rounded-lg border border-border text-center">
+                    <p class="text-2xl font-bold text-foreground tracking-tight mb-1">22,530</p>
+                    <p class="font-mono text-xs text-muted-foreground uppercase">Dimensión DUE</p>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="flex items-start gap-3 p-4 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <svg class="w-5 h-5 text-green-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
+                    <div>
+                        <strong class="text-foreground block mb-1 text-sm">Prueba de Idempotencia: Aprobada</strong>
+                        <p class="text-xs text-secondary-foreground">Al reprocesar el mismo lote, la tarea `SQL_LimpiarTablas` trunca Staging. El flujo finaliza con <strong>0% de registros duplicados</strong>.</p>
+                    </div>
+                </div>
+                <div class="flex items-start gap-3 p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <svg class="w-5 h-5 text-blue-400 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <div>
+                        <strong class="text-foreground block mb-1 text-sm">Conservación Matemática</strong>
+                        <p class="text-xs text-secondary-foreground">La suma de registros válidos y anómalos equivale exactamente al volumen original extraído (1,000,000). <strong>0% fuga de datos.</strong></p>
+                    </div>
+                </div>
+            </div>
+            <!-- Placeholder captura 4 -->
+            <div class="mt-6 aspect-video w-full bg-muted/10 border border-dashed border-border rounded-lg flex items-center justify-center">
+                <p class="text-muted-foreground font-mono text-xs">[Insertar captura: SSMS Consulta SELECT COUNT(*) sobre tablas Destino y Auditoría]</p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navegación -->
+    <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('arquitectura') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Anterior: Arquitectura SSIS
+        </a>
+        <a href="{{ url_for('publicacion') }}" class="btn-primary text-sm">
+            Siguiente: Publicación y Video
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}

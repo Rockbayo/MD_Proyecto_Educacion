@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+    
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('arquitectura') }}" class="hover:text-primary transition-colors">Arquitectura SSIS</a>
+        <span>/</span>
+        <a href="{{ url_for('iteraciones') }}" class="hover:text-primary transition-colors">Iteraciones</a>
+        <span>/</span>
+        <span class="text-primary">Publicación y Video</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 03 · Transformación de Datos</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            3. Entregables Finales: Informe Técnico y Video
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl">
+            Consulta el documento formal con las evidencias de la implementación ETL y reproduce la demostración técnica del proceso de integración en SQL Server Integration Services.
+        </p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+        
+        <!-- Contenedor del PDF -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
+                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.733-1.942c3.123-2.923 5.485-3.328 6.002-1.921.465 1.272-1.558 4.757-2.185 6.467-.65 1.776-.301 2.304.57 2.304 1.778 0 4.204-2.585 5.568-4.575l1.096 1.71c-1.895 2.502-4.52 4.41-7.234 4.41-1.636 0-2.859-1.242-2.316-3.131zm-.438-10.978c-.782 0-1.417-.635-1.417-1.417 0-.782.635-1.417 1.417-1.417.781 0 1.417.635 1.417 1.417 0 .782-.636 1.417-1.417 1.417z"/></svg>
+                    Informe Técnico (PDF)
+                </h2>
+                <a href="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" download class="btn-ghost text-xs py-1.5 px-3">
+                    <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                    Descargar
+                </a>
+            </div>
+            
+            <div class="aspect-[3/4] w-full bg-muted/10 border border-border rounded-lg overflow-hidden">
+                <!-- Fallback en caso de que el navegador no soporte iframes de PDF -->
+                <object data="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" type="application/pdf" class="w-full h-full">
+                    <div class="p-8 text-center flex flex-col items-center justify-center h-full">
+                        <p class="text-sm text-secondary-foreground mb-4">Tu navegador no soporta la previsualización directa de PDF.</p>
+                        <a href="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" class="btn-primary text-sm">Descargar Informe</a>
+                    </div>
+                </object>
+            </div>
+        </div>
+
+        <!-- Contenedor del Video -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll">
+            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
+                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                Video de Demostración
+            </h2>
+            
+            <div class="aspect-video w-full bg-muted/10 border border-border rounded-lg overflow-hidden relative group">
+                <!-- Reemplazar el src con el enlace de YouTube / Vimeo de tu proyecto -->
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/TU_ID_DE_VIDEO?rel=0" title="Demostración SSIS Etapa 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+
+            <div class="mt-6 space-y-3 text-sm text-secondary-foreground">
+                <h3 class="font-bold text-foreground mb-2">Contenido del Video (4 min)</h3>
+                <ul class="list-disc list-inside space-y-1">
+                    <li><strong class="text-foreground">0:00 - 1:00:</strong> Presentación del equipo y arquitectura del Control Flow.</li>
+                    <li><strong class="text-foreground">1:00 - 2:00:</strong> Configuración del <em>Data Conversion</em> y <em>Lookup</em> geográfico (DUE).</li>
+                    <li><strong class="text-foreground">2:00 - 3:30:</strong> Ejecución en vivo, división con <em>Conditional Split</em> y resultados en SSMS.</li>
+                    <li><strong class="text-foreground">3:30 - 4:00:</strong> Verificación de 0 duplicados (Idempotencia).</li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Navegación final -->
+    <div class="pt-8 mt-10 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('iteraciones') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            Anterior: Resultados
+        </a>
+        <a href="{{ url_for('index') }}" class="btn-primary text-sm bg-green-600 hover:bg-green-500 border-none">
+            Finalizar Etapa 3 · Volver al Inicio
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" /></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
