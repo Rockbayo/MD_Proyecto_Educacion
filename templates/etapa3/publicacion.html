@@ -27,50 +27,76 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
-        <!-- Contenedor del PDF -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
-                    <svg class="w-5 h-5 text-red-400" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.733-1.942c3.123-2.923 5.485-3.328 6.002-1.921.465 1.272-1.558 4.757-2.185 6.467-.65 1.776-.301 2.304.57 2.304 1.778 0 4.204-2.585 5.568-4.575l1.096 1.71c-1.895 2.502-4.52 4.41-7.234 4.41-1.636 0-2.859-1.242-2.316-3.131zm-.438-10.978c-.782 0-1.417-.635-1.417-1.417 0-.782.635-1.417 1.417-1.417.781 0 1.417.635 1.417 1.417 0 .782-.636 1.417-1.417 1.417z"/></svg>
-                    Informe Técnico (PDF)
-                </h2>
-                <a href="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" download class="btn-ghost text-xs py-1.5 px-3">
-                    <svg class="w-4 h-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
-                    Descargar
-                </a>
+        <!-- Contenedor del PDF Mejorado -->
+        <div class="card-base p-6 sm:p-8 animate-on-scroll flex flex-col">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+                <div>
+                    <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.733-1.942c3.123-2.923 5.485-3.328 6.002-1.921.465 1.272-1.558 4.757-2.185 6.467-.65 1.776-.301 2.304.57 2.304 1.778 0 4.204-2.585 5.568-4.575l1.096 1.71c-1.895 2.502-4.52 4.41-7.234 4.41-1.636 0-2.859-1.242-2.316-3.131zm-.438-10.978c-.782 0-1.417-.635-1.417-1.417 0-.782.635-1.417 1.417-1.417.781 0 1.417.635 1.417 1.417 0 .782-.636 1.417-1.417 1.417z"/></svg>
+                        Informe Técnico Final
+                    </h2>
+                    <span class="text-xs font-mono text-muted-foreground block mt-0.5">Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf</span>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf') }}" target="_blank" class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1" title="Abrir en pestaña nueva">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                        Ampliar
+                    </a>
+                    <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf') }}" download="Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf" class="btn-primary text-xs py-1.5 px-3 font-mono flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        Descargar
+                    </a>
+                </div>
             </div>
             
-            <div class="aspect-[3/4] w-full bg-muted/10 border border-border rounded-lg overflow-hidden">
-                <!-- Fallback en caso de que el navegador no soporte iframes de PDF -->
-                <object data="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" type="application/pdf" class="w-full h-full">
-                    <div class="p-8 text-center flex flex-col items-center justify-center h-full">
-                        <p class="text-sm text-secondary-foreground mb-4">Tu navegador no soporta la previsualización directa de PDF.</p>
-                        <a href="{{ url_for('static', filename='assets/docs/Etapa3_EduMetrics.pdf') }}" class="btn-primary text-sm">Descargar Informe</a>
-                    </div>
+            <!-- Visor Interactivo Integrado de PDF -->
+            <div class="w-full h-[620px] bg-muted/10 border border-border rounded-lg overflow-hidden shadow-inner relative flex-grow">
+                <object data="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=FitH" type="application/pdf" class="w-full h-full">
+                    <iframe src="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=FitH" class="w-full h-full border-0">
+                        <div class="p-8 text-center flex flex-col items-center justify-center h-full">
+                            <p class="text-sm text-secondary-foreground mb-4">El visor no pudo cargar directamente el archivo en este dispositivo.</p>
+                            <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_3_Mineria_de_Datos.pdf') }}" target="_blank" class="btn-primary text-sm">Abrir o Descargar PDF</a>
+                        </div>
+                    </iframe>
                 </object>
             </div>
         </div>
 
         <!-- Contenedor del Video -->
-        <div class="card-base p-6 sm:p-8 animate-on-scroll">
-            <h2 class="text-xl font-bold text-foreground mb-6 flex items-center gap-2">
-                <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-                Video de Demostración
-            </h2>
-            
-            <div class="aspect-video w-full bg-muted/10 border border-border rounded-lg overflow-hidden relative group">
-                <!-- Reemplazar el src con el enlace de YouTube / Vimeo de tu proyecto -->
-                <iframe class="w-full h-full" src="https://www.youtube.com/embed/TU_ID_DE_VIDEO?rel=0" title="Demostración SSIS Etapa 3" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        <div class="card-base p-6 sm:p-8 animate-on-scroll flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
+                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
+                        Video de Demostración Técnica
+                    </h2>
+                    <a href="https://www.youtube.com/watch?v=uQEiZYC2TV0" target="_blank" class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1" title="Ver en YouTube">
+                        <span>YouTube</span>
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                    </a>
+                </div>
+                
+                <!-- Reproductor Responsivo de YouTube -->
+                <div class="aspect-video w-full bg-black border border-border rounded-lg overflow-hidden shadow-lg relative group">
+                    <iframe class="w-full h-full" src="https://www.youtube.com/embed/uQEiZYC2TV0?si=Jwu-yJDCRz2TL1td" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                </div>
+
+                <div class="mt-6 space-y-3 text-sm text-secondary-foreground">
+                    <h3 class="font-bold text-foreground mb-2 flex items-center gap-2">
+                        <span class="text-primary font-mono text-xs">03.</span> Resumen de la Demostración Técnica
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1.5 text-xs text-secondary-foreground leading-relaxed">
+                        <li><strong class="text-foreground">Arquitectura:</strong> Explicación del Control Flow, truncate de tablas en Staging y secuenciamiento de paquetes.</li>
+                        <li><strong class="text-foreground">Data Flow:</strong> Limpieza de caracteres Unicode, conversión de tipos de datos y cruce con la dimensión DUE.</li>
+                        <li><strong class="text-foreground">Auditoría:</strong> Bifurcación de anomalías y validación de 0 duplicados en SQL Server (SSMS).</li>
+                    </ul>
+                </div>
             </div>
 
-            <div class="mt-6 space-y-3 text-sm text-secondary-foreground">
-                <h3 class="font-bold text-foreground mb-2">Contenido del Video (4 min)</h3>
-                <ul class="list-disc list-inside space-y-1">
-                    <li><strong class="text-foreground">0:00 - 1:00:</strong> Presentación del equipo y arquitectura del Control Flow.</li>
-                    <li><strong class="text-foreground">1:00 - 2:00:</strong> Configuración del <em>Data Conversion</em> y <em>Lookup</em> geográfico (DUE).</li>
-                    <li><strong class="text-foreground">2:00 - 3:30:</strong> Ejecución en vivo, división con <em>Conditional Split</em> y resultados en SSMS.</li>
-                    <li><strong class="text-foreground">3:30 - 4:00:</strong> Verificación de 0 duplicados (Idempotencia).</li>
-                </ul>
+            <div class="mt-8 p-4 rounded-lg bg-primary/10 border border-primary/20">
+                <span class="font-mono text-xs text-primary font-semibold block mb-1">PROYECTO EDUMETRICS · ETAPA 3</span>
+                <p class="text-xs text-secondary-foreground">La demostración y el documento reflejan la integración total del pipeline ETL y las validaciones de calidad de datos.</p>
             </div>
         </div>
 
