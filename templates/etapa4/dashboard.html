@@ -19,28 +19,28 @@
             Tableros Power BI e Informe Técnico
         </h1>
         <p class="text-secondary-foreground leading-relaxed max-w-3xl">
-            Accede al informe interactivo de Power BI con los cuatro tableros analíticos y
-            al documento técnico de la etapa, con opción de visualización directa y descarga.
+            Visualización integrada de los cuatro tableros analíticos desarrollados en Power BI Desktop sobre el conjunto
+            de datos curado del Saber 11 ICFES (4 millones de registros evaluados entre 2019 y 2025), junto con el documento técnico formal de la etapa.
         </p>
     </div>
 
     <!-- Estadísticas rápidas del dataset -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10 animate-on-scroll">
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-primary font-mono">761K</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Registros analizados</div>
+            <div class="text-2xl font-bold text-primary font-mono">4 Mill.</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Total evaluados</div>
         </div>
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-accent font-mono">4</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Tableros · Preguntas</div>
+            <div class="text-2xl font-bold text-accent font-mono">4 Páginas</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Tableros temáticos</div>
         </div>
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-primary font-mono">12+</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Indicadores DAX</div>
+            <div class="text-2xl font-bold text-primary font-mono">12+ DAX</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Medidas calculadas</div>
         </div>
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-accent font-mono">2019–25</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Periodo cubierto</div>
+            <div class="text-2xl font-bold text-accent font-mono">12 Hallazgos</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Conocimientos evidentes</div>
         </div>
     </div>
 
@@ -57,19 +57,19 @@
                         <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
                         </svg>
-                        EduMetrics — Descubrimiento de Conocimiento Evidente
+                        EduMetrics — Tableros de Conocimiento Evidente (Power BI)
                     </h2>
-                    <p class="text-xs text-muted-foreground font-mono mt-0.5">Fuente: ICFES · Dataset post-ETL · Periodo: 2019-1 a 2025-2</p>
+                    <p class="text-xs text-muted-foreground font-mono mt-0.5">Fuente: ICFES · Dataset post-ETL · Cobertura 2019-1 a 2025-2 · 4 páginas de análisis</p>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <a href="POWERBI_URL_AQUI" target="_blank" rel="noopener noreferrer"
+                    <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
                        class="btn-primary text-xs py-1.5 px-3 font-mono flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
-                        Abrir en Power BI
+                        Abrir en Power BI Service
                     </a>
-                    <a href="POWERBI_PBIX_DOWNLOAD_URL" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/raw/feature/etapa-4/entregables/EduMetrics_Etapa4_Conocimiento_Evidente.pbix" target="_blank" rel="noopener noreferrer"
                        class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -79,73 +79,66 @@
                 </div>
             </div>
 
-            <!-- iFrame Power BI — Responsive 16:9 con lazy-load -->
+            <!-- iFrame Power BI — Responsive 16:9 con incrustación directa -->
             <div class="w-full bg-muted/10 border border-border rounded-xl overflow-hidden shadow-inner relative" style="padding-top: 56.25%;">
                 <iframe
                     id="powerbi-iframe"
                     class="absolute top-0 left-0 w-full h-full border-0"
-                    src="about:blank"
-                    data-src="POWERBI_EMBED_URL_AQUI"
+                    src="https://app.powerbi.com/reportEmbed?reportId=e88e30a1-d605-413f-a622-3c66297fa2f8&autoAuth=true"
                     title="EduMetrics — Conocimiento Evidente · Saber 11 ICFES 2019-2025"
                     allowfullscreen="true"
                     allow="clipboard-write">
                 </iframe>
-
-                <!-- Placeholder (visible hasta que se configure la URL) -->
-                <div id="powerbi-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-card text-center px-6">
-                    <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="font-bold text-foreground mb-2">Informe Power BI</h3>
-                    <p class="text-sm text-muted-foreground mb-4 max-w-sm">
-                        Una vez publicado el informe en Power BI Service, el visor interactivo se cargará aquí automáticamente.
-                    </p>
-                    <a href="POWERBI_URL_AQUI" target="_blank" class="btn-primary text-sm flex items-center gap-2">
-                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
-                        </svg>
-                        Acceder directamente al informe
-                    </a>
-                    <p class="text-xs text-muted-foreground mt-3 font-mono">Requiere cuenta Microsoft para el informe completo</p>
-                </div>
             </div>
 
-            <!-- Nota acceso -->
-            <div class="mt-4 p-3 rounded-lg bg-primary/5 border border-primary/15">
-                <p class="text-xs text-secondary-foreground leading-relaxed">
-                    <span class="font-mono text-primary font-semibold">ℹ ACCESO:</span>
-                    Si el informe no carga, usa el botón "Abrir en Power BI" con tu cuenta Microsoft.
-                    El informe requiere licencia Power BI Pro o acceso de organización para la inserción embed.
-                    El archivo <span class="font-mono text-xs">.pbix</span> está disponible para descarga y exploración local.
-                </p>
+            <!-- Aviso de acceso y autenticación -->
+            <div class="mt-4 p-4 rounded-lg bg-secondary/30 border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div class="space-y-0.5">
+                    <p class="font-semibold text-foreground flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Informe sincronizado con Power BI Service
+                    </p>
+                    <p class="text-secondary-foreground">
+                        Si tu navegador requiere inicio de sesión en tu cuenta institucional o muestra restricción de iframe, puedes abrir el tablero completo directamente.
+                    </p>
+                </div>
+                <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
+                   class="btn-outline text-xs py-1.5 px-3 font-mono whitespace-nowrap flex-shrink-0">
+                    Abrir Pantalla Completa ↗
+                </a>
+            </div>
+                <p class="font-mono text-primary font-semibold">¿CÓMO INSERTAR TU INFORME DE POWER BI?</p>
+                <ol class="list-decimal list-inside space-y-1 leading-relaxed">
+                    <li>Abre tu archivo <code class="text-foreground font-mono">.pbix</code> en Power BI Desktop.</li>
+                    <li>Haz clic en <strong>Inicio → Publicar</strong> y selecciona tu área de trabajo en Power BI Service.</li>
+                    <li>En Power BI Service, ve a <strong>Archivo → Insertar informe → Publicar en la web (público)</strong>.</li>
+                    <li>Copia el enlace del <code class="text-foreground font-mono">&lt;iframe src="..."&gt;</code> generado.</li>
+                    <li>Reemplaza <code class="text-foreground font-mono">POWERBI_EMBED_URL_AQUI</code> en este template con dicho enlace.</li>
+                </ol>
             </div>
         </div>
     </section>
 
     <!-- ============================================================
-         SECCIÓN 2: VISOR PDF INFORME TÉCNICO
+         SECCIÓN 2: VISOR PDF DEL INFORME TÉCNICO
          ============================================================ -->
     <section class="mb-12 animate-on-scroll">
         <p class="section-label mb-4">02 · Informe Técnico en PDF</p>
 
-        <div class="card-base p-6 sm:p-8 flex flex-col">
-            <!-- Cabecera del PDF -->
-            <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+        <div class="card-base p-5 sm:p-7">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
                 <div>
-                    <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
-                        <svg class="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2.033 16.01c.564-1.789 1.632-3.932 1.821-4.474.273-.787-.211-1.136-1.74.209l-.733-1.942c3.123-2.923 5.485-3.328 6.002-1.921.465 1.272-1.558 4.757-2.185 6.467-.65 1.776-.301 2.304.57 2.304 1.778 0 4.204-2.585 5.568-4.575l1.096 1.71c-1.895 2.502-4.52 4.41-7.234 4.41-1.636 0-2.859-1.242-2.316-3.131zm-.438-10.978c-.782 0-1.417-.635-1.417-1.417 0-.782.635-1.417 1.417-1.417.781 0 1.417.635 1.417 1.417 0 .782-.636 1.417-1.417 1.417z"/>
+                    <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                        <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                         </svg>
-                        Informe Técnico Etapa 4
+                        Informe Técnico — Etapa 4: Descubrimiento de Conocimiento Evidente
                     </h2>
-                    <span class="text-xs font-mono text-muted-foreground block mt-0.5">
-                        Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf
-                    </span>
+                    <p class="text-xs text-muted-foreground font-mono mt-0.5">
+                        Delgado · Robayo · Universidad de Cundinamarca · Minería de Datos 2026-II
+                    </p>
                 </div>
-
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2 flex-wrap">
                     <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}"
                        target="_blank"
                        class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1"
@@ -161,12 +154,12 @@
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
-                        Descargar
+                        Descargar PDF
                     </a>
                 </div>
             </div>
 
-            <!-- Visor PDF integrado — object con iframe fallback (igual que etapa 3) -->
+            <!-- Visor PDF integrado — object con iframe fallback -->
             <div class="w-full h-[680px] bg-muted/10 border border-border rounded-lg overflow-hidden shadow-inner relative flex-grow">
                 <object
                     data="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=FitH"
@@ -191,15 +184,16 @@
             <!-- Metadatos del informe -->
             <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-secondary-foreground">
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <span class="font-mono text-primary font-semibold block mb-1">CONTENIDO</span>
-                    Portada, preguntas de análisis, modelo de datos Power BI, medidas DAX, 12 conocimientos evidentes y conclusiones.
+                    <span class="font-mono text-primary font-semibold block mb-1">ESTRUCTURA DEL INFORME</span>
+                    Portada institucional, planteamiento analítico, evidencias de los 4 tableros, 12 conocimientos con 8 elementos, limitaciones y decisiones sustentadas.
                 </div>
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <span class="font-mono text-primary font-semibold block mb-1">DATASET</span>
-                    761,173 registros post-ETL · Saber 11 ICFES 2019–2025 · 93 variables consolidadas.
+                    <span class="font-mono text-primary font-semibold block mb-1">BASE DE DATOS TRATADA</span>
+                    4 millones de registros consolidados · Cobertura 2019-1 a 2025-2 · 93 variables depuradas post-SSIS.
                 </div>
+                <div class="p-3 rounded-lg bg-accent font-semibold block mb-1">AUTORÍA ACADÉMICA</div>
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <span class="font-mono text-accent font-semibold block mb-1">INTEGRANTES</span>
+                    <span class="font-mono text-accent font-semibold block mb-1">AUTORÍA ACADÉMICA</span>
                     Delgado · Robayo<br>Universidad de Cundinamarca · Minería de Datos 2026-II
                 </div>
             </div>
@@ -207,120 +201,166 @@
     </section>
 
     <!-- ============================================================
-         SECCIÓN 3: DESCRIPCIÓN DE LOS 4 TABLEROS + INSTRUCCIONES PBIX
+         SECCIÓN 3: FICHA RESUMEN DE LOS 4 TABLEROS
          ============================================================ -->
     <section class="mb-12 animate-on-scroll">
-        <p class="section-label mb-4">03 · Contenido de los tableros</p>
+        <p class="section-label mb-4">03 · Estructura de los Cuatro Tableros en Power BI</p>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+
+            <!-- Ficha Tablero 1 -->
             <div class="card-base p-5">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T1</span>
-                    <h3 class="font-semibold text-foreground text-sm">Composición y Distribución</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T1</span>
+                        <h3 class="font-semibold text-foreground text-sm">Composición y Distribución</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 1</span>
                 </div>
-                <ul class="text-xs text-secondary-foreground space-y-1 leading-relaxed">
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Distribución por estrato socioeconómico</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Participación por género y tipo de colegio</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Mapa de participaciones por departamento</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Filtros: Periodo, Departamento</li>
-                </ul>
+                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
+                    Brecha de conectividad a internet y computador cruzada por estrato socioeconómico.
+                </p>
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Indicadores DAX</span>
+                        <span class="text-muted-foreground font-mono">Total_Evaluados (4 mill.) · %_Con_Internet (67%) · %_Con_PC (53%)</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Visualizaciones</span>
+                        <span class="text-muted-foreground">Anillos por tenencia de red · Columnas apiladas estrato × internet · Barras agrupadas Internet vs PC</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
+                        <span class="text-muted-foreground font-mono">periodo · cole_naturaleza</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- Ficha Tablero 2 -->
             <div class="card-base p-5">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T2</span>
-                    <h3 class="font-semibold text-foreground text-sm">Comparación Territorial</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T2</span>
+                        <h3 class="font-semibold text-foreground text-sm">Comparación Territorial</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 2</span>
                 </div>
-                <ul class="text-xs text-secondary-foreground space-y-1 leading-relaxed">
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Ranking de departamentos por puntaje global</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Brecha urbano-rural por área de conocimiento</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Comparativa oficial vs. privado por región</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Filtros: Naturaleza colegio, Área (urbano/rural)</li>
-                </ul>
+                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
+                    Diferencial de desempeño urbano vs. rural y dispersión municipal de conectividad vs. puntaje.
+                </p>
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Indicadores DAX</span>
+                        <span class="text-muted-foreground font-mono">Promedio_Urbano (256) · Promedio_Rural (231) · Brecha_Urbano_Rural (24.02)</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Visualizaciones</span>
+                        <span class="text-muted-foreground">Columnas agrupadas por área · Barras apiladas 100% de internet rural/urbano · Dispersión municipal</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
+                        <span class="text-muted-foreground font-mono">cole_depto_ubicacion · fami_tieneinternet</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- Ficha Tablero 3 -->
             <div class="card-base p-5">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T3</span>
-                    <h3 class="font-semibold text-foreground text-sm">Comportamiento Temporal</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T3</span>
+                        <h3 class="font-semibold text-foreground text-sm">Comportamiento Temporal</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 3</span>
                 </div>
-                <ul class="text-xs text-secondary-foreground space-y-1 leading-relaxed">
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Evolución 2019–2025 por área de conocimiento</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Comparativo semestre 1 vs. semestre 2</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> KPIs: mínimo y máximo histórico</li>
-                    <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Filtros: Área de conocimiento, Tipo de colegio</li>
-                </ul>
+                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
+                    Impacto del confinamiento 2020-2021, adopción forzada de hardware y estancamiento de redes.
+                </p>
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Indicadores DAX</span>
+                        <span class="text-muted-foreground font-mono">Promedio_Global (251.52) · %_Con_PC (53%) · Maximo_Puntaje (500)</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Visualizaciones</span>
+                        <span class="text-muted-foreground">Líneas histórico promedio · Áreas apiladas PC en tiempo · Combinado total evaluados vs % internet</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
+                        <span class="text-muted-foreground font-mono">cole_area_ubicacion · fami_estratovivienda</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- Ficha Tablero 4 -->
             <div class="card-base p-5">
-                <div class="flex items-center gap-2 mb-3">
-                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T4</span>
-                    <h3 class="font-semibold text-foreground text-sm">Análisis Multivariado</h3>
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center gap-2">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T4</span>
+                        <h3 class="font-semibold text-foreground text-sm">Análisis Multivariado</h3>
+                    </div>
+                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 4</span>
                 </div>
-                <ul class="text-xs text-secondary-foreground space-y-1 leading-relaxed">
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Perfiles NSE × tipo colegio × acceso internet</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Matriz de calor de combinaciones</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Dispersión puntaje vs. variables de contexto</li>
-                    <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Filtros: Estrato, Zona geográfica</li>
-                </ul>
+                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
+                    Interacción entre nivel educativo del padre, tenencia de computador y naturaleza institucional.
+                </p>
+                <div class="space-y-2 text-xs">
+                    <div>
+                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Indicadores DAX</span>
+                        <span class="text-muted-foreground font-mono">Eval_Alto_Rendimiento (78 mil) · %_Alto_Rendimiento (15%) · Promedio_Global (248.11)</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Visualizaciones</span>
+                        <span class="text-muted-foreground">Matriz de calor educación padre × internet · Columnas PC × naturaleza (Privado 279 vs 234; Oficial 253 vs 230) · Árbol de descomposición (307 máx. vs 216 mín.)</span>
+                    </div>
+                    <div>
+                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
+                        <span class="text-muted-foreground font-mono">periodo (cohorte 20202) · cole_area_ubicacion</span>
+                    </div>
+                </div>
             </div>
+
         </div>
 
-        <!-- Instrucciones PBIX -->
-        <div class="card-base p-5 sm:p-7">
-            <h2 class="text-base font-bold text-foreground mb-4 flex items-center gap-2">
-                <svg class="w-4 h-4 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
-                </svg>
-                Instrucciones para abrir el informe localmente
-            </h2>
-            <ol class="space-y-2 text-sm text-secondary-foreground list-decimal list-inside leading-relaxed">
-                <li>Descarga el archivo <span class="font-mono text-xs bg-muted px-1 py-0.5 rounded">EduMetrics_Etapa4.pbix</span> con el botón "Descargar PBIX" o desde el repositorio.</li>
-                <li>Abre el archivo con <strong class="text-foreground">Power BI Desktop</strong> (versión ≥ 2.120, gratuita en Microsoft Store).</li>
-                <li>En <em>Inicio → Transformar datos</em>, actualiza la ruta de la fuente al archivo CSV local:
-                    <br><span class="font-mono text-xs text-primary block mt-1 ml-4">data/processed/saber11_integrado_comprimido.csv</span>
-                </li>
-                <li>Haz clic en <em>Actualizar</em>. El archivo muestreado (5%, 227 K registros) es suficiente para exploración.</li>
-                <li>Para el informe con datos completos (761 K post-ETL), conecta al servidor SQL Server Staging (ver Etapa 3).</li>
-            </ol>
-            <div class="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
-                <p class="text-xs text-amber-400 font-mono">
-                    ⚠ Si el PBIX supera 100 MB, se proporciona enlace de descarga externo en el README del repositorio.
-                </p>
+        <!-- Instrucciones para abrir y actualizar el PBIX -->
+        <div class="card-base p-5">
+            <h3 class="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
+                <span class="font-mono text-xs text-primary">GUÍA</span>
+                Instrucciones para Abrir y Actualizar el Archivo PBIX
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-secondary-foreground">
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <p class="font-mono text-primary font-semibold mb-1">1. REQUISITOS</p>
+                    <p class="leading-relaxed">Power BI Desktop (versión 2023 o superior). Acceso al dataset post-ETL en formato SQL Server o CSV exportado.</p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <p class="font-mono text-primary font-semibold mb-1">2. ACTUALIZACIÓN DE DATOS</p>
+                    <p class="leading-relaxed">En Power BI Desktop: clic en <em>Inicio → Transformar datos → Configuración de origen de datos</em> y actualizar la ruta al servidor o archivo local.</p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <p class="font-mono text-primary font-semibold mb-1">3. REFRESCAR MODELO</p>
+                    <p class="leading-relaxed">Presionar <em>Inicio → Actualizar</em>. Las medidas DAX y las relaciones entre tablas se recalculan automáticamente sin alterar los tableros.</p>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Navegación -->
-    <div class="pt-8 border-t border-border flex justify-between items-center animate-on-scroll">
-        <a href="{{ url_for('conocimientos') }}" class="btn-ghost text-sm">
-            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-            </svg>
-            Conocimientos Evidentes
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
+        <a href="{{ url_for('conocimientos') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Ver 12 Conocimientos Evidentes
         </a>
-        <a href="{{ url_for('index') }}" class="btn-primary text-sm bg-green-600 hover:bg-green-500 border-none">
-            Volver al Inicio
-            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-            </svg>
+        <a href="{{ url_for('preguntas_etapa4') }}" class="btn-outline text-xs font-mono">
+            Ver Preguntas de Análisis →
         </a>
     </div>
+
 </div>
 
 <script>
-    // Lazy-load del iframe Power BI (solo carga cuando hace scroll hasta él)
-    const iframe = document.getElementById('powerbi-iframe');
-    const placeholder = document.getElementById('powerbi-placeholder');
-    const embedUrl = iframe ? iframe.getAttribute('data-src') : null;
-
-    if (iframe && embedUrl && embedUrl !== 'POWERBI_EMBED_URL_AQUI') {
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    iframe.src = embedUrl;
-                    if (placeholder) placeholder.style.display = 'none';
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1 });
-        observer.observe(iframe);
-    }
+function cargarDemoPowerBI() {
+    var p = document.getElementById('pbi-instructions');
+    if (p) p.classList.toggle('hidden');
+}
 </script>
 {% endblock %}

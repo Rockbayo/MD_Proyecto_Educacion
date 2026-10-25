@@ -1,130 +1,138 @@
-from flask import Flask, render_template, jsonify
+# app.py
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
+
+# -------------------------------------------------------------
+# RUTAS PRINCIPALES DEL PORTAL (EXISTENTES)
+# -------------------------------------------------------------
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/etapa1/problema')
+@app.route('/problema')
 def problema():
-    return render_template('etapa1/problema.html')
+    return render_template('problema.html')
 
-@app.route('/etapa1/preguntas')
-def preguntas():
-    return render_template('etapa1/preguntas.html')
-
-@app.route('/etapa1/necesidades')
-def necesidades():
-    return render_template('etapa1/necesidades.html')
-
-@app.route('/etapa1/fuentes')
-def fuentes():
-    return render_template('etapa1/fuentes.html')
-
-@app.route('/etapa1/dataset')
-def dataset():
-    return render_template('etapa1/dataset.html')
-
-@app.route('/etapa1/diccionario')
-def diccionario():
-    return render_template('etapa1/diccionario.html')
-
-@app.route('/etapa1/calidad')
-def calidad():
-    return render_template('etapa1/calidad.html')
-
-@app.route('/etapa1/limitaciones')
-def limitaciones():
-    return render_template('etapa1/limitaciones.html')
-
-# ==========================================
-# RUTAS ETAPA 2: DIAGNÓSTICO Y CALIDAD
-# ==========================================
-@app.route('/etapa2/proposito')
+@app.route('/proposito')
 def proposito():
-    return render_template('etapa2/proposito.html')
+    return render_template('proposito.html')
 
-@app.route('/etapa2/perfilamiento')
+@app.route('/fuentes')
+def fuentes():
+    return render_template('fuentes.html')
+
+@app.route('/diccionario')
+def diccionario():
+    return render_template('diccionario.html')
+
+@app.route('/perfilamiento')
 def perfilamiento():
-    return render_template('etapa2/perfilamiento.html')
+    return render_template('perfilamiento.html')
 
-@app.route('/etapa2/dimensiones')
-def dimensiones():
-    return render_template('etapa2/dimensiones.html')
-
-@app.route('/etapa2/integracion')
+@app.route('/integracion')
 def integracion():
-    return render_template('etapa2/integracion.html')
+    return render_template('integracion.html')
 
-@app.route('/etapa2/informe')
+@app.route('/calidad')
+def calidad():
+    return render_template('calidad.html')
+
+@app.route('/informe')
 def informe():
-    return render_template('etapa2/informe.html')
+    return render_template('informe.html')
 
-# ==========================================
-# RUTAS ETAPA 3: ETL Y TRANSFORMACIÓN (SSIS)
-# ==========================================
-@app.route('/etapa3/arquitectura')
+@app.route('/arquitectura')
 def arquitectura():
-    return render_template('etapa3/arquitectura.html')
+    return render_template('arquitectura.html')
 
-@app.route('/etapa3/iteraciones')
+@app.route('/flujos')
+def flujos():
+    return render_template('flujos.html')
+
+@app.route('/iteraciones')
 def iteraciones():
-    return render_template('etapa3/iteraciones.html')
+    return render_template('iteraciones.html')
 
-@app.route('/etapa3/publicacion')
-def publicacion():
-    return render_template('etapa3/publicacion.html')
+@app.route('/resultados')
+def resultados():
+    return render_template('resultados.html')
 
-# ==========================================
-# RUTAS ETAPA 4: CONOCIMIENTO EVIDENTE
-# ==========================================
+@app.route('/informe_etapa3')
+def informe_etapa3():
+    return render_template('informe_etapa3.html')
+
+
+# -------------------------------------------------------------
+# RUTAS DE ETAPA 4: CONOCIMIENTO EVIDENTE (POWER BI)
+# -------------------------------------------------------------
+
 @app.route('/etapa4')
 def etapa4_index():
+    """Vista principal de la Etapa 4: Conocimiento Evidente."""
     return render_template('etapa4/index.html')
 
 @app.route('/etapa4/preguntas')
 def preguntas_etapa4():
+    """Vista de las 4 preguntas de análisis con indicadores y visualizaciones."""
     return render_template('etapa4/preguntas.html')
 
 @app.route('/etapa4/conocimientos')
 def conocimientos():
+    """Vista de los 12 conocimientos evidentes documentados con sus 8 elementos."""
     return render_template('etapa4/conocimientos.html')
 
 @app.route('/etapa4/dashboard')
 def dashboard():
+    """Vista del tablero interactivo Power BI embebido y visor del informe técnico."""
     return render_template('etapa4/dashboard.html')
 
 @app.route('/api/v1/etapa4/resumen')
 def api_etapa4_resumen():
-    """Endpoint JSON con estadísticas globales del dataset curado post-ETL."""
+    """Endpoint JSON con estadísticas globales del dataset curado y tableros Power BI."""
     resumen = {
         "dataset": "Saber 11 ICFES — EduMetrics Colombia",
         "fuente": "ICFES (Instituto Colombiano para la Evaluación de la Educación)",
         "url_fuente": "https://www.icfes.gov.co/data-icfes",
+        "url_powerbi_report": "https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop",
         "periodo_cobertura": "2019-1 a 2025-2",
-        "registros_post_etl": 761173,
-        "registros_muestra_5pct": 227084,
-        "variables_totales": 93,
-        "tratamiento_etl": {
-            "herramienta": "SQL Server Integration Services (SSIS)",
-            "pasos": [
-                "Truncate de tablas en Staging",
-                "Limpieza de caracteres Unicode",
-                "Conversión de tipos de datos",
-                "Cruce con dimensión DUE",
-                "Auditoría de duplicados (0 encontrados)"
-            ]
-        },
+        "total_evaluados_modelo": 4000000,
+        "variables_analizadas": [
+            "fami_tieneinternet", "fami_estratovivienda", "fami_tienecomputador",
+            "fami_educacionpadre", "cole_naturaleza", "cole_area_ubicacion",
+            "cole_depto_ubicacion", "cole_mcpio_ubicacion", "periodo", "punt_global"
+        ],
+        "unidad_analisis": "Evaluación o participación individual de un estudiante en la prueba Saber 11",
         "preguntas_analisis": [
-            {"id": "P1", "titulo": "Composición y Distribución",
-             "pregunta": "¿Cómo se distribuyen los estudiantes según NSE, género y departamento?"},
-            {"id": "P2", "titulo": "Comparación Territorial",
-             "pregunta": "¿Existen diferencias de desempeño entre departamentos y zonas urbano-rural?"},
-            {"id": "P3", "titulo": "Comportamiento Temporal",
-             "pregunta": "¿Cómo evolucionó el desempeño en matemáticas y lectura crítica 2019-2025?"},
-            {"id": "P4", "titulo": "Análisis Multivariado",
-             "pregunta": "¿Qué combinación de NSE, tipo de colegio e internet predice el mayor puntaje?"}
+            {
+                "id": "T1",
+                "titulo": "Composición y Brecha Digital",
+                "pregunta": "¿Qué proporción de estudiantes cuenta con internet y cómo interactúa con el estrato y el computador?",
+                "indicadores_dax": ["Total_Evaluados (4M)", "%_Con_Internet (67%)", "%_Con_PC (53%)"],
+                "filtros": ["periodo", "cole_naturaleza"]
+            },
+            {
+                "id": "T2",
+                "titulo": "Comparación Territorial",
+                "pregunta": "¿Existe una diferencia empírica en el desempeño global entre colegios urbanos y rurales y qué relación guarda la cobertura de conectividad municipal?",
+                "indicadores_dax": ["Promedio_Urbano (256)", "Promedio_Rural (231)", "Brecha_Urbano_Rural (24.02)"],
+                "filtros": ["cole_depto_ubicacion", "fami_tieneinternet"]
+            },
+            {
+                "id": "T3",
+                "titulo": "Comportamiento Temporal y Pandemia",
+                "pregunta": "¿Cómo varió el rendimiento académico general y la tenencia de herramientas tecnológicas en los hogares antes, durante y después del confinamiento (2019–2025)?",
+                "indicadores_dax": ["Promedio_Global (251.52)", "%_Con_PC (53%)", "Maximo_Puntaje (500)"],
+                "filtros": ["cole_area_ubicacion", "fami_estratovivienda"]
+            },
+            {
+                "id": "T4",
+                "titulo": "Análisis Multivariado",
+                "pregunta": "¿De qué manera interactúan el nivel formativo de los padres, la tenencia de computador en el hogar y la naturaleza institucional del colegio sobre el rendimiento?",
+                "indicadores_dax": ["Eval_Alto_Rendimiento (78 mil)", "%_Alto_Rendimiento (15%)", "Promedio_Global (248.11)"],
+                "filtros": ["periodo (20202)", "cole_area_ubicacion"]
+            }
         ],
         "conocimientos_evidentes": 12,
         "tableros_power_bi": 4
