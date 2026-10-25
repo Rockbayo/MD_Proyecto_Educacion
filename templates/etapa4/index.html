@@ -1,0 +1,180 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Etapa 4: Conocimiento Evidente</span>
+    </div>
+
+    <!-- Hero de la etapa -->
+    <div class="relative mb-14 animate-on-scroll">
+        <div class="absolute -top-10 -left-10 w-64 h-64 blob-primary animate-pulse-slow pointer-events-none"></div>
+        <span class="phase-badge block mb-3 w-fit">Fase 04 · Descubrimiento de Conocimiento</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-4">
+            Etapa 4: Descubrimiento de<br class="hidden sm:block"> Conocimiento Evidente
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl mb-6">
+            Análisis exploratorio del conjunto de datos Saber 11 ICFES (2019–2025) para identificar patrones,
+            distribuciones y relaciones entre variables socioeconómicas y académicas mediante tableros interactivos de Power BI.
+        </p>
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ url_for('dashboard') }}" class="btn-primary text-sm">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                Ver Tableros Power BI
+            </a>
+            <a href="{{ url_for('preguntas_etapa4') }}" class="btn-ghost text-sm">
+                Ver Preguntas de Análisis
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- Resumen del tratamiento previo -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">01 · Continuidad del Proyecto</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="card-base p-5 text-center">
+                <div class="text-3xl font-bold text-primary font-mono mb-1">761,173</div>
+                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Registros curados</div>
+                <div class="text-xs text-secondary-foreground mt-1">Post-ETL SSIS (Etapa 3)</div>
+            </div>
+            <div class="card-base p-5 text-center">
+                <div class="text-3xl font-bold text-accent font-mono mb-1">7 años</div>
+                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Cobertura temporal</div>
+                <div class="text-xs text-secondary-foreground mt-1">2019 – 2025 · Saber 11</div>
+            </div>
+            <div class="card-base p-5 text-center">
+                <div class="text-3xl font-bold text-primary font-mono mb-1">93</div>
+                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Variables integradas</div>
+                <div class="text-xs text-secondary-foreground mt-1">Dataset consolidado ICFES</div>
+            </div>
+        </div>
+
+        <div class="card-base p-6">
+            <h2 class="text-lg font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-xs">ETL</span> Resumen del Tratamiento de Datos
+            </h2>
+            <div class="space-y-3 text-sm text-secondary-foreground leading-relaxed">
+                <p>
+                    Los datos provienen de <strong class="text-foreground">14 archivos fuente</strong> del ICFES (periodos 2019-1 a 2025-2),
+                    separados por punto y coma (;) y codificados en UTF-8. Mediante el pipeline ETL implementado en
+                    <strong class="text-foreground">SQL Server Integration Services (SSIS)</strong>, se realizó la consolidación,
+                    limpieza de caracteres Unicode y estandarización de tipos de datos.
+                </p>
+                <p>
+                    La <strong class="text-foreground">unidad de análisis</strong> es la <em>participación individual de un estudiante</em>
+                    en la prueba Saber 11 en un periodo determinado. Un mismo estudiante puede aparecer en múltiples periodos
+                    si presentó la prueba más de una vez.
+                </p>
+            </div>
+            <div class="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+                <p class="text-xs text-amber-400 font-mono">
+                    ⚠ LIMITACIONES DE CALIDAD: Inconsistencias en columnas entre años (estu_etnia ausente en 2019–2020;
+                    estu_grupoetnia surge desde 2021). Valores nulos en variables socioeconómicas (~8%). Posibles duplicados
+                    entre periodos consecutivos no deduplicados intencionalmente.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Las 4 preguntas - resumen visual -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">02 · Preguntas de Análisis</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+            <a href="{{ url_for('preguntas_etapa4') }}#p1" class="card-base p-5 hover:border-primary/40 transition-all group">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                        <span class="font-mono text-xs text-primary font-bold">P1</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">Composición y Distribución</h3>
+                        <p class="text-xs text-muted-foreground leading-relaxed">¿Cómo se distribuyen los estudiantes según nivel socioeconómico, género y región?</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{{ url_for('preguntas_etapa4') }}#p2" class="card-base p-5 hover:border-accent/40 transition-all group">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                        <span class="font-mono text-xs text-accent font-bold">P2</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-accent transition-colors">Comparación por Territorio</h3>
+                        <p class="text-xs text-muted-foreground leading-relaxed">¿Existen diferencias en desempeño académico entre departamentos y zonas urbano-rural?</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{{ url_for('preguntas_etapa4') }}#p3" class="card-base p-5 hover:border-primary/40 transition-all group">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0">
+                        <span class="font-mono text-xs text-primary font-bold">P3</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">Comportamiento Temporal</h3>
+                        <p class="text-xs text-muted-foreground leading-relaxed">¿Cómo evolucionó el desempeño promedio en matemáticas y lectura crítica entre 2019 y 2025?</p>
+                    </div>
+                </div>
+            </a>
+
+            <a href="{{ url_for('preguntas_etapa4') }}#p4" class="card-base p-5 hover:border-accent/40 transition-all group">
+                <div class="flex items-start gap-3">
+                    <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0">
+                        <span class="font-mono text-xs text-accent font-bold">P4</span>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-accent transition-colors">Análisis Multivariado</h3>
+                        <p class="text-xs text-muted-foreground leading-relaxed">¿Qué combinación de NSE, tipo de colegio y acceso a internet mejor predice el puntaje global?</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- Acceso a tableros y conocimientos -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">03 · Entregables</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <a href="{{ url_for('dashboard') }}" class="card-base p-6 text-center hover:border-primary/40 transition-all group">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                </div>
+                <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">Tableros Power BI</h3>
+                <p class="text-xs text-muted-foreground">4 páginas interactivas con indicadores DAX</p>
+            </a>
+            <a href="{{ url_for('preguntas_etapa4') }}" class="card-base p-6 text-center hover:border-accent/40 transition-all group">
+                <div class="w-12 h-12 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                </div>
+                <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-accent transition-colors">Preguntas de Análisis</h3>
+                <p class="text-xs text-muted-foreground">4 preguntas con justificación y variables</p>
+            </a>
+            <a href="{{ url_for('conocimientos') }}" class="card-base p-6 text-center hover:border-primary/40 transition-all group">
+                <div class="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mx-auto mb-3">
+                    <svg class="w-6 h-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+                </div>
+                <h3 class="font-semibold text-foreground text-sm mb-1 group-hover:text-primary transition-colors">Conocimientos Evidentes</h3>
+                <p class="text-xs text-muted-foreground">12 hallazgos con los 8 elementos requeridos</p>
+            </a>
+        </div>
+    </section>
+
+    <!-- Navegación -->
+    <div class="pt-8 mt-4 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('publicacion') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            Anterior: Etapa 3
+        </a>
+        <a href="{{ url_for('preguntas_etapa4') }}" class="btn-primary text-sm">
+            Preguntas de Análisis
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
