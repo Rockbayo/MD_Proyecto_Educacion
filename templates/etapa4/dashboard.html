@@ -20,19 +20,19 @@
         </h1>
         <p class="text-secondary-foreground leading-relaxed max-w-3xl">
             Visualización integrada de los cuatro tableros analíticos desarrollados en Power BI Desktop sobre el conjunto
-            de datos curado del Saber 11 ICFES (4 millones de registros evaluados entre 2019 y 2025), junto con el documento técnico formal de la etapa.
+            de datos curado del Saber 11 ICFES (761,173 registros validados post-ETL SSIS), junto con el documento técnico formal de la etapa.
         </p>
     </div>
 
     <!-- Estadísticas rápidas del dataset -->
     <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10 animate-on-scroll">
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-primary font-mono">4 Mill.</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Total evaluados</div>
+            <div class="text-2xl font-bold text-primary font-mono">761K</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Registros validados (SSIS)</div>
         </div>
         <div class="card-base p-4 text-center">
-            <div class="text-2xl font-bold text-accent font-mono">4 Páginas</div>
-            <div class="text-xs text-muted-foreground mt-0.5">Tableros temáticos</div>
+            <div class="text-2xl font-bold text-accent font-mono">4 Tableros</div>
+            <div class="text-xs text-muted-foreground mt-0.5">Páginas temáticas PBI</div>
         </div>
         <div class="card-base p-4 text-center">
             <div class="text-2xl font-bold text-primary font-mono">12+ DAX</div>
@@ -59,7 +59,7 @@
                         </svg>
                         EduMetrics — Tableros de Conocimiento Evidente (Power BI)
                     </h2>
-                    <p class="text-xs text-muted-foreground font-mono mt-0.5">Fuente: ICFES · Dataset post-ETL · Cobertura 2019-1 a 2025-2 · 4 páginas de análisis</p>
+                    <p class="text-xs text-muted-foreground font-mono mt-0.5">Fuente: ICFES · Dataset post-ETL SSIS · Cobertura 2019–2023 · 4 páginas de análisis</p>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
                     <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
@@ -69,12 +69,12 @@
                         </svg>
                         Abrir en Power BI Service
                     </a>
-                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/raw/feature/etapa-4/entregables/EduMetrics_Etapa4_Conocimiento_Evidente.pbix" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/tree/feature/etapa-4" target="_blank" rel="noopener noreferrer"
                        class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
                         </svg>
-                        Descargar PBIX
+                        Descargar PBIX (GitHub)
                     </a>
                 </div>
             </div>
@@ -85,7 +85,7 @@
                     id="powerbi-iframe"
                     class="absolute top-0 left-0 w-full h-full border-0"
                     src="https://app.powerbi.com/reportEmbed?reportId=e88e30a1-d605-413f-a622-3c66297fa2f8&autoAuth=true"
-                    title="EduMetrics — Conocimiento Evidente · Saber 11 ICFES 2019-2025"
+                    title="EduMetrics — Conocimiento Evidente · Saber 11 ICFES"
                     allowfullscreen="true"
                     allow="clipboard-write">
                 </iframe>
@@ -99,22 +99,13 @@
                         Informe sincronizado con Power BI Service
                     </p>
                     <p class="text-secondary-foreground">
-                        Si tu navegador requiere inicio de sesión en tu cuenta institucional o muestra restricción de iframe, puedes abrir el tablero completo directamente.
+                        Si tu navegador requiere inicio de sesión institucional o bloquea iframes de terceros, puedes abrir el reporte directamente en una pestaña independiente.
                     </p>
                 </div>
                 <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
                    class="btn-outline text-xs py-1.5 px-3 font-mono whitespace-nowrap flex-shrink-0">
                     Abrir Pantalla Completa ↗
                 </a>
-            </div>
-                <p class="font-mono text-primary font-semibold">¿CÓMO INSERTAR TU INFORME DE POWER BI?</p>
-                <ol class="list-decimal list-inside space-y-1 leading-relaxed">
-                    <li>Abre tu archivo <code class="text-foreground font-mono">.pbix</code> en Power BI Desktop.</li>
-                    <li>Haz clic en <strong>Inicio → Publicar</strong> y selecciona tu área de trabajo en Power BI Service.</li>
-                    <li>En Power BI Service, ve a <strong>Archivo → Insertar informe → Publicar en la web (público)</strong>.</li>
-                    <li>Copia el enlace del <code class="text-foreground font-mono">&lt;iframe src="..."&gt;</code> generado.</li>
-                    <li>Reemplaza <code class="text-foreground font-mono">POWERBI_EMBED_URL_AQUI</code> en este template con dicho enlace.</li>
-                </ol>
             </div>
         </div>
     </section>
@@ -123,7 +114,7 @@
          SECCIÓN 2: VISOR PDF DEL INFORME TÉCNICO
          ============================================================ -->
     <section class="mb-12 animate-on-scroll">
-        <p class="section-label mb-4">02 · Informe Técnico en PDF</p>
+        <p class="section-label mb-4">02 · Informe Técnico Oficial en PDF (24 Páginas)</p>
 
         <div class="card-base p-5 sm:p-7">
             <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
@@ -135,7 +126,7 @@
                         Informe Técnico — Etapa 4: Descubrimiento de Conocimiento Evidente
                     </h2>
                     <p class="text-xs text-muted-foreground font-mono mt-0.5">
-                        Delgado · Robayo · Universidad de Cundinamarca · Minería de Datos 2026-II
+                        Oscar Giovanni Robayo · Oscar Felipe Delgado · Universidad de Cundinamarca, Extensión Chía
                     </p>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
@@ -159,18 +150,18 @@
                 </div>
             </div>
 
-            <!-- Visor PDF integrado — object con iframe fallback -->
-            <div class="w-full h-[680px] bg-muted/10 border border-border rounded-lg overflow-hidden shadow-inner relative flex-grow">
+            <!-- Visor PDF integrado — Altura optimizada para relación de aspecto carta/A4 -->
+            <div class="w-full h-[780px] sm:h-[850px] bg-muted/10 border border-border rounded-lg overflow-hidden shadow-inner relative flex-grow">
                 <object
-                    data="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=FitH"
+                    data="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=Fit"
                     type="application/pdf"
                     class="w-full h-full">
                     <iframe
-                        src="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=FitH"
+                        src="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=Fit"
                         class="w-full h-full border-0">
                         <div class="p-8 text-center flex flex-col items-center justify-center h-full">
                             <p class="text-sm text-secondary-foreground mb-4">
-                                El visor no pudo cargar el archivo en este dispositivo.
+                                El visor no pudo cargar directamente el archivo en este dispositivo.
                             </p>
                             <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_4_Mineria_de_Datos.pdf') }}"
                                target="_blank" class="btn-primary text-sm">
@@ -185,182 +176,111 @@
             <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-secondary-foreground">
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
                     <span class="font-mono text-primary font-semibold block mb-1">ESTRUCTURA DEL INFORME</span>
-                    Portada institucional, planteamiento analítico, evidencias de los 4 tableros, 12 conocimientos con 8 elementos, limitaciones y decisiones sustentadas.
+                    Portada institucional, planteamiento analítico, evidencias de los 4 tableros, 12 conocimientos con 8 elementos, limitaciones, decisiones y referencias.
                 </div>
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
                     <span class="font-mono text-primary font-semibold block mb-1">BASE DE DATOS TRATADA</span>
-                    4 millones de registros consolidados · Cobertura 2019-1 a 2025-2 · 93 variables depuradas post-SSIS.
+                    761,173 registros validados (post-filtrado SSIS grado &gt; 11) · Cobertura 2019–2023 · Modelo relacional en estrella (Saber11_Tratado).
                 </div>
-                <div class="p-3 rounded-lg bg-accent font-semibold block mb-1">AUTORÍA ACADÉMICA</div>
                 <div class="p-3 rounded-lg bg-muted/20 border border-border">
                     <span class="font-mono text-accent font-semibold block mb-1">AUTORÍA ACADÉMICA</span>
-                    Delgado · Robayo<br>Universidad de Cundinamarca · Minería de Datos 2026-II
+                    Oscar Giovanni Robayo · Oscar Felipe Delgado<br>Universidad de Cundinamarca · Minería de Datos 2026-II
                 </div>
             </div>
         </div>
     </section>
 
     <!-- ============================================================
-         SECCIÓN 3: FICHA RESUMEN DE LOS 4 TABLEROS
+         SECCIÓN 3: ENLACES OFICIALES DEL PROYECTO
          ============================================================ -->
     <section class="mb-12 animate-on-scroll">
-        <p class="section-label mb-4">03 · Estructura de los Cuatro Tableros en Power BI</p>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
-
-            <!-- Ficha Tablero 1 -->
-            <div class="card-base p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T1</span>
-                        <h3 class="font-semibold text-foreground text-sm">Composición y Distribución</h3>
-                    </div>
-                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 1</span>
+        <p class="section-label mb-4">03 · Enlaces y Repositorio del Proyecto</p>
+        <div class="card-base p-5 sm:p-7">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-mono">
+                <div class="p-4 rounded-lg bg-muted/20 border border-border space-y-2">
+                    <span class="text-primary font-bold block text-sm">Repositorio GitHub</span>
+                    <p class="text-secondary-foreground font-sans">Repositorio público con control de versiones y trazabilidad de entregables.</p>
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion.git" target="_blank" class="text-primary hover:underline break-all block">
+                        https://github.com/Rockbayo/MD_Proyecto_Educacion.git
+                    </a>
                 </div>
-                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
-                    Brecha de conectividad a internet y computador cruzada por estrato socioeconómico.
-                </p>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Indicadores DAX</span>
-                        <span class="text-muted-foreground font-mono">Total_Evaluados (4 mill.) · %_Con_Internet (67%) · %_Con_PC (53%)</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Visualizaciones</span>
-                        <span class="text-muted-foreground">Anillos por tenencia de red · Columnas apiladas estrato × internet · Barras agrupadas Internet vs PC</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
-                        <span class="text-muted-foreground font-mono">periodo · cole_naturaleza</span>
-                    </div>
+                <div class="p-4 rounded-lg bg-muted/20 border border-border space-y-2">
+                    <span class="text-accent font-bold block text-sm">Rama de Desarrollo</span>
+                    <p class="text-secondary-foreground font-sans">Branch activo con la integración web y componentes de la Etapa 4.</p>
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/tree/feature/etapa-4" target="_blank" class="text-accent hover:underline break-all block">
+                        https://github.com/Rockbayo/MD_Proyecto_Educacion/tree/feature/etapa-4
+                    </a>
                 </div>
-            </div>
-
-            <!-- Ficha Tablero 2 -->
-            <div class="card-base p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T2</span>
-                        <h3 class="font-semibold text-foreground text-sm">Comparación Territorial</h3>
-                    </div>
-                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 2</span>
+                <div class="p-4 rounded-lg bg-muted/20 border border-primary/30 space-y-2">
+                    <span class="text-primary font-bold block text-sm flex items-center justify-between">
+                        <span>Pull Request Oficial (PR #23)</span>
+                        <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-primary/20 text-primary">Versión Final</span>
+                    </span>
+                    <p class="text-secondary-foreground font-sans">Solicitud de extracción oficial con la entrega completa de la Etapa 4 al branch principal.</p>
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23" target="_blank" class="text-primary hover:underline break-all block font-bold">
+                        https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23
+                    </a>
                 </div>
-                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
-                    Diferencial de desempeño urbano vs. rural y dispersión municipal de conectividad vs. puntaje.
-                </p>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Indicadores DAX</span>
-                        <span class="text-muted-foreground font-mono">Promedio_Urbano (256) · Promedio_Rural (231) · Brecha_Urbano_Rural (24.02)</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Visualizaciones</span>
-                        <span class="text-muted-foreground">Columnas agrupadas por área · Barras apiladas 100% de internet rural/urbano · Dispersión municipal</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
-                        <span class="text-muted-foreground font-mono">cole_depto_ubicacion · fami_tieneinternet</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ficha Tablero 3 -->
-            <div class="card-base p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">T3</span>
-                        <h3 class="font-semibold text-foreground text-sm">Comportamiento Temporal</h3>
-                    </div>
-                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 3</span>
-                </div>
-                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
-                    Impacto del confinamiento 2020-2021, adopción forzada de hardware y estancamiento de redes.
-                </p>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Indicadores DAX</span>
-                        <span class="text-muted-foreground font-mono">Promedio_Global (251.52) · %_Con_PC (53%) · Maximo_Puntaje (500)</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Visualizaciones</span>
-                        <span class="text-muted-foreground">Líneas histórico promedio · Áreas apiladas PC en tiempo · Combinado total evaluados vs % internet</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
-                        <span class="text-muted-foreground font-mono">cole_area_ubicacion · fami_estratovivienda</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ficha Tablero 4 -->
-            <div class="card-base p-5">
-                <div class="flex items-center justify-between mb-3">
-                    <div class="flex items-center gap-2">
-                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">T4</span>
-                        <h3 class="font-semibold text-foreground text-sm">Análisis Multivariado</h3>
-                    </div>
-                    <span class="text-[11px] font-mono text-muted-foreground">Pág. 4</span>
-                </div>
-                <p class="text-xs text-secondary-foreground mb-3 leading-relaxed">
-                    Interacción entre nivel educativo del padre, tenencia de computador y naturaleza institucional.
-                </p>
-                <div class="space-y-2 text-xs">
-                    <div>
-                        <span class="font-mono text-[10px] text-accent uppercase font-bold block">Indicadores DAX</span>
-                        <span class="text-muted-foreground font-mono">Eval_Alto_Rendimiento (78 mil) · %_Alto_Rendimiento (15%) · Promedio_Global (248.11)</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-primary uppercase font-bold block">Visualizaciones</span>
-                        <span class="text-muted-foreground">Matriz de calor educación padre × internet · Columnas PC × naturaleza (Privado 279 vs 234; Oficial 253 vs 230) · Árbol de descomposición (307 máx. vs 216 mín.)</span>
-                    </div>
-                    <div>
-                        <span class="font-mono text-[10px] text-muted-foreground uppercase font-bold block">Segmentadores</span>
-                        <span class="text-muted-foreground font-mono">periodo (cohorte 20202) · cole_area_ubicacion</span>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-
-        <!-- Instrucciones para abrir y actualizar el PBIX -->
-        <div class="card-base p-5">
-            <h3 class="text-sm font-bold text-foreground mb-3 flex items-center gap-2">
-                <span class="font-mono text-xs text-primary">GUÍA</span>
-                Instrucciones para Abrir y Actualizar el Archivo PBIX
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs text-secondary-foreground">
-                <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <p class="font-mono text-primary font-semibold mb-1">1. REQUISITOS</p>
-                    <p class="leading-relaxed">Power BI Desktop (versión 2023 o superior). Acceso al dataset post-ETL en formato SQL Server o CSV exportado.</p>
-                </div>
-                <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <p class="font-mono text-primary font-semibold mb-1">2. ACTUALIZACIÓN DE DATOS</p>
-                    <p class="leading-relaxed">En Power BI Desktop: clic en <em>Inicio → Transformar datos → Configuración de origen de datos</em> y actualizar la ruta al servidor o archivo local.</p>
-                </div>
-                <div class="p-3 rounded-lg bg-muted/20 border border-border">
-                    <p class="font-mono text-primary font-semibold mb-1">3. REFRESCAR MODELO</p>
-                    <p class="leading-relaxed">Presionar <em>Inicio → Actualizar</em>. Las medidas DAX y las relaciones entre tablas se recalculan automáticamente sin alterar los tableros.</p>
+                <div class="p-4 rounded-lg bg-muted/20 border border-border space-y-2">
+                    <span class="text-accent font-bold block text-sm">Aplicación en Producción</span>
+                    <p class="text-secondary-foreground font-sans">Portal web interactivo publicado y accesible en la nube (Render).</p>
+                    <a href="https://md-proyecto-educacion.onrender.com/" target="_blank" class="text-accent hover:underline break-all block">
+                        https://md-proyecto-educacion.onrender.com/
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Navegación -->
+    <!-- ============================================================
+         SECCIÓN 4: MODELO DE DATOS Y MEDIDAS DAX
+         ============================================================ -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">04 · Modelo en Estrella y Medidas DAX Principales</p>
+        <div class="card-base p-6">
+            <h3 class="text-sm font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="font-mono text-xs text-primary">DAX</span>
+                Fórmulas Nativas Implementadas en Power BI
+            </h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs font-mono">
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <span class="text-primary font-bold block mb-1">Total_Evaluados</span>
+                    <pre class="text-[11px] text-foreground bg-background/50 p-2.5 rounded border border-border/50 overflow-x-auto">Total_Evaluados = 
+COUNTROWS(Saber11_Tratado)</pre>
+                    <p class="font-sans text-[11px] text-muted-foreground mt-2">Conteo sin duplicados sobre la tabla de hechos central.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <span class="text-accent font-bold block mb-1">Promedio_Global</span>
+                    <pre class="text-[11px] text-foreground bg-background/50 p-2.5 rounded border border-border/50 overflow-x-auto">Promedio_Global = 
+AVERAGE(Saber11_Tratado[punt_global])</pre>
+                    <p class="font-sans text-[11px] text-muted-foreground mt-2">Media aritmética del desempeño global en la prueba.</p>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/30 border border-border">
+                    <span class="text-primary font-bold block mb-1">%_Con_Internet</span>
+                    <pre class="text-[11px] text-foreground bg-background/50 p-2.5 rounded border border-border/50 overflow-x-auto">_Con_Internet = 
+DIVIDE(
+  CALCULATE(COUNTROWS(Saber11_Tratado), 
+    Saber11_Tratado[fami_tieneinternet] == "SI"), 
+  CALCULATE(COUNTROWS(Saber11_Tratado), 
+    NOT(ISBLANK(Saber11_Tratado[fami_tieneinternet])))
+) * 100</pre>
+                    <p class="font-sans text-[11px] text-muted-foreground mt-2">Proporción con conectividad sobre registros no nulos.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Cierre de la Experiencia y Navegación Final -->
     <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
         <a href="{{ url_for('conocimientos') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
             <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
-            Ver 12 Conocimientos Evidentes
+            Volver a Conocimientos Evidentes
         </a>
-        <a href="{{ url_for('preguntas_etapa4') }}" class="btn-outline text-xs font-mono">
-            Ver Preguntas de Análisis →
+        <a href="{{ url_for('index') }}" class="btn-primary text-xs font-mono flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+            <span>Volver al Inicio del Proyecto</span>
         </a>
     </div>
 
 </div>
-
-<script>
-function cargarDemoPowerBI() {
-    var p = document.getElementById('pbi-instructions');
-    if (p) p.classList.toggle('hidden');
-}
-</script>
 {% endblock %}
