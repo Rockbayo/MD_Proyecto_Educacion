@@ -8,7 +8,7 @@
     <section class="relative min-h-screen flex flex-col justify-between overflow-hidden -mx-4 sm:-mx-6 -mt-24 mb-16 pt-24">
         <!-- Background Image & Effects -->
         <div class="absolute inset-0 z-0">
-            <img src="https://img.rocket.new/generatedImages/rocket_gen_img_170dedbe2-1776886224384.png" alt="Data Visualization" class="w-full h-full object-cover opacity-40">
+            <img src="https://img.rocket.new/generatedImages/rocket_gen_img_170dedbe2-1776886224384.png" alt="Data Visualization" class="w-full h-full object-cover opacity-25">
             <div class="absolute inset-0 bg-gradient-to-b from-background/85 via-background/50 to-background"></div>
             <div class="absolute inset-0 bg-grid-pattern opacity-60"></div>
         </div>
@@ -67,12 +67,20 @@
                         Fase 2
                     </a>
 
-                    <!-- Botón Entregable 3 (Activo) -->
-                    <a href="{{ url_for('arquitectura') }}" class="btn-ghost border-primary/40 text-primary hover:bg-primary/10">
+                    <!-- Botón Entregable 3 (Completado) -->
+                    <a href="{{ url_for('arquitectura') }}" class="btn-ghost">
                         <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
                         </svg>
                         Fase 3 (SSIS)
+                    </a>
+
+                    <!-- Botón Entregable 4 (Activo) -->
+                    <a href="{{ url_for('etapa4_index') }}" class="btn-ghost border-primary/40 text-primary hover:bg-primary/10">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        Fase 4 (Power BI)
                     </a>
                 </div>
             </div>
@@ -360,7 +368,7 @@
     <div id="experienceModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-300">
         <div id="modalCard" class="card-base max-w-lg w-full p-6 sm:p-8 relative transform scale-95 transition-transform duration-300 border-primary/40 shadow-2xl shadow-primary/10">
             <button id="closeModalBtn" type="button" class="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-sm font-mono p-1" title="Cerrar">
-                ✕
+                ✓
             </button>
 
             <!-- Encabezado Modal -->
@@ -404,16 +412,28 @@
                     <p class="text-xs text-muted-foreground">Perfilamiento técnico, integración multifuente, dimensiones de calidad e informe final.</p>
                 </a>
 
-                <!-- Entregable 3 (Activo) -->
-                <a href="{{ url_for('arquitectura') }}" class="group block p-4 rounded-lg border border-primary/30 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all">
+                <!-- Entregable 3 (Completado) -->
+                <a href="{{ url_for('arquitectura') }}" class="group block p-4 rounded-lg border border-border hover:border-primary/50 bg-secondary/50 hover:bg-secondary transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-sm text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                            Fase 3: Transformación ETL (SSIS)
+                        </span>
+                        <span class="text-xs font-mono text-muted-foreground group-hover:text-primary">03 →</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground">Arquitectura SSIS, flujos de datos, iteraciones y resultados de calidad.</p>
+                </a>
+
+                <!-- Entregable 4 (Activo) -->
+                <a href="{{ url_for('etapa4_index') }}" class="group block p-4 rounded-lg border border-primary/30 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all">
                     <div class="flex items-center justify-between mb-1">
                         <span class="font-semibold text-sm text-foreground group-hover:text-accent transition-colors flex items-center gap-2">
                             <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
-                            Fase 3: Transformación ETL (SSIS)
+                            Fase 4: Conocimiento Evidente
                         </span>
-                        <span class="text-xs font-mono text-accent">Activa 03 →</span>
+                        <span class="text-xs font-mono text-accent">Activa 04 →</span>
                     </div>
-                    <p class="text-xs text-muted-foreground">Arquitectura SSIS, flujos de datos, iteraciones y resultados de calidad.</p>
+                    <p class="text-xs text-muted-foreground">Análisis exploratorio, tableros Power BI e indicadores DAX sobre los datos tratados.</p>
                 </a>
             </div>
 

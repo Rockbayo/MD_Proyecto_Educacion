@@ -1,0 +1,292 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa4_index') }}" class="hover:text-primary transition-colors">Etapa 4</a>
+        <span>/</span>
+        <span class="text-primary">Preguntas de Análisis</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 04 · Formulación Analítica</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Preguntas de Análisis
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Cuatro preguntas orientadoras que estructuran el descubrimiento de conocimiento evidente
+            sobre el desempeño académico en la prueba Saber 11 ICFES (2019–2025).
+        </p>
+    </div>
+
+    <!-- ========== PREGUNTA 1 ========== -->
+    <div id="p1" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-primary font-bold">P1</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Composición y Distribución de la Población</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Cómo se distribuyen los estudiantes que presentaron Saber 11 según nivel socioeconómico,
+                    género y departamento en el periodo 2019–2025?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Comprender la composición de la población evaluada es el punto de partida para interpretar
+                        cualquier diferencia de desempeño. Sin conocer la representatividad de cada grupo,
+                        las comparaciones carecen de contexto estadístico.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">fami_estratovivienda</span>
+                        <span class="data-tag">estu_genero</span>
+                        <span class="data-tag">estu_depto_presentacion</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                        <span class="data-tag">periodo</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Total de participaciones por estrato (COUNT filtrado)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> % de participación femenina vs. masculina</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Participaciones por tipo de colegio (oficial vs. no oficial)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico circular: distribución por estrato</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Mapa coroplético: participaciones por departamento</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de barras apiladas: género × tipo de colegio</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary">Tablero 1 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 2 ========== -->
+    <div id="p2" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-accent font-bold">P2</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Comparación por Territorio</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Existen diferencias significativas en el puntaje global promedio entre departamentos
+                    y entre zonas urbanas y rurales?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Colombia presenta brechas históricas de acceso y calidad educativa entre regiones.
+                        Identificar diferencias territoriales permite focalizar políticas de equidad educativa
+                        y validar si el centralismo educativo se refleja en los resultados de la prueba.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">punt_global</span>
+                        <span class="data-tag">estu_depto_presentacion</span>
+                        <span class="data-tag">cole_area_ubicacion</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                        <span class="data-tag">fami_estratovivienda</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Puntaje global promedio por departamento</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Brecha urbano-rural: diferencia de promedios</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Top 5 departamentos con mayor y menor desempeño</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de barras: puntaje promedio por departamento</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de columnas agrupadas: urbano vs. rural × NSE</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Tabla de ranking: los 10 departamentos extremos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent">Tablero 2 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 3 ========== -->
+    <div id="p3" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-primary font-bold">P3</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Comportamiento Temporal</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Cómo evolucionó el desempeño promedio en matemáticas y lectura crítica
+                    entre 2019 y 2025, y qué impacto tuvo la pandemia (2020–2021)?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        El periodo 2019–2025 incluye el impacto del COVID-19 sobre el sistema educativo.
+                        Comparar periodos equivalentes (semestre-año) permite identificar si el desempeño
+                        académico se recuperó post-pandemia o si persisten rezagos en áreas clave.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">punt_matematicas</span>
+                        <span class="data-tag">punt_lectura_critica</span>
+                        <span class="data-tag">periodo</span>
+                        <span class="data-tag">punt_global</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Promedio de matemáticas por periodo semestral</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Variación porcentual interanual del puntaje global</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Periodo con máximo y mínimo histórico (tarjeta KPI)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de líneas: evolución temporal de ambas áreas</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de área: comparación semestre 1 vs. semestre 2</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Tarjetas KPI: mínimo/máximo histórico con año</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 p-3 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <p class="text-xs text-amber-400 font-mono">
+                ⚠ NOTA METODOLÓGICA: Se comparan solo periodos equivalentes (ej. 2019-1 vs 2020-1).
+                Los periodos con menor cobertura de aplicación (2020) se presentan como hipótesis, no como cambio real del desempeño.
+            </p>
+        </div>
+        <div class="mt-3 flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary">Tablero 3 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 4 ========== -->
+    <div id="p4" class="card-base p-6 sm:p-8 mb-10 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-accent font-bold">P4</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Análisis Multivariado</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Qué combinación de nivel socioeconómico, tipo de colegio y acceso a internet
+                    en casa está más asociada con el puntaje global más alto en Saber 11?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        El desempeño académico es un fenómeno multifactorial. Cruzar tres o más variables
+                        simultáneamente permite identificar perfiles estudiantiles específicos y
+                        combinaciones de condiciones que concentran los mejores y peores resultados,
+                        sin reducir el análisis a correlaciones bivariadas.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS (≥3)</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">fami_estratovivienda</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                        <span class="data-tag">fami_tieneinternet</span>
+                        <span class="data-tag">punt_global</span>
+                        <span class="data-tag">cole_area_ubicacion</span>
+                        <span class="data-tag">fami_tienecomputador</span>
+                    </div>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Puntaje global promedio por perfil (NSE + colegio + internet)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> % de estudiantes con acceso a internet por estrato</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> Desviación estándar del puntaje por combinación de perfil</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Matriz de calor: promedio puntaje × estrato × internet</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de dispersión: NSE vs. puntaje global</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> Gráfico de barras agrupadas: tipo colegio × acceso recursos</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap gap-2 text-xs font-mono">
+            <span class="px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent">Tablero 4 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes</span>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <div class="pt-8 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('etapa4_index') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            Volver a Etapa 4
+        </a>
+        <a href="{{ url_for('conocimientos') }}" class="btn-primary text-sm">
+            Conocimientos Evidentes
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
+

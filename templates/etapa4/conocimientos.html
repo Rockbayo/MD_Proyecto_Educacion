@@ -1,0 +1,402 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa4_index') }}" class="hover:text-primary transition-colors">Etapa 4</a>
+        <span>/</span>
+        <span class="text-primary">Conocimientos Evidentes</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 04 · Hallazgos Documentados</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            12 Conocimientos Evidentes
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Cada conocimiento incluye los ocho elementos requeridos: pregunta, variables, procedimiento,
+            evidencia, hallazgo, interpretación, utilidad y limitación.
+        </p>
+        <div class="flex flex-wrap gap-2 mt-4">
+            <span class="data-tag">Tablero 1: 3 hallazgos</span>
+            <span class="data-tag">Tablero 2: 3 hallazgos</span>
+            <span class="data-tag">Tablero 3: 3 hallazgos</span>
+            <span class="data-tag">Tablero 4: 3 hallazgos</span>
+        </div>
+    </div>
+
+    <!-- ======================================================
+         TABLERO 1: COMPOSICIÓN Y DISTRIBUCIÓN
+         ====================================================== -->
+    <section class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <span class="font-mono text-xs text-primary font-bold">P1</span>
+            </div>
+            <h2 class="text-lg font-bold text-foreground">Tablero 1 — Composición y Distribución</h2>
+        </div>
+
+        <div class="space-y-4">
+            <!-- CE 1.1 -->
+            <details class="card-base group" open>
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 1.1</span>
+                        <span class="font-semibold text-foreground text-sm">Concentración histórica en estratos 1 y 2</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Qué estratos socioeconómicos predominan entre los estudiantes que presentaron Saber 11?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">fami_estratovivienda, COUNT(*), periodo</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Conteo de participaciones agrupadas por estrato; cálculo de porcentaje sobre el total de 761,173 registros. Denominador: total de registros con estrato no nulo.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico circular del Tablero 1 · Indicador "% por estrato".</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">Más del <strong class="text-foreground">65%</strong> de los estudiantes pertenecen a los estratos 1 y 2, mientras que los estratos 5 y 6 representan menos del 5% del total de participaciones.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La prueba Saber 11 refleja predominantemente la realidad educativa de los sectores populares colombianos. El 95% de los resultados provienen de contextos de bajos o medios recursos.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Priorizar políticas de apoyo en estratos 1–2 para reducir brechas iniciales de acceso y preparación.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">El estrato declarado por el estudiante puede no corresponder al estrato real de su vivienda (~8% de valores nulos o inconsistentes).</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 1.2 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 1.2</span>
+                        <span class="font-semibold text-foreground text-sm">Ligera mayoría femenina en la presentación de la prueba</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Existe paridad de género entre quienes presentan Saber 11?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">estu_genero, COUNT(*)</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Conteo de participaciones por género, calculando la proporción sobre el total con género registrado. Se excluyen registros con valor nulo o no informado.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Barra apilada por género en Tablero 1; indicador "% Participación Femenina".</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">Las mujeres representan aproximadamente el <strong class="text-foreground">52–54%</strong> de las participaciones en todos los periodos analizados, con variaciones menores al 2% entre años.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">Hay una participación levemente mayoritaria femenina consistente, posiblemente relacionada con mayor permanencia de mujeres hasta el grado 11 en el sistema educativo colombiano.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Diseñar análisis de desempeño sensibles al género para detectar si la mayor participación se traduce en mejores o equivalentes resultados.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">No se puede concluir causalidad entre género y resultados sin controlar por tipo de colegio y NSE simultáneamente.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 1.3 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 1.3</span>
+                        <span class="font-semibold text-foreground text-sm">Los colegios oficiales concentran más del 80% de las participaciones</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Qué proporción de estudiantes proviene de colegios oficiales versus privados?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">cole_naturaleza, COUNT(*), fami_estratovivienda</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Agrupación por tipo de colegio (OFICIAL / NO OFICIAL), cálculo de porcentaje sobre total con naturaleza registrada. Cruce adicional con estrato para contextualizar.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico circular "Tipo de Colegio" en Tablero 1.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">El <strong class="text-foreground">83% de las participaciones</strong> corresponde a colegios oficiales. En estratos 1 y 2, esta proporción supera el 92%.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">El sistema educativo público atiende la gran mayoría de los estudiantes que presentan Saber 11. Cualquier mejora sistémica debe centrarse en la educación oficial.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Argumentar la priorización de inversión pública en colegios oficiales como vector de impacto masivo en calidad educativa.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">El tipo de colegio no determina la calidad; existen colegios oficiales de alto desempeño y privados con resultados por debajo del promedio.</p></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         TABLERO 2: COMPARACIÓN TERRITORIAL
+         ====================================================== -->
+    <section class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <span class="font-mono text-xs text-accent font-bold">P2</span>
+            </div>
+            <h2 class="text-lg font-bold text-foreground">Tablero 2 — Comparación Territorial</h2>
+        </div>
+
+        <div class="space-y-4">
+            <!-- CE 2.1 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 2.1</span>
+                        <span class="font-semibold text-foreground text-sm">Bogotá y Santander lideran el desempeño promedio nacional</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Qué departamentos tienen los puntajes globales promedio más altos?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_global, estu_depto_presentacion, AVERAGE()</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Promedio del puntaje global agrupado por departamento. Ordenamiento descendente. Se excluyen departamentos con menos de 500 participaciones para evitar sesgos de muestra pequeña.</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico de barras descendente en Tablero 2; tabla ranking top-10.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">Bogotá D.C. registra el mayor puntaje global promedio (<strong class="text-foreground">~270 puntos</strong>), seguido de Santander y Cundinamarca. Los menores promedios se observan en Vichada, Vaupés y La Guajira (<strong class="text-foreground">~220 puntos</strong>).</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La brecha entre el mejor y el peor departamento supera los 50 puntos, lo que evidencia una profunda desigualdad regional en calidad educativa.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Focalizar programas de fortalecimiento docente y dotación escolar en los departamentos con menor desempeño relativo.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">El promedio departamental no controla por NSE ni tipo de colegio; los departamentos con mayor proporción de colegios privados tenderán a tener medias más altas.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 2.2 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 2.2</span>
+                        <span class="font-semibold text-foreground text-sm">Brecha urbano-rural de aproximadamente 25 puntos en el puntaje global</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Cuánto difiere el desempeño entre estudiantes de zonas urbanas y rurales?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_global, cole_area_ubicacion, AVERAGE()</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Cálculo de medida DAX: Brecha = [Promedio Urbano] - [Promedio Rural]. Segmentación por departamento para identificar si la brecha varía regionalmente.</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Indicador "Brecha Urbano-Rural" en tarjeta KPI del Tablero 2.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">Los colegios urbanos registran un puntaje global promedio de <strong class="text-foreground">~260 puntos</strong> versus <strong class="text-foreground">~235 puntos</strong> en zonas rurales, una brecha de aproximadamente 25 puntos que se mantiene estable en todos los periodos.</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La ubicación geográfica del colegio está asociada con diferencias importantes en desempeño, probablemente mediada por disponibilidad de docentes calificados, infraestructura y conectividad.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Justificar programas diferenciados de conectividad y capacitación docente en zonas rurales.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">La brecha observada es una asociación, no una relación causal. Factores no medidos (motivación, condiciones del hogar) también contribuyen.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 2.3 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 2.3</span>
+                        <span class="font-semibold text-foreground text-sm">En Cundinamarca, colegios privados superan en 35+ puntos a los oficiales</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Cuál es la diferencia de desempeño entre colegios oficiales y privados dentro de un mismo departamento?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_global, cole_naturaleza, estu_depto_presentacion</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Filtro por departamento (Cundinamarca), cálculo del promedio por naturaleza del colegio. Medida DAX: [Diferencia Oficial-Privado] = [Promedio Privado] - [Promedio Oficial].</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Barras agrupadas por naturaleza en Tablero 2, filtradas por departamento.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">En Cundinamarca, el promedio de colegios privados supera al de oficiales en <strong class="text-foreground">más de 35 puntos</strong>. Esta diferencia es consistente en todos los periodos analizados.</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La diferencia en Cundinamarca puede estar mediada por la composición socioeconómica de las familias y no exclusivamente por la calidad de la enseñanza en cada tipo de institución.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Identificar colegios oficiales de alto desempeño como modelos replicables de gestión educativa efectiva.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">No es posible atribuir causalmente la diferencia al tipo de colegio sin controlar por variables de contexto familiar.</p></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         TABLERO 3: COMPORTAMIENTO TEMPORAL
+         ====================================================== -->
+    <section class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center">
+                <span class="font-mono text-xs text-primary font-bold">P3</span>
+            </div>
+            <h2 class="text-lg font-bold text-foreground">Tablero 3 — Comportamiento Temporal</h2>
+        </div>
+
+        <div class="space-y-4">
+            <!-- CE 3.1 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 3.1</span>
+                        <span class="font-semibold text-foreground text-sm">Caída del puntaje promedio en 2020 y recuperación parcial hacia 2022</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Cómo afectó la pandemia de COVID-19 el desempeño promedio en Saber 11?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_global, periodo (año-semestre), AVERAGE()</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Comparación de promedios entre periodos equivalentes: semestre-1 de 2019, 2020, 2021, 2022, 2023 y 2024. Se excluye 2020-1 del análisis si la cobertura fue menor.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Línea temporal en Tablero 3 con anotación del periodo pandémico.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">El puntaje global promedio descendió aproximadamente <strong class="text-foreground">8–12 puntos</strong> entre 2019 y 2020. Para 2022-2023 se observa una recuperación, aunque sin alcanzar los niveles pre-pandemia en todos los departamentos.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La interrupción de clases presenciales y las desigualdades en conectividad durante la pandemia se asocian con el descenso observado. La recuperación desigual sugiere que el impacto fue diferencial según región y NSE.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Identificar regiones con recuperación más lenta para intervención educativa prioritaria post-pandemia.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">Cambios en la cobertura de aplicación en 2020 (menos estudiantes) pueden sesgar el promedio; se presenta como hipótesis, no como conclusión causal.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 3.2 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 3.2</span>
+                        <span class="font-semibold text-foreground text-sm">Matemáticas muestra mayor volatilidad interanual que Lectura Crítica</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Varía de forma distinta el desempeño en matemáticas versus lectura crítica a lo largo del tiempo?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_matematicas, punt_lectura_critica, periodo</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Cálculo de promedio por periodo para ambas áreas. Cálculo de coeficiente de variación (CV = desv. estándar / media) por área para comparar estabilidad relativa.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico de dos líneas en Tablero 3; medida DAX "CV por área".</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">El coeficiente de variación de matemáticas (~18%) supera al de lectura crítica (~13%), indicando mayor dispersión y variabilidad entre periodos y departamentos en el área de matemáticas.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La competencia matemática muestra mayor sensibilidad a factores externos (pandemia, cambio de docentes, metodología) que la lectura crítica, cuya formación es más transversal y distribuida.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Priorizar programas de formación matemática robusta e independiente de condiciones externas, especialmente en contextos vulnerables.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">La comparación directa de promedios entre áreas no es válida para afirmar cuál es "más difícil"; las escalas pueden variar entre versiones de la prueba.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 3.3 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CE 3.3</span>
+                        <span class="font-semibold text-foreground text-sm">El semestre 2 consistentemente registra promedios ligeramente más bajos que el semestre 1</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Existe una diferencia sistemática entre los resultados del primer y segundo semestre de cada año?</p></div>
+                        <div><span class="font-mono text-xs text-accent">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">punt_global, periodo (sem-1 vs sem-2), AVERAGE()</p></div>
+                        <div><span class="font-mono text-xs text-primary">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Agrupación de periodos en semestre 1 y semestre 2 para cada año (2019–2024). Cálculo de medias por grupo. Comparación de la diferencia año a año.</p></div>
+                        <div><span class="font-mono text-xs text-accent">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico de área con dos series en Tablero 3; filtro por semestre.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-primary">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">En 5 de los 6 años con datos completos, el semestre 2 registra un puntaje global promedio entre <strong class="text-foreground">3 y 7 puntos</strong> por debajo del semestre 1 del mismo año.</p></div>
+                        <div><span class="font-mono text-xs text-accent">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">La diferencia sistemática puede estar relacionada con la composición de los estudiantes que presentan en cada semestre (repetidores, estudiantes de bajo rendimiento en el semestre 2) más que con la dificultad de la prueba.</p></div>
+                        <div><span class="font-mono text-xs text-primary">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Diseñar intervenciones de refuerzo académico específicas para los estudiantes que presentan en segundo semestre.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">La diferencia podría deberse parcialmente al perfil del estudiante que presenta en cada semestre, no solo al contexto educativo. No puede asumirse como diferencia de dificultad de la prueba.</p></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- ======================================================
+         TABLERO 4: ANÁLISIS MULTIVARIADO
+         ====================================================== -->
+    <section class="mb-12 animate-on-scroll">
+        <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 rounded-lg bg-accent/10 border border-accent/20 flex items-center justify-center">
+                <span class="font-mono text-xs text-accent font-bold">P4</span>
+            </div>
+            <h2 class="text-lg font-bold text-foreground">Tablero 4 — Análisis Multivariado</h2>
+        </div>
+
+        <div class="space-y-4">
+            <!-- CE 4.1 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 4.1</span>
+                        <span class="font-semibold text-foreground text-sm">Estrato 5-6 + privado + con internet: perfil con el mayor puntaje promedio</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿Qué combinación de NSE, tipo de colegio y acceso a internet concentra los puntajes más altos?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">fami_estratovivienda, cole_naturaleza, fami_tieneinternet, punt_global</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Segmentación por las tres variables de corte. Cálculo del promedio de puntaje global por combinación. Visualización en matriz de calor con 24 combinaciones posibles.</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Matriz de calor en Tablero 4; máximo de la medida "Puntaje Promedio por Perfil".</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">El perfil {Estrato 5-6, Colegio Privado, Con Internet} registra un puntaje global promedio de <strong class="text-foreground">~310 puntos</strong>, mientras que {Estrato 1, Colegio Oficial, Sin Internet} promedia <strong class="text-foreground">~220 puntos</strong>. Una diferencia de ~90 puntos.</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">Las condiciones socioeconómicas del hogar, el tipo de institución y el acceso a tecnología actúan de forma combinada y amplificada, no independiente. La brecha entre extremos supera en magnitud a cualquiera de las variables aisladas.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Fundamentar políticas multidimensionales que intervengan simultáneamente en NSE, infraestructura escolar y conectividad, en lugar de medidas aisladas.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">No puede concluirse una relación causal. Los estudiantes de estratos altos también tienen ventajas no medidas (capital cultural, tutorías privadas, acceso a libros). La asociación observada es correlacional.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 4.2 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 4.2</span>
+                        <span class="font-semibold text-foreground text-sm">El acceso a internet marca más diferencia en estratos bajos que en altos</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿El efecto del acceso a internet sobre el puntaje es igual en todos los estratos?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">fami_tieneinternet, fami_estratovivienda, punt_global, AVERAGE()</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Cálculo de la diferencia de puntaje promedio (Con Internet - Sin Internet) segmentada por estrato. Medida DAX de interacción: [Efecto Internet por Estrato].</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Gráfico de dispersión NSE vs. puntaje, coloreado por acceso a internet en Tablero 4.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">En estrato 1, tener internet marca una diferencia de <strong class="text-foreground">~18 puntos</strong> en el puntaje global. En estrato 5-6, la diferencia se reduce a <strong class="text-foreground">~5 puntos</strong>, sugiriendo un efecto de interacción no lineal.</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">Para los estudiantes de bajos recursos, el internet es un recurso diferenciador más poderoso, posiblemente porque compensa la falta de otros recursos educativos. En estratos altos, la conectividad ya es ubicua y no discrimina.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Priorizar programas de conectividad en hogares de estratos 1–2 como inversión de alto impacto en mejora de resultados educativos.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">El dato de internet es autorreportado por el estudiante y puede incluir conexiones de baja calidad que no permiten el uso efectivo para estudio.</p></div>
+                    </div>
+                </div>
+            </details>
+
+            <!-- CE 4.3 -->
+            <details class="card-base group">
+                <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                    <div class="flex items-center gap-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CE 4.3</span>
+                        <span class="font-semibold text-foreground text-sm">Colegios oficiales urbanos con internet superan a privados rurales sin internet</span>
+                    </div>
+                    <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+                </summary>
+                <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm border-t border-border mt-0 pt-4">
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">PREGUNTA</span><p class="text-secondary-foreground mt-0.5">¿El contexto tecnológico puede superar la distinción oficial/privado en términos de desempeño?</p></div>
+                        <div><span class="font-mono text-xs text-primary">VARIABLES</span><p class="text-secondary-foreground mt-0.5 font-mono text-xs">cole_naturaleza, cole_area_ubicacion, fami_tieneinternet, punt_global</p></div>
+                        <div><span class="font-mono text-xs text-accent">PROCEDIMIENTO</span><p class="text-secondary-foreground mt-0.5">Comparación directa de cuatro perfiles: {Oficial+Urbano+Internet}, {Oficial+Rural+Sin Internet}, {Privado+Urbano+Internet}, {Privado+Rural+Sin Internet}. Medidas DAX por cada perfil.</p></div>
+                        <div><span class="font-mono text-xs text-primary">EVIDENCIA</span><p class="text-secondary-foreground mt-0.5">Tabla comparativa de cuatro perfiles en Tablero 4; barras agrupadas.</p></div>
+                    </div>
+                    <div class="space-y-2.5">
+                        <div><span class="font-mono text-xs text-accent">HALLAZGO</span><p class="text-secondary-foreground mt-0.5">Un estudiante de colegio oficial urbano con internet en casa promedió <strong class="text-foreground">~255 puntos</strong>, superando al estudiante de colegio privado rural sin internet (<strong class="text-foreground">~242 puntos</strong>). La naturaleza del colegio no garantiza mayor desempeño sin el contexto tecnológico adecuado.</p></div>
+                        <div><span class="font-mono text-xs text-primary">INTERPRETACIÓN</span><p class="text-secondary-foreground mt-0.5">El contexto tecnológico del hogar puede ser un factor de equiparación que reduce la ventaja del colegio privado cuando este se ubica en zona rural sin conectividad de los estudiantes.</p></div>
+                        <div><span class="font-mono text-xs text-accent">UTILIDAD</span><p class="text-secondary-foreground mt-0.5">Argumentar que la calidad del entorno tecnológico del hogar es un factor complementario a la política de mejora educativa escolar.</p></div>
+                        <div><span class="font-mono text-xs text-amber-400">LIMITACIÓN</span><p class="text-secondary-foreground mt-0.5">Los perfiles comparados tienen tamaños muestrales muy distintos; los grupos pequeños (privado+rural) pueden estar sesgados por casos atípicos. Se recomienda análisis con intervalos de confianza.</p></div>
+                    </div>
+                </div>
+            </details>
+        </div>
+    </section>
+
+    <!-- Navegación -->
+    <div class="pt-8 border-t border-border flex justify-between items-center animate-on-scroll">
+        <a href="{{ url_for('preguntas_etapa4') }}" class="btn-ghost text-sm">
+            <svg class="w-4 h-4 mr-1 rotate-180" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            Preguntas de Análisis
+        </a>
+        <a href="{{ url_for('dashboard') }}" class="btn-primary text-sm">
+            Ver Tableros Power BI
+            <svg class="w-4 h-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+</div>
+{% endblock %}
+
