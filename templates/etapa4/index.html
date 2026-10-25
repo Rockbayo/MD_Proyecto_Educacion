@@ -23,17 +23,13 @@
             e interacciones multivariadas presentadas en tableros interactivos de Power BI.
         </p>
         <div class="flex flex-wrap gap-3">
-            <a href="{{ url_for('dashboard') }}" class="btn-primary text-sm">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-                Ver Tableros Power BI e Informe
-            </a>
-            <a href="{{ url_for('conocimientos') }}" class="btn-outline text-sm">
-                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                12 Conocimientos Evidentes
-            </a>
-            <a href="{{ url_for('preguntas_etapa4') }}" class="btn-ghost text-sm">
-                Preguntas de Análisis
+            <a href="{{ url_for('preguntas_etapa4') }}" class="btn-primary text-sm flex items-center gap-2">
+                <span>Comenzar Recorrido: Preguntas de Análisis</span>
                 <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="{{ url_for('dashboard') }}" class="btn-ghost text-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
+                Tableros Power BI e Informe
             </a>
         </div>
     </div>
@@ -43,14 +39,14 @@
         <p class="section-label mb-4">01 · Continuidad del Proyecto y Unidad de Análisis</p>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
             <div class="card-base p-5 text-center">
-                <div class="text-3xl font-bold text-primary font-mono mb-1">4 Mill.</div>
-                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Evaluados en modelo</div>
-                <div class="text-xs text-secondary-foreground mt-1">Población total analizada</div>
+                <div class="text-3xl font-bold text-primary font-mono mb-1">761,173</div>
+                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Registros Validados</div>
+                <div class="text-xs text-secondary-foreground mt-1">Post-filtrado SSIS (Staging)</div>
             </div>
             <div class="card-base p-5 text-center">
-                <div class="text-3xl font-bold text-accent font-mono mb-1">2019 – 2025</div>
-                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Ventana temporal</div>
-                <div class="text-xs text-secondary-foreground mt-1">14 periodos semestrales (1 y 2)</div>
+                <div class="text-3xl font-bold text-accent font-mono mb-1">2019 – 2023</div>
+                <div class="text-xs text-muted-foreground font-mono uppercase tracking-wider">Ventana Temporal</div>
+                <div class="text-xs text-secondary-foreground mt-1">Periodos semestrales evaluados</div>
             </div>
             <div class="card-base p-5 text-center">
                 <div class="text-3xl font-bold text-primary font-mono mb-1">12+ DAX</div>
@@ -155,39 +151,6 @@
                 </div>
             </a>
 
-        </div>
-    </section>
-
-    <!-- Checklist de entrega de la actividad -->
-    <section class="mb-8 animate-on-scroll">
-        <p class="section-label mb-4">03 · Cumplimiento de Criterios de la Actividad</p>
-        <div class="card-base p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 text-xs text-secondary-foreground">
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>4 páginas de Power BI:</strong> Una por cada pregunta formulada.</span>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>12+ Indicadores DAX:</strong> 3 por tablero verificados con relaciones correctas.</span>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>12 Visualizaciones:</strong> 3 por tablero generadas nativamente en Power BI.</span>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>8 Segmentadores:</strong> 2 filtros interactivos por página.</span>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>12 Conocimientos:</strong> Con los 8 elementos requeridos (Hallazgo, Cifras, etc.).</span>
-                </div>
-                <div class="flex items-start gap-2.5">
-                    <span class="text-emerald-400 font-bold">✓</span>
-                    <span><strong>4 Decisiones y Limitaciones:</strong> Planteadas formalmente por cada tablero.</span>
-                </div>
-            </div>
         </div>
     </section>
 
