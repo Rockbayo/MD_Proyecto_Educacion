@@ -62,14 +62,14 @@
                     <p class="text-xs text-muted-foreground font-mono mt-0.5">Fuente: ICFES · Dataset post-ETL · Cobertura 2019-1 a 2025-2 · 4 páginas de análisis</p>
                 </div>
                 <div class="flex items-center gap-2 flex-wrap">
-                    <a href="POWERBI_URL_AQUI" target="_blank" rel="noopener noreferrer"
+                    <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
                        class="btn-primary text-xs py-1.5 px-3 font-mono flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
                         Abrir en Power BI Service
                     </a>
-                    <a href="POWERBI_PBIX_DOWNLOAD_URL" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/raw/feature/etapa-4/entregables/EduMetrics_Etapa4_Conocimiento_Evidente.pbix" target="_blank" rel="noopener noreferrer"
                        class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
@@ -79,40 +79,34 @@
                 </div>
             </div>
 
-            <!-- iFrame Power BI — Responsive 16:9 con lazy-load -->
+            <!-- iFrame Power BI — Responsive 16:9 con incrustación directa -->
             <div class="w-full bg-muted/10 border border-border rounded-xl overflow-hidden shadow-inner relative" style="padding-top: 56.25%;">
                 <iframe
                     id="powerbi-iframe"
                     class="absolute top-0 left-0 w-full h-full border-0"
-                    src="about:blank"
-                    data-src="POWERBI_EMBED_URL_AQUI"
+                    src="https://app.powerbi.com/reportEmbed?reportId=e88e30a1-d605-413f-a622-3c66297fa2f8&autoAuth=true"
                     title="EduMetrics — Conocimiento Evidente · Saber 11 ICFES 2019-2025"
                     allowfullscreen="true"
                     allow="clipboard-write">
                 </iframe>
-
-                <!-- Placeholder (visible hasta que se configure la URL pública del informe) -->
-                <div id="powerbi-placeholder" class="absolute inset-0 flex flex-col items-center justify-center bg-card text-center px-6">
-                    <div class="w-16 h-16 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-4">
-                        <svg class="w-8 h-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="text-base font-bold text-foreground mb-2">Informe Interactivo Power BI</h3>
-                    <p class="text-xs text-secondary-foreground max-w-md mb-4 leading-relaxed">
-                        El informe contiene cuatro páginas temáticas interactivas con segmentadores, gráficos dinámicos y medidas DAX.
-                        Si dispones del enlace público o de inserción ("Publicar en la web"), configúralo en la variable correspondiente.
-                    </p>
-                    <div class="flex flex-wrap gap-2 justify-center">
-                        <button onclick="cargarDemoPowerBI()" type="button" class="btn-outline text-xs py-1.5 px-3 font-mono">
-                            Ver Instrucciones de Publicación
-                        </button>
-                    </div>
-                </div>
             </div>
 
-            <!-- Instrucciones de configuración -->
-            <div id="pbi-instructions" class="hidden mt-4 p-4 rounded-lg bg-muted/20 border border-border text-xs text-secondary-foreground space-y-2">
+            <!-- Aviso de acceso y autenticación -->
+            <div class="mt-4 p-4 rounded-lg bg-secondary/30 border border-border flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                <div class="space-y-0.5">
+                    <p class="font-semibold text-foreground flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                        Informe sincronizado con Power BI Service
+                    </p>
+                    <p class="text-secondary-foreground">
+                        Si tu navegador requiere inicio de sesión en tu cuenta institucional o muestra restricción de iframe, puedes abrir el tablero completo directamente.
+                    </p>
+                </div>
+                <a href="https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop" target="_blank" rel="noopener noreferrer"
+                   class="btn-outline text-xs py-1.5 px-3 font-mono whitespace-nowrap flex-shrink-0">
+                    Abrir Pantalla Completa ↗
+                </a>
+            </div>
                 <p class="font-mono text-primary font-semibold">¿CÓMO INSERTAR TU INFORME DE POWER BI?</p>
                 <ol class="list-decimal list-inside space-y-1 leading-relaxed">
                     <li>Abre tu archivo <code class="text-foreground font-mono">.pbix</code> en Power BI Desktop.</li>

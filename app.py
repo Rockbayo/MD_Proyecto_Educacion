@@ -95,6 +95,7 @@ def api_etapa4_resumen():
         "dataset": "Saber 11 ICFES — EduMetrics Colombia",
         "fuente": "ICFES (Instituto Colombiano para la Evaluación de la Educación)",
         "url_fuente": "https://www.icfes.gov.co/data-icfes",
+        "url_powerbi_report": "https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop",
         "periodo_cobertura": "2019-1 a 2025-2",
         "total_evaluados_modelo": 4000000,
         "variables_analizadas": [
