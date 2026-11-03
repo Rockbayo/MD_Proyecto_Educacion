@@ -75,12 +75,20 @@
                         Fase 3 (SSIS)
                     </a>
 
-                    <!-- Botón Entregable 4 (Activo) -->
-                    <a href="{{ url_for('etapa4_index') }}" class="btn-ghost border-primary/40 text-primary hover:bg-primary/10">
+                    <!-- Botón Entregable 4 -->
+                    <a href="{{ url_for('etapa4_index') }}" class="btn-ghost">
                         <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                         Fase 4 (Power BI)
+                    </a>
+
+                    <!-- Botón Entregable 5 (Activo) -->
+                    <a href="{{ url_for('etapa5_index') }}" class="btn-ghost border-primary/40 text-primary hover:bg-primary/10">
+                        <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5M9 11.25v1.5M12 9v3.75m3-6v6" />
+                        </svg>
+                        Fase 5 (OLAP)
                     </a>
                 </div>
             </div>
@@ -424,16 +432,28 @@
                     <p class="text-xs text-muted-foreground">Arquitectura SSIS, flujos de datos, iteraciones y resultados de calidad.</p>
                 </a>
 
-                <!-- Entregable 4 (Activo) -->
-                <a href="{{ url_for('etapa4_index') }}" class="group block p-4 rounded-lg border border-primary/30 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all">
+                <!-- Entregable 4 -->
+                <a href="{{ url_for('etapa4_index') }}" class="group block p-4 rounded-lg border border-border hover:border-primary/50 bg-secondary/50 hover:bg-secondary transition-all">
                     <div class="flex items-center justify-between mb-1">
                         <span class="font-semibold text-sm text-foreground group-hover:text-accent transition-colors flex items-center gap-2">
-                            <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                             Fase 4: Conocimiento Evidente
                         </span>
-                        <span class="text-xs font-mono text-accent">Activa 04 →</span>
+                        <span class="text-xs font-mono text-muted-foreground group-hover:text-primary">04 →</span>
                     </div>
                     <p class="text-xs text-muted-foreground">Análisis exploratorio, tableros Power BI e indicadores DAX sobre los datos tratados.</p>
+                </a>
+
+                <!-- Entregable 5 (Activo) -->
+                <a href="{{ url_for('etapa5_index') }}" class="group block p-4 rounded-lg border border-primary/30 hover:border-primary bg-primary/5 hover:bg-primary/10 transition-all">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="font-semibold text-sm text-foreground group-hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-primary animate-ping"></span>
+                            Fase 5: Análisis Multidimensional / OLAP
+                        </span>
+                        <span class="text-xs font-mono text-primary">Activa 05 →</span>
+                    </div>
+                    <p class="text-xs text-muted-foreground">Modelo estrella en SQLite (4.5M de registros), 4 vistas de análisis multidimensional con Drill-down, Roll-up, Slice, Dice y Pivot.</p>
                 </a>
             </div>
 
