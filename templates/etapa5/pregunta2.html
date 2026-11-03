@@ -1,0 +1,445 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa5_index') }}" class="hover:text-primary transition-colors">Fase 5</a>
+        <span>/</span>
+        <span class="text-primary">Vista 2: Dinámica Temporal</span>
+    </div>
+
+    <!-- Encabezado de la vista -->
+    <div class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-2 mb-3">
+            <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20">VISTA 02</span>
+            <span class="phase-badge">Operaciones: Slice & Dice</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Dinámica Temporal por Calendario y Naturaleza
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl text-sm sm:text-base">
+            <strong class="text-foreground">Pregunta de Análisis:</strong> ¿Cómo evolucionó la brecha de rendimiento entre colegios oficiales y privados según la tenencia de computador a lo largo de las etapas pre-pandemia, confinamiento y post-pandemia?
+        </p>
+    </div>
+
+    <!-- Barra de Metadatos y Operaciones Slice / Dice -->
+    <div class="card-base p-4 sm:p-5 mb-8 bg-muted/10 border-border animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+                <span class="font-mono text-[11px] text-muted-foreground uppercase tracking-wider block">Dimensiones y Filtro Slice Activo</span>
+                <p class="text-xs text-secondary-foreground font-mono">
+                    <strong class="text-foreground">Tiempo:</strong> Etapa Pandemia → Periodo | <strong class="text-foreground">Institución:</strong> Oficial vs. No Oficial | <strong class="text-foreground">Hardware:</strong> Computador
+                </p>
+            </div>
+            
+            <!-- Controles OLAP: Slice (Corte por Etapa) -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs text-muted-foreground font-mono mr-1">Operación Slice:</span>
+                <button type="button" id="btnSliceTodos" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-slice-btn" onclick="cambiarSliceEtapa('TODAS')">
+                    Todas las Etapas (Multianual)
+                </button>
+                <button type="button" id="btnSlicePre" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PRE')">
+                    Pre-Pandemia (2019)
+                </button>
+                <button type="button" id="btnSlicePandemia" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PANDEMIA')">
+                    Confinamiento (2020-21)
+                </button>
+                <button type="button" id="btnSlicePost" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('POST')">
+                    Post-Pandemia (2022-25)
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtros Dice: Segmentación cruzada multidimensional -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-4 mt-4 border-t border-border/60">
+            <div>
+                <label for="filtroCalendario" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Operación Dice 1 (Calendario):</label>
+                <select id="filtroCalendario" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV2()">
+                    <option value="TODOS">Todos los Calendarios (A + B + Otro)</option>
+                    <option value="A">Calendario A (Convocatoria Regular Masiva)</option>
+                    <option value="B">Calendario B (Régimen Privado Internacional)</option>
+                </select>
+            </div>
+            <div>
+                <label for="filtroGrupoEstrato" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Operación Dice 2 (Estrato Socioeconómico):</label>
+                <select id="filtroGrupoEstrato" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV2()">
+                    <option value="TODOS">Todos los Estratos Socioeconómicos</option>
+                    <option value="Bajo (Estratos 1 y 2)">Vulnerabilidad Alta (Estratos 1 y 2)</option>
+                    <option value="Medio (Estratos 3 y 4)">Capacidad Media (Estratos 3 y 4)</option>
+                    <option value="Alto (Estratos 5 y 6)">Capacidad Alta (Estratos 5 y 6)</option>
+                </select>
+            </div>
+            <div class="sm:col-span-2 md:col-span-1 flex items-end">
+                <div class="w-full p-2 rounded bg-accent/5 border border-accent/20 text-center">
+                    <span class="font-mono text-[10px] text-accent block">SUBCUBO DICE RECALCULADO</span>
+                    <span id="labelEstadoV2" class="font-mono text-xs text-foreground font-semibold">14 periodos integrados</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 Indicadores Pertinentes (KPIs Dinámicos) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Evaluados en Subcubo</span>
+            <div id="kpiEvaluadosV2" class="text-3xl font-bold text-foreground font-mono my-1">4,541,655</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Total ponderado en selección</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Brecha Privado vs. Oficial</span>
+            <div id="kpiBrechaNaturaleza" class="text-3xl font-bold text-accent font-mono my-1">29.83 pts</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Diferencial institucional medio</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Tenencia de PC (Sector Oficial)</span>
+            <div id="kpiPctPcOficial" class="text-3xl font-bold text-primary font-mono my-1">45.7%</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Penetración de hardware escolar</span>
+        </div>
+    </div>
+
+    <!-- 2 Visualizaciones Interactivas (Chart.js) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Gráfica 1 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Evolución Multianual de Puntaje: Oficial vs. Privado
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Línea de Tiempo 2019-2025</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartLineaTemporal"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfica 2 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                    Efecto Escudo del Hardware por Etapa de Pandemia
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Puntaje según Tenencia de PC</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartBarrasHardwareEtapa"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matriz de Resultados Cruzada -->
+    <div class="card-base p-6 mb-12 animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-border pb-3">
+            <div>
+                <h3 class="text-base font-bold text-foreground">Matriz de Resultados: Etapa Pandemia × Sector × Computador</h3>
+                <p class="text-xs text-muted-foreground font-mono">Cálculo de promedios ponderados por agregación relacional aditiva</p>
+            </div>
+            <span class="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">
+                Puntaje Global Medio / [Volumen Evaluados]
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse font-mono" id="tablaMatrizV2">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground">
+                        <th class="py-2.5 px-3 font-semibold">Etapa de Pandemia</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-primary">Oficial Con PC</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-secondary-foreground">Oficial Sin PC</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-accent">Privado Con PC</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-amber-400">Privado Sin PC</th>
+                        <th class="py-2.5 px-3 font-semibold text-right text-foreground">Brecha Hardware Sectorial</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyMatrizV2" class="divide-y divide-border/60 text-secondary-foreground">
+                    <!-- Rellenado dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2 Conocimientos Multidimensionales Documentados con 8 Elementos -->
+    <section class="mb-12 space-y-6 animate-on-scroll">
+        <p class="section-label">Hallazgos Empíricos · Documentación Rígida de Conocimiento</p>
+
+        <!-- Conocimiento 2.1 -->
+        <details class="card-base group" open>
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CM 2.1</span>
+                    <span class="font-semibold text-foreground text-sm">Asimetría de Resiliencia en Confinamiento entre Sectores</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿Afectó el confinamiento de igual forma a los colegios oficiales y a los no oficiales?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_tiempo (etapa_pandemia) × dim_geografia (cole_naturaleza) | Medida: Promedio_Global</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Slice temporal comparando 2019 frente a 2020-2021 desglosado por naturaleza institucional.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Sector No Oficial: 265.8 pts (2019) → 273.24 pts (Pandemia). Sector Oficial: 240.56 pts (2019) → 240.24 pts (Pandemia).</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">La brecha institucional se expandió de <strong class="text-foreground">25.24 puntos en 2019</strong> a <strong class="text-foreground">33.00 puntos en 2020-2021</strong>, debido a que el sector privado logró amortiguar la educación virtual con un 80.3% de cobertura de computadores.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">El confinamiento profundizó la desigualdad educativa en Colombia: las familias que pudieron financiar plataformas privadas y equipos propios preservaron la continuidad formativa, mientras los estudiantes públicos sufrieron el apagón presencial.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Permite calcular el pasivo académico acumulado en la educación pública para justificar presupuestos especiales de recuperación post-pandemia.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">En el periodo 2020-1 se redujo la tasa de presentación por parte de colegios vulnerables, introduciendo un sesgo de supervivencia en la muestra.</p></div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Conocimiento 2.2 -->
+        <details class="card-base group">
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CM 2.2</span>
+                    <span class="font-semibold text-foreground text-sm">El "Efecto Escudo" del Hardware en la Educación Oficial</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿Qué tanto protegió tener computador a un estudiante de colegio público durante la crisis sanitaria?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_tiempo (etapa_pandemia) × dim_acceso_digital (fami_tienecomputador) en cole_naturaleza = OFICIAL</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Dice subcubo de colegios oficiales contrastando el diferencial de rendimiento con y sin computador.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Oficial con PC en Pandemia: 252.88 pts (415,286 eval.) vs Oficial sin PC en Pandemia: 227.32 pts (404,782 eval.). Brecha: 25.56 pts.</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Contar con un computador doméstico representó una prima de rendimiento de <strong class="text-foreground">25.56 puntos</strong> dentro de los colegios oficiales, permitiendo a este subgrupo acercarse a la media de los colegios privados de estratos medios.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">El computador funcionó como un escudo de resiliencia cognitiva: permitió la elaboración de trabajos de mayor complejidad, lectura de fuentes primarias y uso de herramientas matemáticas que no son viables en pantallas de teléfono móvil.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Evidencia técnica irrefutable para la formulación de políticas públicas: dotar de computadores a los estudiantes de colegios oficiales genera un impacto directo sobre la equidad evaluativa.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">No se evalúan las competencias digitales de los docentes ni el uso efectivo pedagógico que se le dio al equipo en el hogar.</p></div>
+                </div>
+            </div>
+        </details>
+    </section>
+
+    <!-- Limitación y Decisión Sustentada -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 text-xs">
+        <div class="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <span class="font-mono text-amber-400 font-bold block mb-1 uppercase tracking-wide">⚠ Limitación del Análisis Temporal</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                Comparar el periodo 1 con el periodo 2 en una misma serie histórica sin segmentar por Calendario induce a error: el periodo 1 agrupa a menos de 40,000 estudiantes de colegios bilingües de élite, inflando los picos temporales si no se utiliza la operación Dice.
+            </p>
+        </div>
+        <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+            <span class="font-mono text-emerald-400 font-bold block mb-1 uppercase tracking-wide">🎯 Decisión Estratégica Sustentada</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                Establecer una política estatal permanente de renovación de equipos tecnológicos en grado 10° para estudiantes de colegios oficiales de estratos 1 y 2, garantizando que futuras contingencias o transiciones a esquemas híbridos no reabran la brecha histórica.
+            </p>
+        </div>
+    </div>
+
+    <!-- Navegación entre Vistas -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
+        <a href="{{ url_for('etapa5_pregunta1') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Anterior: Vista 1 (Territorial)
+        </a>
+        <a href="{{ url_for('etapa5_pregunta3') }}" class="btn-primary text-xs font-mono flex items-center gap-2">
+            <span>Siguiente: Vista 3 (Capital Cultural y Pivot)</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+let sliceActual = 'TODAS';
+let chartLineaInstance = null;
+let chartBarrasHardwareInstance = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarDatosV2();
+});
+
+function cambiarSliceEtapa(etapa) {
+    sliceActual = etapa;
+
+    document.querySelectorAll('.active-slice-btn').forEach(b => {
+        b.classList.remove('btn-primary', 'active-slice-btn');
+        b.classList.add('btn-ghost');
+    });
+
+    if (etapa === 'TODAS') {
+        const b = document.getElementById('btnSliceTodos');
+        b.classList.add('btn-primary', 'active-slice-btn');
+        b.classList.remove('btn-ghost');
+    } else if (etapa === 'PRE') {
+        const b = document.getElementById('btnSlicePre');
+        b.classList.add('btn-primary', 'active-slice-btn');
+        b.classList.remove('btn-ghost');
+    } else if (etapa === 'PANDEMIA') {
+        const b = document.getElementById('btnSlicePandemia');
+        b.classList.add('btn-primary', 'active-slice-btn');
+        b.classList.remove('btn-ghost');
+    } else {
+        const b = document.getElementById('btnSlicePost');
+        b.classList.add('btn-primary', 'active-slice-btn');
+        b.classList.remove('btn-ghost');
+    }
+
+    cargarDatosV2();
+}
+
+function aplicarFiltrosV2() {
+    cargarDatosV2();
+}
+
+function cargarDatosV2() {
+    const calendario = document.getElementById('filtroCalendario').value;
+    const estrato = document.getElementById('filtroGrupoEstrato').value;
+    const labelEstado = document.getElementById('labelEstadoV2');
+    labelEstado.textContent = 'Recalculando Subcubo Dice...';
+
+    const url = `/api/v1/olap/pregunta2?slice_etapa=${encodeURIComponent(sliceActual)}&calendario=${encodeURIComponent(calendario)}&grupo_estrato=${encodeURIComponent(estrato)}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') return;
+            labelEstado.textContent = `Slice: ${data.slice_nombre} | N: ${Number(data.kpis.total_evaluados).toLocaleString('es-CO')}`;
+
+            // Actualizar KPIs
+            document.getElementById('kpiEvaluadosV2').textContent = Number(data.kpis.total_evaluados).toLocaleString('es-CO');
+            document.getElementById('kpiBrechaNaturaleza').textContent = `${data.kpis.brecha_privado_oficial} pts`;
+            document.getElementById('kpiPctPcOficial').textContent = `${data.kpis.pct_pc_oficial}%`;
+
+            // Actualizar Gráficas
+            actualizarGraficaLinea(data.grafica_linea);
+            actualizarGraficaHardwareEtapa(data.grafica_hardware);
+
+            // Actualizar Matriz
+            actualizarMatrizV2(data.matriz);
+        })
+        .catch(err => {
+            console.error('Error cargando datos OLAP V2:', err);
+            labelEstado.textContent = 'Error en consulta';
+        });
+}
+
+function actualizarGraficaLinea(datos) {
+    const ctx = document.getElementById('chartLineaTemporal').getContext('2d');
+    if (chartLineaInstance) chartLineaInstance.destroy();
+
+    chartLineaInstance = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: datos.labels,
+            datasets: [
+                {
+                    label: 'Sector Privado (No Oficial)',
+                    data: datos.privado,
+                    borderColor: '#7209b7',
+                    backgroundColor: 'rgba(114, 9, 183, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.25,
+                    fill: false,
+                    pointRadius: 3
+                },
+                {
+                    label: 'Sector Público (Oficial)',
+                    data: datos.oficial,
+                    borderColor: '#00b4d8',
+                    backgroundColor: 'rgba(0, 180, 216, 0.1)',
+                    borderWidth: 2,
+                    tension: 0.25,
+                    fill: false,
+                    pointRadius: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 220,
+                    max: 300,
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+}
+
+function actualizarGraficaHardwareEtapa(datos) {
+    const ctx = document.getElementById('chartBarrasHardwareEtapa').getContext('2d');
+    if (chartBarrasHardwareInstance) chartBarrasHardwareInstance.destroy();
+
+    chartBarrasHardwareInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datos.labels,
+            datasets: [
+                {
+                    label: 'Con Computador',
+                    data: datos.con_pc,
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Sin Computador',
+                    data: datos.sin_pc,
+                    backgroundColor: '#ef4444',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 200,
+                    max: 300,
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 } },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+}
+
+function actualizarMatrizV2(filas) {
+    const tbody = document.getElementById('tbodyMatrizV2');
+    tbody.innerHTML = '';
+
+    filas.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-muted/10 transition-colors';
+        tr.innerHTML = `
+            <td class="py-2.5 px-3 font-semibold text-foreground">${f.etapa}</td>
+            <td class="py-2.5 px-3 text-center text-primary font-bold">${f.oficial_con_pc} <span class="text-[10px] text-muted-foreground font-normal">(${f.eval_oficial_con})</span></td>
+            <td class="py-2.5 px-3 text-center text-secondary-foreground">${f.oficial_sin_pc} <span class="text-[10px] text-muted-foreground font-normal">(${f.eval_oficial_sin})</span></td>
+            <td class="py-2.5 px-3 text-center text-accent font-bold">${f.privado_con_pc} <span class="text-[10px] text-muted-foreground font-normal">(${f.eval_privado_con})</span></td>
+            <td class="py-2.5 px-3 text-center text-amber-400">${f.privado_sin_pc} <span class="text-[10px] text-muted-foreground font-normal">(${f.eval_privado_sin})</span></td>
+            <td class="py-2.5 px-3 text-right font-bold text-foreground">${f.brecha_hardware} pts</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+</script>
+{% endblock %}
+
