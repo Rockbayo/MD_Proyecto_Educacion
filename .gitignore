@@ -25,3 +25,6 @@ data/processed/*
 Semana 13.txt
 *.rar
 *.pbix
+
+ETL_EduMetrics/
+ETL_Edumetrics/

@@ -236,6 +236,72 @@
         </div>
     </div>
 
+    <!-- 4. Matriz Técnica de Homologación de Esquemas (2019-2025) -->
+    <div class="card-base p-6 sm:p-8 animate-on-scroll mt-10">
+        <div class="flex items-center justify-between mb-4 border-b border-border pb-3">
+            <h3 class="text-lg font-bold text-foreground flex items-center gap-2">
+                <svg class="w-5 h-5 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                </svg>
+                Matriz de Homologación Técnica de Esquema (Transformación vs Concatenación Simple)
+            </h3>
+            <span class="phase-badge font-mono text-[10px]">85 Variables Estandarizadas</span>
+        </div>
+        <p class="text-xs text-secondary-foreground leading-relaxed mb-6">
+            La integración de los 14 archivos semestrales del ICFES <strong>no fue una concatenación directa</strong>. Cada semestre presentaba variaciones tipográficas, nombres en mayúsculas sostenidas, caracteres especiales (tildes/eñes), tipos de datos divergentes y variables agregadas en periodos recientes. A continuación se evidencia el proceso de homologación aplicado:
+        </p>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left border-collapse text-xs">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground font-mono uppercase">
+                        <th class="py-3 px-3">Variable Destino (Consolidada)</th>
+                        <th class="py-3 px-3">Variaciones en Archivos Fuente (2019-2025)</th>
+                        <th class="py-3 px-3">Tipo Origen &rarr; Destino</th>
+                        <th class="py-3 px-3">Regla de Homologación Aplicada</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-border/60 text-secondary-foreground font-mono">
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">periodo</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">PERIODO, Periodo</td>
+                        <td class="py-2.5 px-3 text-primary">String / Float &rarr; Int64</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Casteo a entero estricto de 5 dígitos (YYYYS).</td>
+                    </tr>
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">estu_consecutivo</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">ESTU_CONSECUTIVO, Consecutivo</td>
+                        <td class="py-2.5 px-3 text-primary">String &rarr; String Limpio</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Normalización de trim() y eliminación de saltos de línea ocultos.</td>
+                    </tr>
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">cole_depto_ubicacion</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">COLE_DEPTO_UBICACION, BOGOTÁ, NARIÑO</td>
+                        <td class="py-2.5 px-3 text-primary">String latin-1/utf-8 &rarr; ASCII Uppercase</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Remoción de tildes y caracteres rotos (�, Ń) para permitir cruces DANE.</td>
+                    </tr>
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">punt_global</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">PUNT_GLOBAL, punt_global (con comas decimales)</td>
+                        <td class="py-2.5 px-3 text-primary">Object/Float &rarr; Float64</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Reemplazo de comas decimales por punto y validación de rango [0-500].</td>
+                    </tr>
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">fami_tieneinternet</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">FAMI_TIENEINTERNET, Si / No / - / S / N</td>
+                        <td class="py-2.5 px-3 text-primary">Categoría Mixta &rarr; Binario Estándar</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Homologación a 'SI', 'NO' y nulos explícitos controlados.</td>
+                    </tr>
+                    <tr class="hover:bg-muted/10">
+                        <td class="py-2.5 px-3 font-bold text-foreground">estu_comunidadcampesina</td>
+                        <td class="py-2.5 px-3 text-muted-foreground">Inexistente en 2019-2020, presente desde 2021</td>
+                        <td class="py-2.5 px-3 text-primary">Esquema Evolutivo &rarr; Categoría Opcional</td>
+                        <td class="py-2.5 px-3 text-muted-foreground font-sans">Relleno con NaN controlado sin corromper la integridad de filas históricas.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <!-- Navegación de Etapa -->
     <div class="pt-8 mt-10 border-t border-border flex justify-between items-center animate-on-scroll">
         <a href="{{ url_for('dimensiones') }}" class="btn-ghost text-sm">
