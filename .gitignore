@@ -1,4 +1,4 @@
-# Entornos virtuales y caché de Python
+# Entornos virtuales y cachÃ© de Python
 venv/
 env/
 __pycache__/
@@ -10,6 +10,7 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+generador_contexto.py
 
 # Reportes y resultados (opcional, descomentar si no quieres subirlos)
 # data/reports/*.csv
@@ -28,3 +29,13 @@ Semana 13.txt
 
 ETL_EduMetrics/
 ETL_Edumetrics/
+
+# proyecto SSIS
+ETL_Edumetrics/*
+# Guías y pautas de clase
+Semana 13.txt
+scripts/test_flask_endpoints.py
+
+# Archivos pesados de Power BI
+*.rar
+*.pbix

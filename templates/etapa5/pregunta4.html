@@ -1,0 +1,426 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa5_index') }}" class="hover:text-primary transition-colors">Fase 5</a>
+        <span>/</span>
+        <span class="text-primary">Vista 4: Intensidad TIC y Riesgo</span>
+    </div>
+
+    <!-- Encabezado de la vista -->
+    <div class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-2 mb-3">
+            <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20">VISTA 04</span>
+            <span class="phase-badge">Operaciones: Drill-Down + Dice Multimétrica</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Intensidad de Navegación, Inglés y Riesgo Crítico
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl text-sm sm:text-base">
+            <strong class="text-foreground">Pregunta de Análisis:</strong> ¿Cómo incide la dedicación diaria a internet en el dominio de una segunda lengua (inglés) y qué combinaciones institucionales y territoriales concentran la mayor proporción de estudiantes en riesgo bajo (&lt; 220 puntos)?
+        </p>
+    </div>
+
+    <!-- Barra de Metadatos y Operación Drill-Down TIC -->
+    <div class="card-base p-4 sm:p-5 mb-8 bg-muted/10 border-border animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+                <span class="font-mono text-[11px] text-muted-foreground uppercase tracking-wider block">Dimensiones y Medidas Multimétricas</span>
+                <p class="text-xs text-secondary-foreground font-mono">
+                    <strong class="text-foreground">TIC:</strong> Intensidad Diaria (Horas) | <strong class="text-foreground">Metas:</strong> Inglés (MCER B1/B+) y Riesgo Crítico (&lt; 220 pts)
+                </p>
+            </div>
+            
+            <!-- Controles OLAP: Selección de Medida en Foco -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs text-muted-foreground font-mono mr-1">Métrica Protagonista:</span>
+                <button type="button" id="btnMetricaIngles" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-metrica-btn" onclick="cambiarMetricaFoco('ingles')">
+                    Competencia en Inglés
+                </button>
+                <button type="button" id="btnMetricaRiesgo" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('riesgo')">
+                    Concentración de Riesgo
+                </button>
+                <button type="button" id="btnMetricaGlobal" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('global')">
+                    Puntaje Global Integral
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtros interactivos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-4 mt-4 border-t border-border/60">
+            <div>
+                <label for="filtroAreaV4" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Territorio (Zona):</label>
+                <select id="filtroAreaV4" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV4()">
+                    <option value="TODOS">Todas las Zonas Geográficas</option>
+                    <option value="URBANO">Zonas Urbanas (Cabeceras)</option>
+                    <option value="RURAL">Zonas Rurales (Disperso / Centros Poblados)</option>
+                </select>
+            </div>
+            <div>
+                <label for="filtroNaturalezaV4" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Institución (Sector):</label>
+                <select id="filtroNaturalezaV4" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV4()">
+                    <option value="TODOS">Todos los Colegios</option>
+                    <option value="OFICIAL">Colegios Oficiales (Públicos)</option>
+                    <option value="NO OFICIAL">Colegios No Oficiales (Privados)</option>
+                </select>
+            </div>
+            <div class="sm:col-span-2 md:col-span-1 flex items-end">
+                <div class="w-full p-2 rounded bg-accent/5 border border-accent/20 text-center">
+                    <span class="font-mono text-[10px] text-accent block">ESTUDIANTES EVALUADOS</span>
+                    <span id="labelEstadoV4" class="font-mono text-xs text-foreground font-semibold">Cohorte completa activa</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 Indicadores Pertinentes (KPIs Dinámicos) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Evaluados Analizados</span>
+            <div id="kpiEvaluadosV4" class="text-3xl font-bold text-foreground font-mono my-1">4,541,655</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Total ponderado en subcubo</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Tasa Bilingüe (Nivel B1 / B+)</span>
+            <div id="kpiPctBilingue" class="text-3xl font-bold text-accent font-mono my-1">11.64%</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Marco Común Europeo (MCER)</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Tasa en Riesgo Crítico (&lt; 220)</span>
+            <div id="kpiPctRiesgo" class="text-3xl font-bold text-red-400 font-mono my-1">29.41%</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Puntaje inferior a 220 puntos</span>
+        </div>
+    </div>
+
+    <!-- 2 Visualizaciones Interactivas (Chart.js) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Gráfica 1 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                    Gradiente de Conectividad Diaria vs. Dominio de Inglés
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Puntaje y % Bilingüe B1/B+</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartDedicacionIngles"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfica 2 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Segmentación de Población según Franjas de Desempeño
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Riesgo (&lt;220) vs. Medio vs. Alto (≥300)</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartDonaRiesgo"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matriz de Resultados Multidimensional (Cruce de Dimensiones) -->
+    <div class="card-base p-6 mb-12 animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-border pb-3">
+            <div>
+                <h3 class="text-base font-bold text-foreground">Matriz de Resultados: Intensidad de Internet × Zona × Rendimiento</h3>
+                <p class="text-xs text-muted-foreground font-mono">Desglose de medidas aditivas y cocientes ponderados calculados en SQLite</p>
+            </div>
+            <span class="text-xs font-mono text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">
+                Puntaje Inglés | % Bilingüe | % Riesgo Crítico
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse font-mono" id="tablaMatrizV4">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground">
+                        <th class="py-2.5 px-3 font-semibold">Dedicación Diaria a Internet</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-foreground">Evaluados (N)</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-primary">Promedio Global</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-accent">Puntaje Inglés</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-emerald-400">% B1/B+ (Bilingüe)</th>
+                        <th class="py-2.5 px-3 font-semibold text-right text-red-400">% Riesgo (&lt; 220)</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyMatrizV4" class="divide-y divide-border/60 text-secondary-foreground">
+                    <!-- Rellenado dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2 Conocimientos Multidimensionales Documentados con 8 Elementos -->
+    <section class="mb-12 space-y-6 animate-on-scroll">
+        <p class="section-label">Hallazgos Empíricos · Documentación Rígida de Conocimiento</p>
+
+        <!-- Conocimiento 4.1 -->
+        <details class="card-base group" open>
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CM 4.1</span>
+                    <span class="font-semibold text-foreground text-sm">El Umbral de Productividad Digital: El Salto hacia las Competencias Bilingües</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿A partir de qué nivel de exposición diaria a internet se observa una mejora sustancial en el dominio de un segundo idioma?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_acceso_digital (estu_dedicacioninternet) × fact (suma_ingles, eval_ingles_bilingue, eval_riesgo_bajo)</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Drill-down en las cinco franjas horarias de uso de internet analizando la tasa de estudiantes en rango B1/B+ y la tasa de riesgo.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">No navega: 43.47 pts (2.94% B1, 53.83% riesgo) → 1 a 3 horas: 52.71 pts (14.87% B1, 22.76% riesgo) → Más de 3 horas: 54.00 pts (17.91% B1, 21.17% riesgo).</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Navegar entre 1 y 3 horas diarias multiplica por <strong class="text-foreground">5.05 veces</strong> la probabilidad de certificar nivel bilingüe B1 o superior frente a quienes no usan internet, al tiempo que reduce a menos de la mitad (<strong class="text-foreground">del 53.83% al 22.76%</strong>) la tasa de estudiantes en riesgo académico crítico.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">El acceso intensivo a la red opera como un canal informal de inmersión lingüística y autoaprendizaje: consumo de contenido audiovisual en versión original, plataformas de idiomas y redes de interacción que superan los límites del aula física.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Sustenta la incorporación de licencias de autoaprendizaje de idiomas en línea en la jornada extendida de colegios públicos.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">El indicador no discrimina si el tiempo en internet se destina a fines académicos o recreativos.</p></div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Conocimiento 4.2 -->
+        <details class="card-base group">
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CM 4.2</span>
+                    <span class="font-semibold text-foreground text-sm">La Concentración de Riesgo en la Ruralidad Oficial Desconectada</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿Cuál es el perfil institucional y geográfico que acumula la mayor proporción de estudiantes por debajo del estándar mínimo de 220 puntos?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_geografia (cole_area_ubicacion = RURAL, cole_naturaleza = OFICIAL) × dim_acceso_digital</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Operación Dice aislando sedes oficiales rurales y cruzando por franjas de dedicación a internet.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Oficial Rural sin internet: Promedio Global 220.65 pts, Tasa de riesgo &lt; 220: 58.74% (148,210 eval.). Oficial Urbano con &gt;1h internet: Tasa de riesgo: 18.42%.</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Cerca del <strong class="text-foreground">59% de los estudiantes</strong> de colegios oficiales rurales que no cuentan con internet en casa caen en la zona de riesgo crítico (menos de 220 puntos globales), una concentración <strong class="text-foreground">3.18 veces más alta</strong> que la observada en el sector urbano conectado.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">La combinación de aislamiento geográfico, régimen oficial y desconexión digital configura un estado de emergencia educativa estructural: 6 de cada 10 jóvenes rurales quedan marginados de las posibilidades de acceder a la educación superior pública por bajo puntaje.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Define los criterios técnicos de elegibilidad para los programas de matrícula cero y becas de acceso preferencial para zonas PDET y municipios ZOMAC.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">No se evalúa la deserción escolar previa a grado 11, la cual en el campo suele expulsar a los perfiles de menor rendimiento antes de presentar la prueba.</p></div>
+                </div>
+            </div>
+        </details>
+    </section>
+
+    <!-- Limitación y Decisión Sustentada -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 text-xs">
+        <div class="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <span class="font-mono text-amber-400 font-bold block mb-1 uppercase tracking-wide">⚠ Limitación del Análisis de Intensidad TIC</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                El tiempo de navegación es una variable ordinal agregada en rangos de autorreporte, lo que no permite evaluar rendimientos decrecientes o posibles efectos perjudiciales de hiperconectividad recreativa nocturna.
+            </p>
+        </div>
+        <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+            <span class="font-mono text-emerald-400 font-bold block mb-1 uppercase tracking-wide">🎯 Decisión Estratégica Sustentada</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                Priorizar la instalación de conectividad satelital comunitaria en sedes rurales oficiales con esquemas de horario extendido, asegurando que los estudiantes rurales puedan alcanzar al menos dos horas diarias de interacción con recursos educativos digitales.
+            </p>
+        </div>
+    </div>
+
+    <!-- Navegación entre Vistas -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
+        <a href="{{ url_for('etapa5_pregunta3') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+            Anterior: Vista 3 (Capital Cultural)
+        </a>
+        <a href="{{ url_for('etapa5_index') }}" class="btn-primary text-xs font-mono flex items-center gap-2">
+            <span>Volver a Portada de Análisis Multidimensional</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </a>
+    </div>
+
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+let metricaFocoActual = 'ingles';
+let chartDedicacionInstance = null;
+let chartDonaRiesgoInstance = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarDatosV4();
+});
+
+function cambiarMetricaFoco(metrica) {
+    metricaFocoActual = metrica;
+
+    document.querySelectorAll('.active-metrica-btn').forEach(b => {
+        b.classList.remove('btn-primary', 'active-metrica-btn');
+        b.classList.add('btn-ghost');
+    });
+
+    if (metrica === 'ingles') {
+        document.getElementById('btnMetricaIngles').classList.add('btn-primary', 'active-metrica-btn');
+        document.getElementById('btnMetricaIngles').classList.remove('btn-ghost');
+    } else if (metrica === 'riesgo') {
+        document.getElementById('btnMetricaRiesgo').classList.add('btn-primary', 'active-metrica-btn');
+        document.getElementById('btnMetricaRiesgo').classList.remove('btn-ghost');
+    } else {
+        document.getElementById('btnMetricaGlobal').classList.add('btn-primary', 'active-metrica-btn');
+        document.getElementById('btnMetricaGlobal').classList.remove('btn-ghost');
+    }
+
+    cargarDatosV4();
+}
+
+function aplicarFiltrosV4() {
+    cargarDatosV4();
+}
+
+function cargarDatosV4() {
+    const area = document.getElementById('filtroAreaV4').value;
+    const naturaleza = document.getElementById('filtroNaturalezaV4').value;
+    const labelEstado = document.getElementById('labelEstadoV4');
+    labelEstado.textContent = 'Calculando métricas...';
+
+    const url = `/api/v1/olap/pregunta4?metrica_foco=${encodeURIComponent(metricaFocoActual)}&area=${encodeURIComponent(area)}&naturaleza=${encodeURIComponent(naturaleza)}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') return;
+            labelEstado.textContent = `N: ${Number(data.kpis.total_evaluados).toLocaleString('es-CO')} evaluados`;
+
+            // KPIs
+            document.getElementById('kpiEvaluadosV4').textContent = Number(data.kpis.total_evaluados).toLocaleString('es-CO');
+            document.getElementById('kpiPctBilingue').textContent = `${data.kpis.pct_bilingue}%`;
+            document.getElementById('kpiPctRiesgo').textContent = `${data.kpis.pct_riesgo}%`;
+
+            // Gráficas
+            actualizarGraficaDedicacion(data.grafica_dedicacion);
+            actualizarGraficaDona(data.grafica_dona);
+
+            // Matriz
+            actualizarMatrizV4(data.matriz);
+        })
+        .catch(err => {
+            console.error('Error cargando datos OLAP V4:', err);
+            labelEstado.textContent = 'Error de consulta';
+        });
+}
+
+function actualizarGraficaDedicacion(datos) {
+    const ctx = document.getElementById('chartDedicacionIngles').getContext('2d');
+    if (chartDedicacionInstance) chartDedicacionInstance.destroy();
+
+    chartDedicacionInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datos.labels,
+            datasets: [
+                {
+                    type: 'bar',
+                    label: 'Puntaje Medio Inglés',
+                    data: datos.puntaje_ingles,
+                    backgroundColor: 'rgba(0, 180, 216, 0.7)',
+                    borderColor: '#00b4d8',
+                    borderWidth: 1,
+                    borderRadius: 4,
+                    yAxisID: 'y'
+                },
+                {
+                    type: 'line',
+                    label: '% Bilingüe (Nivel B1/B+)',
+                    data: datos.pct_bilingue,
+                    borderColor: '#10b981',
+                    backgroundColor: '#10b981',
+                    borderWidth: 2,
+                    pointRadius: 4,
+                    tension: 0.2,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 35,
+                    max: 65,
+                    position: 'left',
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                },
+                y1: {
+                    min: 0,
+                    max: 25,
+                    position: 'right',
+                    ticks: { color: '#10b981', font: { family: 'JetBrains Mono', size: 10 }, callback: v => `${v}%` },
+                    grid: { display: false }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 25 },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+}
+
+function actualizarGraficaDona(datos) {
+    const ctx = document.getElementById('chartDonaRiesgo').getContext('2d');
+    if (chartDonaRiesgoInstance) chartDonaRiesgoInstance.destroy();
+
+    chartDonaRiesgoInstance = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Riesgo Crítico (< 220)', 'Rendimiento Medio (220-299)', 'Alto Rendimiento (≥ 300)'],
+            datasets: [{
+                data: [datos.pct_riesgo, datos.pct_medio, datos.pct_alto],
+                backgroundColor: ['#ef4444', '#00b4d8', '#10b981'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 }, padding: 15 }
+                }
+            },
+            cutout: '65%'
+        }
+    });
+}
+
+function actualizarMatrizV4(filas) {
+    const tbody = document.getElementById('tbodyMatrizV4');
+    tbody.innerHTML = '';
+
+    filas.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-muted/10 transition-colors';
+        tr.innerHTML = `
+            <td class="py-2.5 px-3 font-semibold text-foreground">${f.dedicacion}</td>
+            <td class="py-2.5 px-3 text-center text-muted-foreground font-mono">${Number(f.evaluados).toLocaleString('es-CO')}</td>
+            <td class="py-2.5 px-3 text-center text-primary font-bold font-mono">${f.prom_global}</td>
+            <td class="py-2.5 px-3 text-center text-accent font-bold font-mono">${f.prom_ingles}</td>
+            <td class="py-2.5 px-3 text-center text-emerald-400 font-mono">${f.pct_bilingue}%</td>
+            <td class="py-2.5 px-3 text-right font-bold text-red-400 font-mono">${f.pct_riesgo}%</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+</script>
+{% endblock %}
+

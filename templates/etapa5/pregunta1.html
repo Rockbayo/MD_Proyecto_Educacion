@@ -1,0 +1,440 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa5_index') }}" class="hover:text-primary transition-colors">Fase 5</a>
+        <span>/</span>
+        <span class="text-primary">Vista 1: Desagregación Territorial</span>
+    </div>
+
+    <!-- Encabezado de la vista -->
+    <div class="mb-10 animate-on-scroll">
+        <div class="flex items-center gap-2 mb-3">
+            <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2.5 py-1 rounded border border-primary/20">VISTA 01</span>
+            <span class="phase-badge">Operaciones: Drill-Down / Roll-Up</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Desagregación Territorial y Brecha Digital
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl text-sm sm:text-base">
+            <strong class="text-foreground">Pregunta de Análisis:</strong> ¿Cómo varía la penalización por exclusión digital sobre el puntaje global y matemáticas al desagregar desde la escala regional macro hacia departamentos y zonas urbano-rurales?
+        </p>
+    </div>
+
+    <!-- Barra de Metadatos y Operación OLAP -->
+    <div class="card-base p-4 sm:p-5 mb-8 bg-muted/10 border-border animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="space-y-1">
+                <span class="font-mono text-[11px] text-muted-foreground uppercase tracking-wider block">Dimensiones y Jerarquía Activa</span>
+                <p class="text-xs text-secondary-foreground font-mono">
+                    <strong class="text-foreground">Territorio:</strong> Región DANE → Departamento → Zona (Urbano/Rural) | <strong class="text-foreground">TIC:</strong> Perfil Digital
+                </p>
+            </div>
+            
+            <!-- Controles OLAP: Drill-down / Roll-up -->
+            <div class="flex flex-wrap items-center gap-2">
+                <span class="text-xs text-muted-foreground font-mono mr-1">Jerarquía Territorial:</span>
+                <button type="button" id="btnNivelRegion" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-olap-btn" onclick="cambiarNivelTerritorial('region')">
+                    Regiones (Roll-Up)
+                </button>
+                <button type="button" id="btnNivelDepto" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('depto')">
+                    Departamentos (Drill-Down)
+                </button>
+                <button type="button" id="btnNivelZona" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('area')">
+                    Zona Urbano/Rural (Detalle)
+                </button>
+            </div>
+        </div>
+
+        <!-- Filtros interactivos de dos dimensiones distintas -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 pt-4 mt-4 border-t border-border/60">
+            <div>
+                <label for="filtroPeriodo" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Tiempo (Periodo):</label>
+                <select id="filtroPeriodo" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV1()">
+                    <option value="TODOS">Consolidado Multianual (2019-2025)</option>
+                    <option value="20252">2025 - Semestre 2 (Reciente)</option>
+                    <option value="20232">2023 - Semestre 2</option>
+                    <option value="20212">2021 - Semestre 2 (Pandemia)</option>
+                    <option value="20192">2019 - Semestre 2 (Pre-pandemia)</option>
+                </select>
+            </div>
+            <div>
+                <label for="filtroNaturaleza" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Institución (Sector):</label>
+                <select id="filtroNaturaleza" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV1()">
+                    <option value="TODOS">Todos los Colegios (Oficial + No Oficial)</option>
+                    <option value="OFICIAL">Colegios Oficiales (Públicos)</option>
+                    <option value="NO OFICIAL">Colegios No Oficiales (Privados)</option>
+                </select>
+            </div>
+            <div class="sm:col-span-2 md:col-span-1 flex items-end">
+                <div class="w-full p-2 rounded bg-primary/5 border border-primary/20 text-center">
+                    <span class="font-mono text-[10px] text-primary block">CONSULTA SQL EN TIEMPO REAL</span>
+                    <span id="labelEstadoConsulta" class="font-mono text-xs text-foreground font-semibold">Subcubo Activo: 100% registros</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3 Indicadores Pertinentes (KPIs Dinámicos) -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Evaluados Analizados</span>
+            <div id="kpiEvaluados" class="text-3xl font-bold text-foreground font-mono my-1">4,541,655</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Población total con cobertura</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Puntaje Global Ponderado</span>
+            <div id="kpiPromedioGlobal" class="text-3xl font-bold text-primary font-mono my-1">252.42 pts</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Escala oficial [0 - 500]</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Brecha Digital Territorial</span>
+            <div id="kpiBrechaMax" class="text-3xl font-bold text-accent font-mono my-1">42.24 pts</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Diferencial Pleno vs. Exclusión</span>
+        </div>
+    </div>
+
+    <!-- 2 Visualizaciones Interactivas (Chart.js) -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+        <!-- Gráfica 1 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-primary"></span>
+                    Desempeño Promedio por Unidad Territorial
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Puntaje Global vs. Matemáticas</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartTerritorioPuntajes"></canvas>
+            </div>
+        </div>
+
+        <!-- Gráfica 2 -->
+        <div class="card-base p-5 sm:p-6">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                    <span class="w-2 h-2 rounded-full bg-accent"></span>
+                    Distribución de Madurez TIC por Territorio
+                </h3>
+                <span class="text-[10px] font-mono text-muted-foreground">Porcentaje Ponderado (%)</span>
+            </div>
+            <div class="h-72 w-full relative">
+                <canvas id="chartPerfilesTic"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <!-- Matriz de Resultados Multidimensional (Cruce de Dimensiones) -->
+    <div class="card-base p-6 mb-12 animate-on-scroll">
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-4 border-b border-border pb-3">
+            <div>
+                <h3 class="text-base font-bold text-foreground">Matriz de Resultados: Cruce Territorio × Perfil Digital</h3>
+                <p class="text-xs text-muted-foreground font-mono">Valores agregados mediante recálculo ponderado en SQLite</p>
+            </div>
+            <span class="text-xs font-mono text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">
+                Puntaje Global Medio / [N Evaluados]
+            </span>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs border-collapse font-mono" id="tablaMatrizResultados">
+                <thead>
+                    <tr class="bg-muted/20 border-b border-border text-muted-foreground">
+                        <th class="py-2.5 px-3 font-semibold">Unidad Territorial</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-primary">Acceso Pleno (Internet+PC)</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-accent">Móvil (Solo Internet)</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-amber-400">Offline (Solo PC)</th>
+                        <th class="py-2.5 px-3 font-semibold text-center text-red-400">Exclusión Absoluta</th>
+                        <th class="py-2.5 px-3 font-semibold text-right text-foreground">Brecha Neta</th>
+                    </tr>
+                </thead>
+                <tbody id="tbodyMatriz" class="divide-y divide-border/60 text-secondary-foreground">
+                    <!-- Rellenado dinámicamente -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- 2 Conocimientos Multidimensionales Documentados con 8 Elementos -->
+    <section class="mb-12 space-y-6 animate-on-scroll">
+        <p class="section-label">Hallazgos Empíricos · Documentación Rígida de Conocimiento</p>
+
+        <!-- Conocimiento 1.1 -->
+        <details class="card-base group" open>
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded border border-primary/20">CM 1.1</span>
+                    <span class="font-semibold text-foreground text-sm">Gradiente Regional y Concentración de Brecha en la Periferia</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿En qué regiones naturales de Colombia el aislamiento tecnológico genera el castigo psicométrico más severo?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_geografia (region_dane) × dim_acceso_digital (perfil_acceso_tic) | Medida: Promedio_Global, num_evaluados</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Roll-up a nivel de las 8 macro-regiones DANE y cálculo de la diferencia neta de puntaje entre el estrato digital alto y bajo.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Región Caribe: Acceso Pleno (258.4 pts) vs Exclusión (218.1 pts) = Brecha de 40.3 pts. Región Bogotá: Pleno (279.1 pts) vs Exclusión (238.4 pts) = 40.7 pts.</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Mientras en Bogotá y Centro Oriente más del <strong class="text-foreground">58%</strong> de la cohorte posee Acceso Pleno, en la Región Caribe dicho grupo solo representa el <strong class="text-foreground">31.4%</strong>, concentrando 412,000 evaluados en exclusión con un promedio que no supera los <strong class="text-foreground">220 puntos</strong>.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">La brecha digital no es un fenómeno homogéneo: en las regiones periféricas la falta de conectividad coexiste con desventajas en infraestructura escolar básica, consolidando trampas territoriales de bajo rendimiento.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Justifica territorializar los subsidios de conectividad focalizando transferencias condicionadas hacia Magdalena, Guajira, Chocó y Córdoba.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">La clasificación regional no discrimina el nivel socioeconómico de la familia, el cual actúa como covariable de confusión.</p></div>
+                </div>
+            </div>
+        </details>
+
+        <!-- Conocimiento 1.2 -->
+        <details class="card-base group">
+            <summary class="flex items-center justify-between p-5 cursor-pointer list-none">
+                <div class="flex items-center gap-3">
+                    <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-1 rounded border border-accent/20">CM 1.2</span>
+                    <span class="font-semibold text-foreground text-sm">Disrupción del Patrón Rural en Cundinamarca y Boyacá (Drill-Down Departamental)</span>
+                </div>
+                <svg class="w-4 h-4 text-muted-foreground group-open:rotate-180 transition-transform flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </summary>
+            <div class="px-5 pb-5 grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs border-t border-border mt-0 pt-4">
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿Se mantiene la desventaja rural cuando los estudiantes acceden a hardware e internet en el centro del país?</p></div>
+                    <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_geografia (cole_depto_ubicacion, cole_area_ubicacion) × dim_acceso_digital | Medida: Promedio_Global</p></div>
+                    <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Drill-down a Cundinamarca cruzando área urbana frente a rural bajo la condición de tenencia de computador e internet.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Cundinamarca Rural con Acceso Pleno: 288.45 pts (32,825 eval.) vs Cundinamarca Urbano con Acceso Pleno: 268.67 pts (124,067 eval.).</p></div>
+                </div>
+                <div class="space-y-2.5">
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Los estudiantes de sedes clasificadas como rurales en Cundinamarca con conectividad plena obtienen <strong class="text-foreground">19.78 puntos por encima</strong> de los estudiantes urbanos con idéntico equipamiento tecnológico.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">El Drill-down revela un sesgo de clasificación institucional: en las áreas rurales circundantes a Bogotá operan colegios privados campestres bilingües de élite, demostrando que la etiqueta "Rural" no es sinónimo absoluto de precariedad cuando media la infraestructura digital.</p></div>
+                    <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Alerta a los investigadores educativos sobre la necesidad de desagregar colegios públicos rurales de concesiones campestres privadas para no inflar artificialmente los diagnósticos del campo.</p></div>
+                    <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">Este fenómeno se restringe a departamentos con conurbación metropolitana; en Chocó, Guaviare o Vaupés no se reproduce.</p></div>
+                </div>
+            </div>
+        </details>
+    </section>
+
+    <!-- Limitación y Decisión Sustentada -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10 text-xs">
+        <div class="p-4 rounded-lg bg-amber-500/10 border border-amber-500/20">
+            <span class="font-mono text-amber-400 font-bold block mb-1 uppercase tracking-wide">⚠ Limitación Metodológica del Análisis</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                El Drill-down territorial no permite atribuir causalidad exclusiva a la tecnología: los municipios con mayor promedio presentan simultáneamente mejor cualificación del cuerpo docente, menor hacinamiento en aulas y mayores índices de gasto público por alumno.
+            </p>
+        </div>
+        <div class="p-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+            <span class="font-mono text-emerald-400 font-bold block mb-1 uppercase tracking-wide">🎯 Decisión Estratégica Sustentada</span>
+            <p class="text-secondary-foreground leading-relaxed">
+                Priorizar la inversión del Fondo Único de Tecnologías de la Información y las Comunicaciones (FUNTIC) en las 8 macro-regiones según su índice de brecha neta, garantizando que ninguna sede pública oficial rural quede clasificada en el perfil de "Exclusión Absoluta".
+            </p>
+        </div>
+    </div>
+
+    <!-- Navegación entre Vistas -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
+        <a href="{{ url_for('etapa5_index') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Volver a Portada OLAP
+        </a>
+        <a href="{{ url_for('etapa5_pregunta2') }}" class="btn-primary text-xs font-mono flex items-center gap-2">
+            <span>Siguiente: Vista 2 (Dinámica Temporal)</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+let nivelActual = 'region';
+let chartPuntajesInstance = null;
+let chartPerfilesInstance = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    cargarDatosV1();
+});
+
+function cambiarNivelTerritorial(nivel) {
+    nivelActual = nivel;
+    
+    // Actualizar estilos botones
+    document.querySelectorAll('.active-olap-btn').forEach(b => {
+        b.classList.remove('btn-primary', 'active-olap-btn');
+        b.classList.add('btn-ghost');
+    });
+    
+    if (nivel === 'region') {
+        const b = document.getElementById('btnNivelRegion');
+        b.classList.add('btn-primary', 'active-olap-btn');
+        b.classList.remove('btn-ghost');
+    } else if (nivel === 'depto') {
+        const b = document.getElementById('btnNivelDepto');
+        b.classList.add('btn-primary', 'active-olap-btn');
+        b.classList.remove('btn-ghost');
+    } else {
+        const b = document.getElementById('btnNivelZona');
+        b.classList.add('btn-primary', 'active-olap-btn');
+        b.classList.remove('btn-ghost');
+    }
+
+    cargarDatosV1();
+}
+
+function aplicarFiltrosV1() {
+    cargarDatosV1();
+}
+
+function cargarDatosV1() {
+    const periodo = document.getElementById('filtroPeriodo').value;
+    const naturaleza = document.getElementById('filtroNaturaleza').value;
+    const labelEstado = document.getElementById('labelEstadoConsulta');
+    labelEstado.textContent = 'Consultando OLAP...';
+
+    const url = `/api/v1/olap/pregunta1?nivel=${encodeURIComponent(nivelActual)}&periodo=${encodeURIComponent(periodo)}&naturaleza=${encodeURIComponent(naturaleza)}`;
+
+    fetch(url)
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') return;
+            labelEstado.textContent = `Nivel: ${data.nivel_nombre} | Filas: ${data.filas_total}`;
+
+            // Actualizar KPIs
+            document.getElementById('kpiEvaluados').textContent = Number(data.kpis.total_evaluados).toLocaleString('es-CO');
+            document.getElementById('kpiPromedioGlobal').textContent = `${data.kpis.promedio_global} pts`;
+            document.getElementById('kpiBrechaMax').textContent = `${data.kpis.brecha_digital} pts`;
+
+            // Actualizar Gráficas
+            actualizarGraficaPuntajes(data.grafica_puntajes);
+            actualizarGraficaPerfiles(data.grafica_perfiles);
+
+            // Actualizar Matriz
+            actualizarMatriz(data.matriz);
+        })
+        .catch(err => {
+            console.error('Error cargando datos OLAP:', err);
+            labelEstado.textContent = 'Error en consulta';
+        });
+}
+
+function actualizarGraficaPuntajes(datos) {
+    const ctx = document.getElementById('chartTerritorioPuntajes').getContext('2d');
+    if (chartPuntajesInstance) chartPuntajesInstance.destroy();
+
+    chartPuntajesInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datos.labels,
+            datasets: [
+                {
+                    label: 'Puntaje Global',
+                    data: datos.global,
+                    backgroundColor: 'rgba(0, 180, 216, 0.7)',
+                    borderColor: '#00b4d8',
+                    borderWidth: 1,
+                    borderRadius: 4
+                },
+                {
+                    label: 'Matemáticas',
+                    data: datos.matematicas,
+                    backgroundColor: 'rgba(114, 9, 183, 0.7)',
+                    borderColor: '#7209b7',
+                    borderWidth: 1,
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    min: 200,
+                    max: 300,
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } },
+                    grid: { color: 'rgba(255, 255, 255, 0.05)' }
+                },
+                x: {
+                    ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 45, minRotation: 20 },
+                    grid: { display: false }
+                }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+}
+
+function actualizarGraficaPerfiles(datos) {
+    const ctx = document.getElementById('chartPerfilesTic').getContext('2d');
+    if (chartPerfilesInstance) chartPerfilesInstance.destroy();
+
+    chartPerfilesInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: datos.labels,
+            datasets: [
+                {
+                    label: 'Acceso Pleno',
+                    data: datos.pct_pleno,
+                    backgroundColor: '#10b981',
+                    borderRadius: 3
+                },
+                {
+                    label: 'Móvil (Solo Internet)',
+                    data: datos.pct_movil,
+                    backgroundColor: '#00b4d8',
+                    borderRadius: 3
+                },
+                {
+                    label: 'Offline (Solo PC)',
+                    data: datos.pct_offline,
+                    backgroundColor: '#f59e0b',
+                    borderRadius: 3
+                },
+                {
+                    label: 'Exclusión Absoluta',
+                    data: datos.pct_exclusion,
+                    backgroundColor: '#ef4444',
+                    borderRadius: 3
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: { stacked: true, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 45, minRotation: 20 }, grid: { display: false } },
+                y: { stacked: true, max: 100, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+}
+
+function actualizarMatriz(filas) {
+    const tbody = document.getElementById('tbodyMatriz');
+    tbody.innerHTML = '';
+
+    filas.forEach(f => {
+        const tr = document.createElement('tr');
+        tr.className = 'hover:bg-muted/10 transition-colors';
+        tr.innerHTML = `
+            <td class="py-2.5 px-3 font-semibold text-foreground">${f.territorio}</td>
+            <td class="py-2.5 px-3 text-center text-primary">${f.pleno_puntaje} <span class="text-[10px] text-muted-foreground">(${f.pleno_eval})</span></td>
+            <td class="py-2.5 px-3 text-center text-accent">${f.movil_puntaje} <span class="text-[10px] text-muted-foreground">(${f.movil_eval})</span></td>
+            <td class="py-2.5 px-3 text-center text-amber-400">${f.offline_puntaje} <span class="text-[10px] text-muted-foreground">(${f.offline_eval})</span></td>
+            <td class="py-2.5 px-3 text-center text-red-400">${f.exclusion_puntaje} <span class="text-[10px] text-muted-foreground">(${f.exclusion_eval})</span></td>
+            <td class="py-2.5 px-3 text-right font-bold text-foreground">${f.brecha} pts</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+</script>
+{% endblock %}
+

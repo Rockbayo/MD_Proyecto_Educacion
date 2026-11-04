@@ -1,0 +1,293 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <a href="{{ url_for('etapa4_index') }}" class="hover:text-primary transition-colors">Etapa 4</a>
+        <span>/</span>
+        <span class="text-primary">Preguntas de Análisis</span>
+    </div>
+
+    <!-- Encabezado -->
+    <div class="mb-10">
+        <span class="phase-badge block mb-3 w-fit">Fase 04 · Formulación Analítica</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Preguntas de Análisis
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-3xl">
+            Cuatro preguntas orientadoras formuladas a partir del propósito del proyecto, cada una desarrollada en una página
+            independiente del informe en Power BI con sus respectivos indicadores DAX, visualizaciones y filtros interactivos.
+        </p>
+    </div>
+
+    <!-- ========== PREGUNTA 1 ========== -->
+    <div id="p1" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-primary font-bold">P1</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Composición y Distribución de la Población</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Qué proporción de estudiantes evaluados cuenta con acceso a internet en sus hogares y cómo interactúa la brecha digital con el estrato socioeconómico y la tenencia de computador?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Permite caracterizar la disponibilidad de recursos tecnológicos esenciales en la población estudiantil evaluada (4 millones de registros) e identificar si la brecha digital se concentra en los estratos socioeconómicos más vulnerables (1 y 2).
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">fami_tieneinternet</span>
+                        <span class="data-tag">fami_estratovivienda</span>
+                        <span class="data-tag">Eval_Con_Internet</span>
+                        <span class="data-tag">Eval_Con_PC</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                        <span class="data-tag">periodo</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-muted-foreground font-semibold mb-1">SEGMENTADORES (2)</p>
+                    <p class="text-xs text-secondary-foreground font-mono">periodo · cole_naturaleza</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5 font-mono">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>Total_Evaluados:</strong> 4 mill. (Volumen total evaluado)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>%_Con_Internet:</strong> 67% (Tasa global de conectividad)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>%_Con_PC:</strong> 53% (Tasa de tenencia de computador)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Gráfico de Anillos:</strong> Total_Evaluados por fami_tieneinternet (67% SI, 26% NO, 7% NO_INFORMA).</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Columnas Apiladas:</strong> Total_Evaluados por fami_estratovivienda y fami_tieneinternet.</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Barras Agrupadas:</strong> Eval_Con_Internet vs Eval_Con_PC por fami_estratovivienda.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono pt-3 border-t border-border">
+            <span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary">Tablero 1 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes documentados</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 2 ========== -->
+    <div id="p2" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-accent font-bold">P2</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Comparación Territorial</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Existe una diferencia empírica en el desempeño global entre colegios urbanos y rurales, y qué relación guarda la cobertura de conectividad municipal con dichos promedios?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Examina las asimetrías territoriales en el desempeño académico colombiano, contrastando la brecha entre sedes urbanas y rurales con la penetración tecnológica de cada municipio.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">cole_area_ubicacion</span>
+                        <span class="data-tag">cole_depto_ubicacion</span>
+                        <span class="data-tag">cole_mcpio_ubicacion</span>
+                        <span class="data-tag">fami_tieneinternet</span>
+                        <span class="data-tag">Promedio_Global</span>
+                        <span class="data-tag">%_Con_Internet</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-muted-foreground font-semibold mb-1">SEGMENTADORES (2)</p>
+                    <p class="text-xs text-secondary-foreground font-mono">cole_depto_ubicacion · fami_tieneinternet</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5 font-mono">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Promedio_Urbano:</strong> 256 puntos (Puntaje medio cabeceras)</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Promedio_Rural:</strong> 231 puntos (Puntaje medio sedes rurales)</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Brecha_Urbano_Rural:</strong> 24.02 puntos (Diferencial directo)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Columnas Agrupadas:</strong> Promedio_Global por cole_area_ubicacion (Urbano 256 vs Rural 231).</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Barras Apiladas al 100%:</strong> Distribución de tenencia de internet según zona geográfica.</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Gráfico de Dispersión:</strong> %_Con_Internet vs Promedio_Global por cole_mcpio_ubicacion.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono pt-3 border-t border-border">
+            <span class="px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent">Tablero 2 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes documentados</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 3 ========== -->
+    <div id="p3" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-primary font-bold">P3</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Comportamiento Temporal</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿Cómo varió el rendimiento académico general y la tenencia de herramientas tecnológicas en los hogares antes, durante y después del confinamiento por pandemia (2019–2025)?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Permite cuantificar el impacto histórico de la emergencia sanitaria en los aprendizajes escolares y rastrear la evolución de la infraestructura doméstica de hardware y conectividad.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">periodo</span>
+                        <span class="data-tag">Promedio_Global</span>
+                        <span class="data-tag">Eval_Con_PC</span>
+                        <span class="data-tag">Total_Evaluados</span>
+                        <span class="data-tag">%_Con_Internet</span>
+                        <span class="data-tag">cole_area_ubicacion</span>
+                        <span class="data-tag">fami_estratovivienda</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-muted-foreground font-semibold mb-1">SEGMENTADORES (2)</p>
+                    <p class="text-xs text-secondary-foreground font-mono">cole_area_ubicacion · fami_estratovivienda</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5 font-mono">
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>Promedio_Global:</strong> 251.52 puntos (Media multianual consolidada)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>%_Con_PC:</strong> 53% (Porcentaje global con computador)</li>
+                        <li class="flex items-start gap-2"><span class="text-primary mt-0.5">▸</span> <strong>Maximo_Puntaje:</strong> 500 puntos (Escala superior de referencia)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Gráfico de Líneas Histórico:</strong> Promedio_Global por periodo (2019-1 a 2025-2).</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Gráfico de Áreas Apiladas:</strong> Eval_Con_PC por periodo a lo largo del tiempo.</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Gráfico Combinado Líneas y Columnas:</strong> Total_Evaluados vs %_Con_Internet por periodo.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono pt-3 border-t border-border">
+            <span class="px-2 py-1 rounded bg-primary/10 border border-primary/20 text-primary">Tablero 3 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes documentados</span>
+        </div>
+    </div>
+
+    <!-- ========== PREGUNTA 4 ========== -->
+    <div id="p4" class="card-base p-6 sm:p-8 mb-6 animate-on-scroll scroll-mt-20">
+        <div class="flex items-start gap-4 mb-5">
+            <div class="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                <span class="font-mono text-sm text-accent font-bold">P4</span>
+            </div>
+            <div>
+                <span class="data-tag mb-2 block w-fit">Análisis Multivariado</span>
+                <h2 class="text-xl font-bold text-foreground leading-tight">
+                    ¿De qué manera interactúan el nivel formativo de los padres, la tenencia de computador en el hogar y la naturaleza institucional del colegio sobre el rendimiento y los casos de alto puntaje?
+                </h2>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-5">
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">JUSTIFICACIÓN</p>
+                    <p class="text-sm text-secondary-foreground leading-relaxed">
+                        Cruza simultáneamente cuatro variables socioeducativas (educación del padre, computador, naturaleza institucional y área geográfica) para evaluar la compensación cultural familiar y la brecha tecnológica por sector.
+                    </p>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VARIABLES UTILIZADAS</p>
+                    <div class="flex flex-wrap gap-1.5">
+                        <span class="data-tag">fami_educacionpadre</span>
+                        <span class="data-tag">fami_tienecomputador</span>
+                        <span class="data-tag">cole_naturaleza</span>
+                        <span class="data-tag">cole_area_ubicacion</span>
+                        <span class="data-tag">Promedio_Global</span>
+                        <span class="data-tag">Eval_Alto_Rendimiento</span>
+                    </div>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-muted-foreground font-semibold mb-1">SEGMENTADORES (2)</p>
+                    <p class="text-xs text-secondary-foreground font-mono">periodo (cohorte 20202) · cole_area_ubicacion</p>
+                </div>
+            </div>
+            <div class="space-y-3">
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-primary font-semibold mb-1">INDICADORES DAX (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5 font-mono">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Eval_Alto_Rendimiento:</strong> 78 mil (Estudiantes en percentil superior)</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>%_Alto_Rendimiento:</strong> 15% (Proporción en excelencia)</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Promedio_Global:</strong> 248.11 puntos (Media cohorte analizada)</li>
+                    </ul>
+                </div>
+                <div class="p-3 rounded-lg bg-muted/30 border border-border">
+                    <p class="font-mono text-xs text-accent font-semibold mb-1">VISUALIZACIONES (3)</p>
+                    <ul class="text-xs text-secondary-foreground space-y-1.5">
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Matriz Cruzada / Mapa de Calor:</strong> Promedio_Global según fami_educacionpadre × fami_tienecomputador.</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Columnas Apiladas:</strong> Promedio_Global por fami_tienecomputador y cole_naturaleza (Privado 279 vs 234; Oficial 253 vs 230).</li>
+                        <li class="flex items-start gap-2"><span class="text-accent mt-0.5">▸</span> <strong>Árbol de Descomposición / Treemap:</strong> Descomposición jerárquica de perfiles extremos (Máximo 307 vs Mínimo 216).</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs font-mono pt-3 border-t border-border">
+            <span class="px-2 py-1 rounded bg-accent/10 border border-accent/20 text-accent">Tablero 4 · Power BI</span>
+            <span class="px-2 py-1 rounded bg-muted/50 border border-border text-muted-foreground">3 conocimientos evidentes documentados</span>
+        </div>
+    </div>
+
+    <!-- Enlaces de navegación secuencial guiada -->
+    <div class="flex flex-wrap items-center justify-between gap-4 pt-6 border-t border-border">
+        <a href="{{ url_for('etapa4_index') }}" class="btn-ghost text-xs font-mono flex items-center gap-1.5">
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            Volver a Etapa 4
+        </a>
+        <a href="{{ url_for('conocimientos') }}" class="btn-primary text-xs font-mono flex items-center gap-2">
+            <span>Siguiente: Ver 12 Conocimientos Evidentes</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+        </a>
+    </div>
+
+</div>
+{% endblock %}
