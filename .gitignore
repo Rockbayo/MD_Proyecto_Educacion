@@ -21,3 +21,7 @@ data/processed/*
 .vscode/
 .idea/
 .DS_Store
+# Ignorar pautas y archivos pesados
+Semana 13.txt
+*.rar
+*.pbix
