@@ -1,0 +1,422 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 5 · Análisis Multidimensional</span>
+    </div>
+
+    <!-- Encabezado de la etapa -->
+    <div class="relative mb-14 animate-on-scroll">
+        <span class="phase-badge block mb-3 w-fit">Fase 05 · Minería y Procesamiento OLAP</span>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-4">
+            Análisis Multidimensional:<br class="hidden sm:block"> Modelo Estrella y Operaciones OLAP
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl mb-6">
+            Estructuración e implementación de un almacén analítico multidimensional sobre el conjunto curado de Saber 11 ICFES (2019–2025)
+            con <strong>4,541,655 registros evaluados</strong>. Esta fase profundiza en los patrones identificados en la Etapa 4 mediante el cruce sistemático
+            de dimensiones temporales, institucionales, territoriales y socioeconómicas utilizando operaciones de <em>Drill-down</em>, <em>Roll-up</em>,
+            <em>Slice</em>, <em>Dice</em> y <em>Pivot</em> consultables en tiempo real sobre el motor relacional.
+        </p>
+        <div class="flex flex-wrap gap-3">
+            <a href="{{ url_for('etapa5_pregunta1') }}" class="btn-primary text-sm flex items-center gap-2">
+                <span>Comenzar Exploración: Vista 1 (Territorio y TIC)</span>
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </a>
+            <a href="#modelo-estrella" class="btn-ghost text-sm flex items-center gap-2">
+                <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                Ver Arquitectura del Modelo
+            </a>
+        </div>
+    </div>
+
+    <!-- 1. Continuidad y Profundización frente a la Etapa 4 -->
+    <section class="mb-14 animate-on-scroll">
+        <p class="section-label mb-3">01 · Continuidad y Aporte de Conocimiento</p>
+        <div class="card-base p-6 sm:p-8 space-y-4">
+            <h2 class="text-xl font-bold text-foreground flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">1.1</span> De los Conocimientos Evidentes a la Inferencia Multidimensional
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed">
+                En la Etapa 4 se formularon doce conocimientos evidentes a partir de tableros descriptivos en Power BI (identificando una brecha nacional urbano-rural de 24 puntos, un piso de 246 puntos en pandemia y la persistencia de una brecha de hardware en estratos 1 y 2). Sin embargo, tales observaciones agregadas presentaban limitaciones metodológicas documentadas: ocultaban la varianza interna departamental, promediaban cohortes con calendarios académicos heterogéneos y analizaban variables en cortes estáticos sin desglose jerárquico.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+                <div class="p-4 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-xs text-primary font-semibold block mb-1">UNIDAD DE ANÁLISIS</span>
+                    <p class="text-xs text-secondary-foreground leading-relaxed">
+                        Corresponde a la <strong>presentación individual o examen de un estudiante</strong> en una convocatoria formal de Saber 11 en Colombia. Integra las calificaciones psicométricas obtenidas, el autorreporte de infraestructura tecnológica en el hogar y las características de la sede educativa.
+                    </p>
+                </div>
+                <div class="p-4 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-xs text-accent font-semibold block mb-1">GRANULARIDAD DE LA TABLA DE HECHOS</span>
+                    <p class="text-xs text-secondary-foreground leading-relaxed">
+                        Cada registro en <code>fact_resultados_saber11</code> representa la intersección atómica entre una convocatoria temporal (periodo semestral), una caracterización geográfica institucional, un perfil de acceso tecnológico y un entorno socioeconómico familiar, almacenando medidas aditivas base para cálculo ponderado exacto.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Diagrama y Estructura del Modelo Estrella -->
+    <section id="modelo-estrella" class="mb-14 animate-on-scroll">
+        <p class="section-label mb-3">02 · Diseño del Modelo Estrella</p>
+        <div class="card-base p-6 sm:p-8">
+            <h2 class="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+                <span class="text-primary font-mono text-sm">2.1</span> Esquema Relacional de Hechos y Dimensiones
+            </h2>
+            <p class="text-sm text-secondary-foreground leading-relaxed mb-6">
+                El modelo implementa una arquitectura estrella pura con cuatro dimensiones conformadas y una tabla de hechos central optimizada en SQLite (<code>edumetrics_olap.db</code>), garantizando integridad referencial y tiempos de respuesta sub-segundo en agregaciones masivas.
+            </p>
+
+            <!-- Diagrama Visual Modelo Estrella -->
+            <div class="p-6 rounded-xl bg-muted/10 border border-border mb-8 overflow-x-auto">
+                <div class="min-w-[700px] grid grid-cols-3 gap-6 items-center">
+                    
+                    <!-- Dimensión Tiempo -->
+                    <div class="p-4 rounded-lg bg-card border border-primary/30 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-xs text-primary font-bold">dim_tiempo</span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-primary/10 text-primary">PK: id_tiempo</span>
+                        </div>
+                        <ul class="text-xs text-muted-foreground space-y-1 font-mono">
+                            <li>• periodo (20191 - 20252)</li>
+                            <li>• anio (2019 - 2025)</li>
+                            <li>• semestre_num (1 o 2)</li>
+                            <li>• semestre_etiqueta (Cal. A / B)</li>
+                            <li>• etapa_pandemia</li>
+                        </ul>
+                    </div>
+
+                    <!-- Dimensión Geografía / Colegio -->
+                    <div class="p-4 rounded-lg bg-card border border-accent/30 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-xs text-accent font-bold">dim_geografia</span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-accent/10 text-accent">PK: id_geografia</span>
+                        </div>
+                        <ul class="text-xs text-muted-foreground space-y-1 font-mono">
+                            <li>• region_dane (8 Regiones)</li>
+                            <li>• cole_depto_ubicacion (33 Dptos)</li>
+                            <li>• cole_area_ubicacion (Urbano/Rural)</li>
+                            <li>• cole_naturaleza (Oficial/Privado)</li>
+                            <li>• cole_calendario (A, B, OTRO)</li>
+                        </ul>
+                    </div>
+
+                    <!-- Dimensión Acceso Digital -->
+                    <div class="p-4 rounded-lg bg-card border border-emerald-500/30 shadow-sm">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-xs text-emerald-400 font-bold">dim_acceso_digital</span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-500/10 text-emerald-400">PK: id_digital</span>
+                        </div>
+                        <ul class="text-xs text-muted-foreground space-y-1 font-mono">
+                            <li>• perfil_acceso_tic (4 niveles)</li>
+                            <li>• fami_tieneinternet (SI/NO)</li>
+                            <li>• fami_tienecomputador (SI/NO)</li>
+                            <li>• estu_dedicacioninternet</li>
+                        </ul>
+                    </div>
+
+                    <!-- Columna Izquierda Espaciador -->
+                    <div class="text-center">
+                        <div class="h-6 w-0.5 bg-border mx-auto"></div>
+                        <span class="font-mono text-[10px] text-muted-foreground">1 : N</span>
+                        <div class="h-6 w-0.5 bg-border mx-auto"></div>
+                    </div>
+
+                    <!-- TABLA DE HECHOS CENTRAL -->
+                    <div class="p-5 rounded-xl bg-primary/10 border-2 border-primary shadow-lg text-center">
+                        <div class="mb-2">
+                            <span class="font-mono text-sm text-foreground font-bold block">fact_resultados_saber11</span>
+                            <span class="text-[10px] font-mono text-primary">Granularidad: Celda Multidimensional Atómica</span>
+                        </div>
+                        <div class="grid grid-cols-2 gap-2 text-left text-xs font-mono pt-2 border-t border-primary/20">
+                            <div>
+                                <span class="text-[10px] text-primary font-bold block mb-1">Claves Foráneas (FK)</span>
+                                <ul class="text-secondary-foreground space-y-0.5">
+                                    <li>FK_tiempo</li>
+                                    <li>FK_geografia</li>
+                                    <li>FK_digital</li>
+                                    <li>FK_socioeconomico</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <span class="text-[10px] text-accent font-bold block mb-1">Medidas Base</span>
+                                <ul class="text-secondary-foreground space-y-0.5">
+                                    <li>num_evaluados</li>
+                                    <li>suma_punt_global</li>
+                                    <li>suma_matematicas</li>
+                                    <li>suma_lectura_critica</li>
+                                    <li>suma_ingles</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha Espaciador -->
+                    <div class="text-center">
+                        <div class="h-6 w-0.5 bg-border mx-auto"></div>
+                        <span class="font-mono text-[10px] text-muted-foreground">1 : N</span>
+                        <div class="h-6 w-0.5 bg-border mx-auto"></div>
+                    </div>
+
+                    <!-- Dimensión Socioeconómica (Abajo) -->
+                    <div class="col-start-2 p-4 rounded-lg bg-card border border-amber-500/30 shadow-sm mt-2">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="font-mono text-xs text-amber-400 font-bold">dim_socioeconomica</span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-400">PK: id_socioeconomico</span>
+                        </div>
+                        <ul class="text-xs text-muted-foreground space-y-1 font-mono">
+                            <li>• grupo_estrato (Bajo, Medio, Alto)</li>
+                            <li>• fami_estratovivienda (Estrato 1 a 6)</li>
+                            <li>• grupo_educacion_padre (4 niveles)</li>
+                            <li>• fami_educacionpadre</li>
+                            <li>• estu_genero (M / F)</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Jerarquías y Reglas de Aditividad -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <h3 class="font-bold text-foreground text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-primary"></span>
+                        Jerarquías de Análisis Válidas
+                    </h3>
+                    <div class="space-y-3 text-xs text-secondary-foreground">
+                        <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                            <strong class="text-foreground block mb-1">Jerarquía Territorial (4 Niveles):</strong>
+                            <code>Nación → Región DANE (8) → Departamento (33) → Área (Urbano / Rural)</code>
+                            <p class="text-muted-foreground mt-1">Permite el Roll-up regional y el Drill-down hacia la brecha rural específica.</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                            <strong class="text-foreground block mb-1">Jerarquía Temporal (3 Niveles):</strong>
+                            <code>Histórico Consolidado → Etapa de Pandemia (3) → Año (7) → Periodo Semestral (14)</code>
+                            <p class="text-muted-foreground mt-1">Diferencia convocatorias regulares Calendario A de muestras semestrales Calendario B.</p>
+                        </div>
+                        <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                            <strong class="text-foreground block mb-1">Jerarquía de Madurez Digital (3 Niveles):</strong>
+                            <code>Perfil TIC Sintético → Tenencia Cruzada (Internet × PC) → Dedicación Diaria de Uso</code>
+                            <p class="text-muted-foreground mt-1">Identifica el salto cualitativo entre conexión móvil y herramientas de cómputo dedicadas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h3 class="font-bold text-foreground text-sm mb-3 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-accent"></span>
+                        Reglas de Agregación y Aditividad de Medidas
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs border-collapse">
+                            <thead>
+                                <tr class="border-b border-border text-muted-foreground font-mono">
+                                    <th class="py-2 pr-2">Medida</th>
+                                    <th class="py-2 pr-2">Tipo</th>
+                                    <th class="py-2">Fórmula de Recálculo</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border/60 text-secondary-foreground font-mono">
+                                <tr>
+                                    <td class="py-2 pr-2 text-foreground font-semibold">Total Evaluados</td>
+                                    <td class="py-2 pr-2 text-green-400">Totalmente Aditiva</td>
+                                    <td class="py-2">SUM(num_evaluados)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 pr-2 text-foreground font-semibold">Promedio Global</td>
+                                    <td class="py-2 pr-2 text-amber-400">Semi-Aditiva</td>
+                                    <td class="py-2">SUM(suma_punt_global) / SUM(num_evaluados)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 pr-2 text-foreground font-semibold">Promedio por Área</td>
+                                    <td class="py-2 pr-2 text-amber-400">Semi-Aditiva</td>
+                                    <td class="py-2">SUM(suma_materia) / SUM(num_evaluados)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 pr-2 text-foreground font-semibold">Tasa de Brecha TIC</td>
+                                    <td class="py-2 pr-2 text-amber-400">Proporción</td>
+                                    <td class="py-2">100.0 * SUM(eval_con_recurso) / SUM(evaluados)</td>
+                                </tr>
+                                <tr>
+                                    <td class="py-2 pr-2 text-foreground font-semibold">Riesgo Crítico (&lt;220)</td>
+                                    <td class="py-2 pr-2 text-amber-400">Proporción</td>
+                                    <td class="py-2">100.0 * SUM(eval_riesgo_bajo) / SUM(evaluados)</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="mt-3 p-3 rounded-lg bg-primary/5 border border-primary/20 text-xs text-secondary-foreground">
+                        <strong class="text-primary block mb-0.5">Garantía Matemática de Idempotencia:</strong>
+                        Al cambiar de nivel jerárquico o aplicar filtros, el sistema nunca promedia promedios preexistentes; recalcula dinámicamente el cociente entre las sumas base y el denominador exacto del subconjunto.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Comprobaciones de Integridad Técnica frente al Origen -->
+    <section class="mb-14 animate-on-scroll">
+        <p class="section-label mb-3">03 · Auditoría y Validación de Carga</p>
+        <div class="card-base p-6 sm:p-8">
+            <div class="flex flex-wrap items-center justify-between gap-4 mb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-foreground">Tres Comprobaciones de Cuadre frente al Dataset Tratado</h2>
+                    <p class="text-xs text-muted-foreground font-mono">Fuente original: saber11_integrado.csv | Destino: edumetrics_olap.db</p>
+                </div>
+                <span class="px-2.5 py-1 rounded-full text-xs font-mono bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                    ✓ 100% Cuadre Sin Pérdida
+                </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                <!-- Comprobación 1 -->
+                <div class="p-4 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-xs text-primary font-bold block mb-1">COMPROBACIÓN 1: VOLUMETRÍA</span>
+                    <div class="text-2xl font-bold text-foreground font-mono my-2">4,541,655</div>
+                    <p class="text-xs text-secondary-foreground leading-relaxed">
+                        Evaluados en CSV tratado vs. Evaluados en tabla de hechos del modelo estrella. <strong>Diferencia absoluta: 0 registros</strong>. Huérfanos de clave foránea: <strong>0</strong>.
+                    </p>
+                </div>
+
+                <!-- Comprobación 2 -->
+                <div class="p-4 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-xs text-accent font-bold block mb-1">COMPROBACIÓN 2: PRECISIÓN MÉTRICA</span>
+                    <div class="text-2xl font-bold text-foreground font-mono my-2">252.4228 pts</div>
+                    <p class="text-xs text-secondary-foreground leading-relaxed">
+                        Media global calculada directamente sobre las 4.54M filas en Pandas vs. Media ponderada calculada por consulta SQL en el Modelo Estrella. <strong>Exactitud: 4 decimales</strong>.
+                    </p>
+                </div>
+
+                <!-- Comprobación 3 -->
+                <div class="p-4 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-xs text-emerald-400 font-bold block mb-1">COMPROBACIÓN 3: SEGMENTACIÓN TIC</span>
+                    <div class="text-2xl font-bold text-foreground font-mono my-2">2,603,716</div>
+                    <p class="text-xs text-secondary-foreground leading-relaxed">
+                        Evaluados con internet reportado (promedio 261.84) frente a 1,021,067 sin internet (promedio 230.02) y 916,872 sin información. Coincidencia total de agregaciones.
+                    </p>
+                </div>
+            </div>
+
+            <div class="p-3.5 rounded-lg bg-muted/30 border border-border text-xs font-mono text-secondary-foreground flex flex-wrap items-center justify-between gap-2">
+                <span>Base SQLite Relacional optimizada: <strong>72.33 MB</strong> (Reducción del 98% frente a los 3.54 GB del CSV plano).</span>
+                <span class="text-primary">Consultas analíticas en memoria: &lt; 20 ms</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Cuadrícula de Acceso a las Cuatro Vistas Interactivas -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">04 · Las Cuatro Vistas de Análisis Multidimensional</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+
+            <!-- Vista 1 -->
+            <div class="card-base p-6 hover:border-primary/50 transition-all flex flex-col justify-between group">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">VISTA 01</span>
+                        <span class="text-[11px] font-mono text-muted-foreground uppercase">Drill-Down / Roll-Up</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2">
+                        Desagregación Territorial y Brecha Digital
+                    </h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Exploración jerárquica del desempeño en Matemáticas y Puntaje Global desde el nivel Nacional y Regional DANE hasta Departamentos, Municipios y Zonas Urbano/Rurales.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="data-tag text-[10px]">Jerarquía Territorial</span>
+                        <span class="data-tag text-[10px]">Perfil TIC</span>
+                        <span class="data-tag text-[10px]">Tasa de Riesgo</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('etapa5_pregunta1') }}" class="btn-primary text-xs w-full justify-center">
+                    Explorar Vista 1 (Territorial)
+                    <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+            <!-- Vista 2 -->
+            <div class="card-base p-6 hover:border-accent/50 transition-all flex flex-col justify-between group">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20">VISTA 02</span>
+                        <span class="text-[11px] font-mono text-muted-foreground uppercase">Slice & Dice</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground group-hover:text-accent transition-colors mb-2">
+                        Dinámica Temporal por Calendario y Naturaleza
+                    </h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Cortes analíticos temporales (2019 a 2025) aislando el efecto de la pandemia sobre colegios oficiales frente a privados, diferenciando calendarios escolares y tenencia de hardware.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="data-tag text-[10px]">Etapa Pandemia</span>
+                        <span class="data-tag text-[10px]">Oficial vs Privado</span>
+                        <span class="data-tag text-[10px]">Calendario A / B</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('etapa5_pregunta2') }}" class="btn-primary text-xs w-full justify-center">
+                    Explorar Vista 2 (Temporal)
+                    <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+            <!-- Vista 3 -->
+            <div class="card-base p-6 hover:border-primary/50 transition-all flex flex-col justify-between group">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">VISTA 03</span>
+                        <span class="text-[11px] font-mono text-muted-foreground uppercase">Pivot (Rotación)</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground group-hover:text-primary transition-colors mb-2">
+                        Capital Cultural y Estrato vs. Brecha Digital
+                    </h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Matriz pivote interactiva con conmutación dinámica de ejes para evaluar la compensación entre el nivel educativo de los padres, el estrato de la vivienda y la tenencia de computador.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="data-tag text-[10px]">Educación Parental</span>
+                        <span class="data-tag text-[10px]">Estrato Vivienda</span>
+                        <span class="data-tag text-[10px]">Lectura Crítica</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('etapa5_pregunta3') }}" class="btn-primary text-xs w-full justify-center">
+                    Explorar Vista 3 (Pivot)
+                    <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+            <!-- Vista 4 -->
+            <div class="card-base p-6 hover:border-accent/50 transition-all flex flex-col justify-between group">
+                <div>
+                    <div class="flex items-start justify-between mb-3">
+                        <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2 py-0.5 rounded border border-accent/20">VISTA 04</span>
+                        <span class="text-[11px] font-mono text-muted-foreground uppercase">Drill-Down + Dice</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground group-hover:text-accent transition-colors mb-2">
+                        Intensidad de Navegación, Inglés y Riesgo
+                    </h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Evaluación del gradiente de horas diarias de conexión frente al dominio bilingüe (MCER B1/B+) y mapeo de combinaciones con concentración crítica de bajo rendimiento.
+                    </p>
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        <span class="data-tag text-[10px]">Horas Diarias TIC</span>
+                        <span class="data-tag text-[10px]">Desempeño Inglés</span>
+                        <span class="data-tag text-[10px]">Riesgo Crítico</span>
+                    </div>
+                </div>
+                <a href="{{ url_for('etapa5_pregunta4') }}" class="btn-primary text-xs w-full justify-center">
+                    Explorar Vista 4 (Intensidad y Riesgo)
+                    <svg class="w-3.5 h-3.5 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+{% endblock %}
+

@@ -1,0 +1,46 @@
+{
+  "fecha_generacion": "2026-11-03 17:08:30",
+  "tamano_db_mb": 72.33,
+  "dimensiones_conteo": {
+    "dim_tiempo": 14,
+    "dim_geografia": 198,
+    "dim_acceso_digital": 54,
+    "dim_socioeconomica": 220,
+    "fact_resultados_saber11": 717225,
+    "agg_territorial_municipio": 114568
+  },
+  "comprobacion_1_volumetria_e_integridad": {
+    "evaluados_csv_tratado": 4541655,
+    "evaluados_modelo_estrella": 4541655,
+    "diferencia_registros": 0,
+    "registros_huerfanos_fk": 0,
+    "celdas_agrupadas_hechos": 717225
+  },
+  "comprobacion_2_exactitud_medidas": {
+    "punt_global_csv": 252.4228,
+    "punt_global_estrella": 252.4228,
+    "punt_matematicas_csv": 51.2295,
+    "punt_matematicas_estrella": 51.2295,
+    "punt_lectura_csv": 53.0753,
+    "punt_lectura_estrella": 53.0753,
+    "punt_ingles_csv": 50.2482,
+    "punt_ingles_estrella": 50.2482
+  },
+  "comprobacion_3_segmentacion_conectividad": [
+    {
+      "fami_tieneinternet": "SI",
+      "evaluados": 2603716,
+      "promedio_global": 261.84
+    },
+    {
+      "fami_tieneinternet": "NO",
+      "evaluados": 1021067,
+      "promedio_global": 230.02
+    },
+    {
+      "fami_tieneinternet": "NO_INFORMA",
+      "evaluados": 916872,
+      "promedio_global": 250.64
+    }
+  ]
+}

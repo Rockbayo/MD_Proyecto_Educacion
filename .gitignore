@@ -25,3 +25,10 @@ generador_contexto.py
 
 # proyecto SSIS
 ETL_Edumetrics/*
+# Guías y pautas de clase
+Semana 13.txt
+scripts/test_flask_endpoints.py
+
+# Archivos pesados de Power BI
+*.rar
+*.pbix
