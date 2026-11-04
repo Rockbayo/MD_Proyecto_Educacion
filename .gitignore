@@ -10,6 +10,7 @@ data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
+!data/processed/edumetrics_olap.db
 generador_contexto.py
 
 # Reportes y resultados (opcional, descomentar si no quieres subirlos)
@@ -32,10 +33,14 @@ ETL_Edumetrics/
 
 # proyecto SSIS
 ETL_Edumetrics/*
-# Guías y pautas de clase
+# Guias y pautas de clase
 Semana 13.txt
 scripts/test_flask_endpoints.py
 
 # Archivos pesados de Power BI
 *.rar
 *.pbix
+
+# Documentos de entrega
+*.docx
+data/reports/capturas/
