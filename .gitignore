@@ -1,4 +1,4 @@
-# Entornos virtuales y caché de Python
+# Entornos virtuales y cachÃ© de Python
 venv/
 env/
 __pycache__/
@@ -22,10 +22,17 @@ generador_contexto.py
 .vscode/
 .idea/
 .DS_Store
+# Ignorar pautas y archivos pesados
+Semana 13.txt
+*.rar
+*.pbix
+
+ETL_EduMetrics/
+ETL_Edumetrics/
 
 # proyecto SSIS
 ETL_Edumetrics/*
-# Gu�as y pautas de clase
+# Guías y pautas de clase
 Semana 13.txt
 scripts/test_flask_endpoints.py
 
