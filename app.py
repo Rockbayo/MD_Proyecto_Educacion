@@ -254,11 +254,11 @@ def api_olap_pregunta1():
     filtros = []
     params = []
 
-    if periodo != 'TODOS':
+    if periodo and str(periodo).upper() not in ['TODOS', 'TODAS']:
         filtros.append("t.periodo = ?")
         params.append(int(periodo))
     
-    if naturaleza != 'TODOS':
+    if naturaleza and naturaleza.upper() not in ['TODOS', 'TODAS']:
         filtros.append("g.cole_naturaleza = ?")
         params.append(naturaleza)
 
@@ -435,11 +435,11 @@ def api_olap_pregunta2():
     else:
         slice_nombre = "Secuencia Temporal Completa (2019-2025)"
 
-    if calendario != 'TODOS':
+    if calendario and calendario.upper() not in ['TODOS', 'TODAS']:
         filtros.append("g.cole_calendario = ?")
         params.append(calendario)
 
-    if grupo_estrato != 'TODOS':
+    if grupo_estrato and grupo_estrato.upper() not in ['TODOS', 'TODAS']:
         filtros.append("s.grupo_estrato LIKE ?")
         params.append(f"%{grupo_estrato}%")
 
@@ -609,11 +609,11 @@ def api_olap_pregunta3():
     filtros = []
     params = []
 
-    if area != 'TODAS':
+    if area and area.upper() not in ['TODAS', 'TODOS']:
         filtros.append("g.cole_area_ubicacion = ?")
         params.append(area)
 
-    if genero != 'TODOS':
+    if genero and genero.upper() not in ['TODOS', 'TODAS']:
         filtros.append("s.estu_genero = ?")
         params.append(genero)
 
@@ -799,11 +799,11 @@ def api_olap_pregunta4():
     filtros = []
     params = []
 
-    if area != 'TODAS':
+    if area and area.upper() not in ['TODAS', 'TODOS']:
         filtros.append("g.cole_area_ubicacion = ?")
         params.append(area)
 
-    if naturaleza != 'TODOS':
+    if naturaleza and naturaleza.upper() not in ['TODOS', 'TODAS']:
         filtros.append("g.cole_naturaleza = ?")
         params.append(naturaleza)
 
