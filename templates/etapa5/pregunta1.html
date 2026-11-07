@@ -39,13 +39,13 @@
             <!-- Controles OLAP: Drill-down / Roll-up -->
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs text-muted-foreground font-mono mr-1">Jerarquía Territorial:</span>
-                <button type="button" id="btnNivelRegion" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-olap-btn" onclick="cambiarNivelTerritorial('region')">
+                <button type="button" id="btnNivelRegion" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-olap-btn" onclick="cambiarNivelTerritorial('region')" title="Operación Roll-Up: agrega métricas al nivel macro de Regiones DANE">
                     Regiones (Roll-Up)
                 </button>
-                <button type="button" id="btnNivelDepto" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('depto')">
+                <button type="button" id="btnNivelDepto" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('depto')" title="Operación Drill-Down: desagrega métricas por cada uno de los 33 departamentos">
                     Departamentos (Drill-Down)
                 </button>
-                <button type="button" id="btnNivelZona" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('area')">
+                <button type="button" id="btnNivelZona" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarNivelTerritorial('area')" title="Detalle territorial: contrasta el rendimiento entre áreas urbanas y rurales">
                     Zona Urbano/Rural (Detalle)
                 </button>
             </div>

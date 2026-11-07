@@ -39,13 +39,13 @@
             <!-- Controles OLAP: Pivot (Rotación de Matriz) -->
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs text-muted-foreground font-mono mr-1">Conmutación de Perspectiva (Pivot):</span>
-                <button type="button" id="btnPivotModo1" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-pivot-btn" onclick="cambiarModoPivot('edu_pc')">
+                <button type="button" id="btnPivotModo1" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-pivot-btn" onclick="cambiarModoPivot('edu_pc')" title="Operación Pivot: rota los ejes para cruzar escolaridad del padre con tenencia de computador">
                     Educación × PC
                 </button>
-                <button type="button" id="btnPivotModo2" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarModoPivot('estrato_tic')">
+                <button type="button" id="btnPivotModo2" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarModoPivot('estrato_tic')" title="Operación Pivot: rota los ejes para cruzar estrato socioeconómico con perfil TIC integral">
                     Estrato × Perfil TIC
                 </button>
-                <button type="button" id="btnPivotModo3" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarModoPivot('edu_genero')">
+                <button type="button" id="btnPivotModo3" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarModoPivot('edu_genero')" title="Operación Pivot: rota los ejes para contrastar nivel formativo parental frente al género">
                     Educación × Género
                 </button>
             </div>
