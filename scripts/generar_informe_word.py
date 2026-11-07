@@ -651,7 +651,7 @@ def generar_documento_word():
     git_data = [
         ["Repositorio Público Oficial", "https://github.com/Rockbayo/MD_Proyecto_Educacion", "Código fuente, scripts ETL, pruebas y documentación completa."],
         ["Rama Específica de Trabajo", "feature/etapa-5", "Rama oficial de la etapa, sincronizada con origin/feature/etapa-5."],
-        ["Pull Request Oficial", "https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/25", "Pull Request formal hacia la rama principal main para auditoría docente."],
+        ["Pull Request Oficial", "https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23", "Pull Request formal hacia la rama principal main para auditoría docente."],
         ["Rama Subsanada (Retroalimentación)", "feature/etapa-2", "Contiene los commits d8eb58f y 7d694aa que sustentan exactitud, consistencia y nulos."],
         ["Base de Datos Analítica ROLAP", "data/processed/edumetrics_olap.db", "Archivo binario SQLite de 72.33 MB con 717,225 tuplas en hechos y 4 dimensiones."],
         ["Aplicación Web Local", "http://127.0.0.1:5000/etapa5", "Portal Flask interactivo con 4 vistas y 5 endpoints de consulta OLAP activos."]
