@@ -151,6 +151,7 @@
                         <th class="py-2.5 px-3 font-semibold text-center text-amber-400">Offline (Solo PC)</th>
                         <th class="py-2.5 px-3 font-semibold text-center text-red-400">Exclusión Absoluta</th>
                         <th class="py-2.5 px-3 font-semibold text-right text-foreground">Brecha Neta</th>
+                        <th class="py-2.5 px-3 font-semibold text-right text-primary">Pérdida Relativa (%)</th>
                     </tr>
                 </thead>
                 <tbody id="tbodyMatriz" class="divide-y divide-border/60 text-secondary-foreground">
@@ -431,6 +432,7 @@ function actualizarMatriz(filas) {
             <td class="py-2.5 px-3 text-center text-amber-400">${f.offline_puntaje} <span class="text-[10px] text-muted-foreground">(${f.offline_eval})</span></td>
             <td class="py-2.5 px-3 text-center text-red-400">${f.exclusion_puntaje} <span class="text-[10px] text-muted-foreground">(${f.exclusion_eval})</span></td>
             <td class="py-2.5 px-3 text-right font-bold text-foreground">${f.brecha} pts</td>
+            <td class="py-2.5 px-3 text-right font-bold text-primary font-mono">${f.brecha_relativa}%</td>
         `;
         tbody.appendChild(tr);
     });
