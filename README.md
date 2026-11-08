@@ -155,7 +155,7 @@ MD_Proyecto_Educacion/
 ## Despliegue en la Nube y Entregables
 *   **Aplicación Web en Producción (Render):** [https://md-proyecto-educacion.onrender.com/](https://md-proyecto-educacion.onrender.com/)
 *   **Informe Interactivo Power BI (Etapa 4):** [Tableros en Power BI Service](https://app.powerbi.com/groups/me/reports/e88e30a1-d605-413f-a622-3c66297fa2f8?pbi_source=desktop)
-*   **Pull Request Oficial Etapa 5:** [PR #27 - Rama feature/etapa-5](https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/27)
+*   **Pull Request Oficial Etapa 5:** [PR #29 - Rama feature/etapa-5](https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/29)
 
 ---
 
