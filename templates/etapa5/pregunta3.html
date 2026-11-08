@@ -337,7 +337,7 @@ function actualizarGraficaBrecha(datos) {
                 x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 30 }, grid: { display: false } }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });
@@ -380,7 +380,7 @@ function actualizarGraficaCompetencias(datos) {
                 x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 }, maxRotation: 30 }, grid: { display: false } }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });
@@ -412,7 +412,9 @@ function actualizarTablaPivot(dataMatriz) {
         let tdHtml = `<td class="py-2.5 px-3 font-semibold text-foreground">${f.nombre_fila}</td>`;
         
         f.valores.forEach(v => {
-            tdHtml += `<td class="py-2.5 px-3 text-center text-secondary-foreground font-mono">${v.puntaje} <span class="text-[10px] text-muted-foreground">(${v.evaluados})</span></td>`;
+            const promVal = (v.prom !== undefined && v.prom !== null) ? v.prom : ((v.puntaje !== undefined && v.puntaje !== null) ? v.puntaje : '-');
+            const numVal = (v.n !== undefined && v.n !== null) ? v.n : ((v.evaluados !== undefined && v.evaluados !== null) ? v.evaluados : '');
+            tdHtml += `<td class="py-2.5 px-3 text-center text-secondary-foreground font-mono">${promVal} <span class="text-[10px] text-muted-foreground">(${numVal})</span></td>`;
         });
         
         tdHtml += `<td class="py-2.5 px-3 text-right font-bold text-foreground font-mono">${f.diferencial} pts</td>`;
