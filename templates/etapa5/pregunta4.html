@@ -39,13 +39,13 @@
             <!-- Controles OLAP: Selección de Medida en Foco -->
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs text-muted-foreground font-mono mr-1">Métrica Protagonista:</span>
-                <button type="button" id="btnMetricaIngles" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-metrica-btn" onclick="cambiarMetricaFoco('ingles')">
+                <button type="button" id="btnMetricaIngles" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-metrica-btn" onclick="cambiarMetricaFoco('ingles')" title="Focalizar análisis en la competencia de inglés y tasa de bilingüismo">
                     Competencia en Inglés
                 </button>
-                <button type="button" id="btnMetricaRiesgo" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('riesgo')">
+                <button type="button" id="btnMetricaRiesgo" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('riesgo')" title="Focalizar análisis en porcentaje de estudiantes en percentil de riesgo (menor a 210 pts)">
                     Concentración de Riesgo
                 </button>
-                <button type="button" id="btnMetricaGlobal" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('global')">
+                <button type="button" id="btnMetricaGlobal" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarMetricaFoco('global')" title="Focalizar análisis en puntaje global consolidado (escala 0-500)">
                     Puntaje Global Integral
                 </button>
             </div>

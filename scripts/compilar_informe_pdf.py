@@ -548,8 +548,8 @@ def generar_pdf():
         [Paragraph("<b>Parámetro</b>", style_body), Paragraph("<b>Valor de Verificación en Repositorio</b>", style_body)],
         [Paragraph("<b>Repositorio Oficial:</b>", style_body), Paragraph("https://github.com/Rockbayo/MD_Proyecto_Educacion", style_body)],
         [Paragraph("<b>Rama Activa:</b>", style_body), Paragraph("feature/etapa-5 (Sincronizada con origin/feature/etapa-5)", style_body)],
-        [Paragraph("<b>Pull Request:</b>", style_body), Paragraph("https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/25", style_body)],
-        [Paragraph("<b>Commits de la Etapa:</b>", style_body), Paragraph("a8abeef, d71082f, 205f16c, 0bdf215, 2b6f996 (5 commits distribuidos)", style_body)],
+        [Paragraph("<b>Pull Request:</b>", style_body), Paragraph("https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23", style_body)],
+        [Paragraph("<b>Commits de la Etapa:</b>", style_body), Paragraph("Oscar Delgado (e94ce41, 1484693, 7f47244), Oscar Robayo (0efddf7, 9b0c7b6)", style_body)],
         [Paragraph("<b>Script ETL Reproducible:</b>", style_body), Paragraph("scripts/07_modelo_estrella_olap.py", style_body)],
         [Paragraph("<b>Base de Datos Analítica:</b>", style_body), Paragraph("data/processed/edumetrics_olap.db (72.33 MB SQLite)", style_body)],
         [Paragraph("<b>Portal y Vistas Web:</b>", style_body), Paragraph("http://127.0.0.1:5000/etapa5 (Templates pregunta1.html a pregunta4.html)", style_body)]

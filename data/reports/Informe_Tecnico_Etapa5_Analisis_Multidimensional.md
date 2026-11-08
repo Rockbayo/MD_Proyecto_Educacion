@@ -367,7 +367,7 @@ d71082f | 2026-11-03 14:15:33 | plantillas de las preguntas 1 a 4 con graficos c
 
 * **URL del Repositorio:** [https://github.com/Rockbayo/MD_Proyecto_Educacion](https://github.com/Rockbayo/MD_Proyecto_Educacion)
 * **Rama Activa:** `feature/etapa-5`
-* **Pull Request Oficial:** [https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/25](https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/25)
+* **Pull Request Oficial:** [https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23](https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23)
 
 ---
 

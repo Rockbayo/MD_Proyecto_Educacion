@@ -39,16 +39,16 @@
             <!-- Controles OLAP: Slice (Corte por Etapa) -->
             <div class="flex flex-wrap items-center gap-2">
                 <span class="text-xs text-muted-foreground font-mono mr-1">Operación Slice:</span>
-                <button type="button" id="btnSliceTodos" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-slice-btn" onclick="cambiarSliceEtapa('TODAS')">
+                <button type="button" id="btnSliceTodos" class="btn-primary text-xs py-1.5 px-3 font-mono cursor-pointer active-slice-btn" onclick="cambiarSliceEtapa('TODAS')" title="Operación Slice: consolida todas las cohortes del periodo 2019-2025">
                     Todas las Etapas (Multianual)
                 </button>
-                <button type="button" id="btnSlicePre" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PRE')">
+                <button type="button" id="btnSlicePre" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PRE')" title="Operación Slice: filtra exclusivamente la cohorte pre-pandemia (2019)">
                     Pre-Pandemia (2019)
                 </button>
-                <button type="button" id="btnSlicePandemia" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PANDEMIA')">
+                <button type="button" id="btnSlicePandemia" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('PANDEMIA')" title="Operación Slice: filtra los periodos de confinamiento y emergencia sanitaria (2020-2021)">
                     Confinamiento (2020-21)
                 </button>
-                <button type="button" id="btnSlicePost" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('POST')">
+                <button type="button" id="btnSlicePost" class="btn-ghost text-xs py-1.5 px-3 font-mono cursor-pointer" onclick="cambiarSliceEtapa('POST')" title="Operación Slice: filtra las cohortes de retorno a la presencialidad (2022-2025)">
                     Post-Pandemia (2022-25)
                 </button>
             </div>
