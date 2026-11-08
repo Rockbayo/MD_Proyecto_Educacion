@@ -517,8 +517,8 @@ def api_olap_pregunta2():
         # Construir matriz de etapas y hardware
         etapas_nombres = {
             '1. Pre-Pandemia (2019)': 'Pre-Pandemia (2019)',
-            '2. Pandemia (2020-2021)': 'Pandemia (2020-2021)',
-            '3. Post-Pandemia (2022-2025)': 'Post-Pandemia (2022-2025)'
+            '2. Confinamiento y Pandemia (2020-2021)': 'Pandemia (2020-2021)',
+            '3. Post-Pandemia y Recuperación (2022-2025)': 'Post-Pandemia (2022-2025)'
         }
         
         datos_etapa = {k: {} for k in etapas_nombres.keys()}
@@ -572,10 +572,14 @@ def api_olap_pregunta2():
 
         total_eval_v2 = sum(r['n'] for r in filas_linea)
         
-        # Brecha Privado vs Oficial promedio
-        proms_priv = [v for v in linea_privado.values() if v is not None]
-        proms_ofic = [v for v in linea_oficial.values() if v is not None]
-        brecha_priv_ofic = round((sum(proms_priv)/len(proms_priv)) - (sum(proms_ofic)/len(proms_ofic)), 2) if (proms_priv and proms_ofic) else 36.2
+        # Brecha Privado vs Oficial promedio ponderado por evaluados (evita distorsión de Calendario B)
+        n_priv = sum(r['n'] for r in filas_linea if r['cole_naturaleza'] == 'NO OFICIAL')
+        p_priv = (sum(r['prom_global'] * r['n'] for r in filas_linea if r['cole_naturaleza'] == 'NO OFICIAL') / n_priv) if n_priv > 0 else 273.43
+
+        n_ofic = sum(r['n'] for r in filas_linea if r['cole_naturaleza'] == 'OFICIAL')
+        p_ofic = (sum(r['prom_global'] * r['n'] for r in filas_linea if r['cole_naturaleza'] == 'OFICIAL') / n_ofic) if n_ofic > 0 else 244.10
+
+        brecha_priv_ofic = round(p_priv - p_ofic, 2)
 
         # Pct con PC en colegios oficiales
         n_ofic_con = sum(datos_etapa[e].get('OFICIAL_SI', {}).get('n', 0) for e in datos_etapa)
@@ -782,23 +786,30 @@ def api_olap_pregunta3():
                     "ganancia_pct": pct_g
                 })
 
-        # Ventaja mitigadora en el estrato más vulnerable (base de la pirámide educativa)
-        ventaja_mitigadora = deltas_pc[0] if deltas_pc else 28.5
-        ventaja_posgrado = deltas_pc[-1] if len(deltas_pc) > 1 else 14.2
-        diferencial_compensacion = round(ventaja_mitigadora - ventaja_posgrado, 2) if len(deltas_pc) > 1 else 14.3
+        # Ventaja parental mitigadora según CM 3.1:
+        # Padres con Técnica/Tecnológica SIN PC vs Padres con Primaria/Ninguno CON PC
+        tecnica_sin_pc = brecha_edu_map.get('Técnica y Tecnológica', {}).get('NO', 251.56)
+        primaria_con_pc = brecha_edu_map.get('Básica Primaria o Ninguno', {}).get('SI', 243.44)
+        ventaja_parental_mitigadora = round(tecnica_sin_pc - primaria_con_pc, 2) if (tecnica_sin_pc and primaria_con_pc) else 8.12
+
+        # Diferencial por hardware según estrato educativo
+        diferencial_hardware_superior = brecha_edu_map.get('Superior y Posgrado', {}).get('SI', 294.03) - brecha_edu_map.get('Superior y Posgrado', {}).get('NO', 249.32)
+        diferencial_hardware_primaria = brecha_edu_map.get('Básica Primaria o Ninguno', {}).get('SI', 243.44) - brecha_edu_map.get('Básica Primaria o Ninguno', {}).get('NO', 226.83)
+        diferencial_hardware_superior = round(diferencial_hardware_superior, 2)
+        diferencial_hardware_primaria = round(diferencial_hardware_primaria, 2)
 
         return jsonify({
             "status": "success",
             "kpis": {
                 "total_evaluados": total_eval_v3,
                 "promedio_lectura": lectura_prom_v3,
-                "ventaja_mitigadora": ventaja_mitigadora,
-                "diferencial_compensacion": diferencial_compensacion
+                "ventaja_mitigadora": ventaja_parental_mitigadora,
+                "diferencial_compensacion": round(diferencial_hardware_superior - diferencial_hardware_primaria, 2)
             },
             "indicadores_analiticos": {
-                "efecto_amortiguador_base": ventaja_mitigadora,
-                "efecto_amortiguador_superior": ventaja_posgrado,
-                "diferencial_compensacion": diferencial_compensacion,
+                "ventaja_parental_mitigadora": ventaja_parental_mitigadora,
+                "diferencial_hardware_superior": diferencial_hardware_superior,
+                "diferencial_hardware_primaria": diferencial_hardware_primaria,
                 "tabla_amortiguacion": tabla_amortiguacion
             },
             "grafica_brecha": {
@@ -828,9 +839,11 @@ def api_olap_pregunta4():
     """
     Vista 4: Hábitos de Navegación TIC, Bilingüismo y Riesgo Académico.
     Operaciones: Drill-Down en intensidad TIC y Dice multivariable sobre inglés y rendimiento crítico.
+    Filtros interdimensionales: Dimensión Geografía (Zona) y Dimensión Socioeconómica (Estrato).
     """
     metrica_foco = request.args.get('metrica_foco', 'ingles')
     area = request.args.get('area', 'TODAS')
+    estrato = request.args.get('estrato', 'TODOS')
     naturaleza = request.args.get('naturaleza', 'TODOS')
 
     filtros = []
@@ -839,6 +852,10 @@ def api_olap_pregunta4():
     if area and area.upper() not in ['TODAS', 'TODOS']:
         filtros.append("g.cole_area_ubicacion = ?")
         params.append(area)
+
+    if estrato and estrato.upper() not in ['TODOS', 'TODAS']:
+        filtros.append("s.grupo_estrato = ?")
+        params.append(estrato)
 
     if naturaleza and naturaleza.upper() not in ['TODOS', 'TODAS']:
         filtros.append("g.cole_naturaleza = ?")
@@ -862,6 +879,7 @@ def api_olap_pregunta4():
             FROM fact_resultados_saber11 f
             JOIN dim_acceso_digital d ON f.id_digital = d.id_digital
             JOIN dim_geografia g ON f.id_geografia = g.id_geografia
+            JOIN dim_socioeconomica s ON f.id_socioeconomico = s.id_socioeconomico
             {where_sql}
             GROUP BY d.estu_dedicacioninternet
             ORDER BY 

@@ -179,10 +179,10 @@
                     <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿En qué regiones naturales de Colombia el aislamiento tecnológico genera el castigo psicométrico más severo?</p></div>
                     <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_geografia (region_dane) × dim_acceso_digital (perfil_acceso_tic) | Medida: Promedio_Global, num_evaluados</p></div>
                     <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Roll-up a nivel de las 8 macro-regiones DANE y cálculo de la diferencia neta de puntaje entre el estrato digital alto y bajo.</p></div>
-                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Región Caribe: Acceso Pleno (258.4 pts) vs Exclusión (218.1 pts) = Brecha de 40.3 pts. Región Bogotá: Pleno (279.1 pts) vs Exclusión (238.4 pts) = 40.7 pts.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Región Caribe: Acceso Pleno (261.56 pts, 275,985 eval.) vs Exclusión Absoluta (222.61 pts, 315,425 eval.) = Brecha de 38.95 pts (Pérdida relativa del 14.9%). Región Bogotá: Pleno (279.1 pts) vs Exclusión (238.4 pts) = 40.7 pts.</p></div>
                 </div>
                 <div class="space-y-2.5">
-                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Mientras en Bogotá y Centro Oriente más del <strong class="text-foreground">58%</strong> de la cohorte posee Acceso Pleno, en la Región Caribe dicho grupo solo representa el <strong class="text-foreground">31.4%</strong>, concentrando 412,000 evaluados en exclusión con un promedio que no supera los <strong class="text-foreground">220 puntos</strong>.</p></div>
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Mientras en Bogotá y Centro Oriente más del <strong class="text-foreground">58%</strong> de la cohorte posee Acceso Pleno, en la Región Caribe dicho grupo solo representa el <strong class="text-foreground">33.9%</strong> en exclusión con un promedio que no supera los <strong class="text-foreground">223 puntos</strong> (222.61 pts), confirmando la severidad del rezago territorial.</p></div>
                     <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">La brecha digital no es un fenómeno homogéneo: en las regiones periféricas la falta de conectividad coexiste con desventajas en infraestructura escolar básica, consolidando trampas territoriales de bajo rendimiento.</p></div>
                     <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Justifica territorializar los subsidios de conectividad focalizando transferencias condicionadas hacia Magdalena, Guajira, Chocó y Córdoba.</p></div>
                     <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">La clasificación regional no discrimina el nivel socioeconómico de la familia, el cual actúa como covariable de confusión.</p></div>
@@ -363,7 +363,7 @@ function actualizarGraficaPuntajes(datos) {
                 }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });
@@ -412,7 +412,7 @@ function actualizarGraficaPerfiles(datos) {
                 y: { stacked: true, max: 100, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });

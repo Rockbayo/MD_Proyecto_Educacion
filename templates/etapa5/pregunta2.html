@@ -205,10 +205,10 @@
                     <div><span class="font-mono text-primary font-semibold">1. PREGUNTA:</span><p class="text-secondary-foreground mt-0.5">¿Qué tanto protegió tener computador a un estudiante de colegio público durante la crisis sanitaria?</p></div>
                     <div><span class="font-mono text-accent font-semibold">2. DIMENSIONES Y MEDIDAS:</span><p class="text-secondary-foreground mt-0.5 font-mono">dim_tiempo (etapa_pandemia) × dim_acceso_digital (fami_tienecomputador) en cole_naturaleza = OFICIAL</p></div>
                     <div><span class="font-mono text-primary font-semibold">3. PROCEDIMIENTO:</span><p class="text-secondary-foreground mt-0.5">Dice subcubo de colegios oficiales contrastando el diferencial de rendimiento con y sin computador.</p></div>
-                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Oficial con PC en Pandemia: 252.88 pts (415,286 eval.) vs Oficial sin PC en Pandemia: 227.32 pts (404,782 eval.). Brecha: 25.56 pts.</p></div>
+                    <div><span class="font-mono text-accent font-semibold">4. EVIDENCIA:</span><p class="text-secondary-foreground mt-0.5 font-mono">Oficial con PC en Pandemia: 251.88 pts (414,885 eval.) vs Oficial sin PC en Pandemia: 228.26 pts (374,810 eval.). Brecha: 23.62 pts.</p></div>
                 </div>
                 <div class="space-y-2.5">
-                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Contar con un computador doméstico representó una prima de rendimiento de <strong class="text-foreground">25.56 puntos</strong> dentro de los colegios oficiales, permitiendo a este subgrupo acercarse a la media de los colegios privados de estratos medios.</p></div>
+                    <div><span class="font-mono text-primary font-semibold">5. HALLAZGO:</span><p class="text-secondary-foreground mt-0.5">Contar con un computador doméstico representó una prima de rendimiento de <strong class="text-foreground">23.62 puntos</strong> dentro de los colegios oficiales (251.88 vs 228.26), permitiendo a este subgrupo amortiguar la caída del confinamiento.</p></div>
                     <div><span class="font-mono text-accent font-semibold">6. INTERPRETACIÓN:</span><p class="text-secondary-foreground mt-0.5">El computador funcionó como un escudo de resiliencia cognitiva: permitió la elaboración de trabajos de mayor complejidad, lectura de fuentes primarias y uso de herramientas matemáticas que no son viables en pantallas de teléfono móvil.</p></div>
                     <div><span class="font-mono text-emerald-400 font-semibold">7. UTILIDAD:</span><p class="text-secondary-foreground mt-0.5">Evidencia técnica irrefutable para la formulación de políticas públicas: dotar de computadores a los estudiantes de colegios oficiales genera un impacto directo sobre la equidad evaluativa.</p></div>
                     <div><span class="font-mono text-amber-400 font-semibold">8. LIMITACIÓN:</span><p class="text-secondary-foreground mt-0.5">No se evalúan las competencias digitales de los docentes ni el uso efectivo pedagógico que se le dio al equipo en el hogar.</p></div>
@@ -371,7 +371,7 @@ function actualizarGraficaLinea(datos) {
                 }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });
@@ -416,7 +416,7 @@ function actualizarGraficaHardwareEtapa(datos) {
                 }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });

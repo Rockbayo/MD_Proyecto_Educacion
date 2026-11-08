@@ -62,11 +62,13 @@
                 </select>
             </div>
             <div>
-                <label for="filtroNaturalezaV4" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Institución (Sector):</label>
-                <select id="filtroNaturalezaV4" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV4()">
-                    <option value="TODOS">Todos los Colegios</option>
-                    <option value="OFICIAL">Colegios Oficiales (Públicos)</option>
-                    <option value="NO OFICIAL">Colegios No Oficiales (Privados)</option>
+                <label for="filtroEstratoV4" class="block font-mono text-[11px] text-muted-foreground uppercase mb-1">Dimensión Socioeconómica (Estrato):</label>
+                <select id="filtroEstratoV4" class="w-full bg-background border border-border rounded-lg px-3 py-1.5 text-xs text-foreground focus:border-primary focus:outline-none" onchange="aplicarFiltrosV4()">
+                    <option value="TODOS">Todos los Estratos Socioeconómicos</option>
+                    <option value="Bajo (Estratos 1 y 2)">Estratos Bajos (Estrato 1 y 2)</option>
+                    <option value="Medio (Estratos 3 y 4)">Estratos Medios (Estrato 3 y 4)</option>
+                    <option value="Alto (Estratos 5 y 6)">Estratos Altos (Estrato 5 y 6)</option>
+                    <option value="Sin Estratificación / Rural Disperso">Sin Estratificación / Rural Disperso</option>
                 </select>
             </div>
             <div class="sm:col-span-2 md:col-span-1 flex items-end">
@@ -283,11 +285,11 @@ function aplicarFiltrosV4() {
 
 function cargarDatosV4() {
     const area = document.getElementById('filtroAreaV4').value;
-    const naturaleza = document.getElementById('filtroNaturalezaV4').value;
+    const estrato = document.getElementById('filtroEstratoV4') ? document.getElementById('filtroEstratoV4').value : 'TODOS';
     const labelEstado = document.getElementById('labelEstadoV4');
     labelEstado.textContent = 'Calculando métricas...';
 
-    const url = `/api/v1/olap/pregunta4?metrica_foco=${encodeURIComponent(metricaFocoActual)}&area=${encodeURIComponent(area)}&naturaleza=${encodeURIComponent(naturaleza)}`;
+    const url = `/api/v1/olap/pregunta4?metrica_foco=${encodeURIComponent(metricaFocoActual)}&area=${encodeURIComponent(area)}&estrato=${encodeURIComponent(estrato)}`;
 
     fetch(url)
         .then(res => res.json())
@@ -369,7 +371,7 @@ function actualizarGraficaDedicacion(datos) {
                 }
             },
             plugins: {
-                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+                legend: { labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 } } }
             }
         }
     });
@@ -395,7 +397,7 @@ function actualizarGraficaDona(datos) {
             plugins: {
                 legend: {
                     position: 'bottom',
-                    labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 }, padding: 15 }
+                    labels: { color: document.documentElement.classList.contains('light') ? '#0f172a' : '#f8fafc', font: { size: 11 }, padding: 15 }
                 }
             },
             cutout: '65%'
