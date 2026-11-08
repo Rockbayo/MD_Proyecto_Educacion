@@ -417,6 +417,86 @@
         </div>
     </section>
 
+    <!-- ============================================================
+         SECCIÓN: VISOR PDF DEL INFORME TÉCNICO · ETAPA 5
+         ============================================================ -->
+    <section class="mb-12 animate-on-scroll">
+        <p class="section-label mb-4">07 · Informe Técnico Oficial en PDF</p>
+
+        <div class="card-base p-5 sm:p-7">
+            <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
+                <div>
+                    <h2 class="text-lg font-bold text-foreground flex items-center gap-2">
+                        <svg class="w-5 h-5 text-accent" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        </svg>
+                        Informe Técnico — Etapa 5: Análisis Multidimensional OLAP
+                    </h2>
+                    <p class="text-xs text-muted-foreground font-mono mt-0.5">
+                        Oscar Giovanni Robayo · Oscar Felipe Delgado · Universidad de Cundinamarca, Extensión Chía
+                    </p>
+                </div>
+                <div class="flex items-center gap-2 flex-wrap">
+                    <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}"
+                       target="_blank"
+                       class="btn-ghost text-xs py-1.5 px-3 font-mono flex items-center gap-1"
+                       title="Abrir en pestaña nueva">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        Ampliar
+                    </a>
+                    <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}"
+                       download="Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf"
+                       class="btn-primary text-xs py-1.5 px-3 font-mono flex items-center gap-1">
+                        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                        </svg>
+                        Descargar PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- Visor PDF integrado — Altura optimizada para relación de aspecto carta/A4 -->
+            <div class="w-full h-[780px] sm:h-[850px] bg-muted/10 border border-border rounded-lg overflow-hidden shadow-inner relative flex-grow">
+                <object
+                    data="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=Fit"
+                    type="application/pdf"
+                    class="w-full h-full">
+                    <iframe
+                        src="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}#toolbar=1&navpanes=0&view=Fit"
+                        class="w-full h-full border-0">
+                        <div class="p-8 text-center flex flex-col items-center justify-center h-full">
+                            <p class="text-sm text-secondary-foreground mb-4">
+                                El visor no pudo cargar directamente el archivo en este dispositivo.
+                            </p>
+                            <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}"
+                               target="_blank" class="btn-primary text-sm">
+                                Abrir o Descargar PDF
+                            </a>
+                        </div>
+                    </iframe>
+                </object>
+            </div>
+
+            <!-- Metadatos del informe -->
+            <div class="mt-5 grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs text-secondary-foreground">
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-primary font-semibold block mb-1">ESTRUCTURA DEL INFORME</span>
+                    Introducción, Modelo Estrella, Formulación de Preguntas, ETL, Operaciones OLAP, 8 Conocimientos Multidimensionales, Limitaciones y Conclusiones.
+                </div>
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-accent font-semibold block mb-1">BASE ANALÍTICA</span>
+                    4,541,655 registros · 14 semestres · 1 tabla de hechos + 4 dimensiones conformadas en SQLite (72 MB).
+                </div>
+                <div class="p-3 rounded-lg bg-muted/20 border border-border">
+                    <span class="font-mono text-primary font-semibold block mb-1">REPOSITORIO Y TRAZABILIDAD</span>
+                    <a href="https://github.com/Rockbayo/MD_Proyecto_Educacion/pull/23" target="_blank" class="text-primary hover:underline">PR #23</a> · Rama feature/etapa-5 · Commits verificables de ambos investigadores.
+                </div>
+            </div>
+        </div>
+    </section>
+
 </div>
 {% endblock %}
 
