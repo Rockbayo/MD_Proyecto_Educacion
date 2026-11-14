@@ -44,3 +44,8 @@ scripts/test_flask_endpoints.py
 # Documentos de entrega
 *.docx
 data/reports/capturas/
+
+# Archivos temporales de Orange Data Mining
+*.swp*
+*.p
+
