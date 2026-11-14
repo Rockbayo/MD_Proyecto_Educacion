@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scheme version="2.0" title="03_text_mining_youtube" description="Procesamiento de lenguaje natural, extraccion de sentimientos y agrupamiento tematico sobre comentarios de YouTube">
+	<nodes>
+		<node id="0" name="Corpus" position="(60, 160)" title="Cargar Comentarios YouTube" qualified_name="Orange.widgets.text.owcorpus.OWCorpus" project_name="Orange3-Text" version="0.1.0" />
+		<node id="1" name="Preprocess Text" position="(240, 160)" title="Tokenizar + Stopwords Español" qualified_name="Orange.widgets.text.owpreprocess.OWPreprocess" project_name="Orange3-Text" version="0.1.0" />
+		<node id="2" name="Sentiment Analysis" position="(420, 100)" title="Analisis de Sentimientos" qualified_name="Orange.widgets.text.owsentiment.OWSentiment" project_name="Orange3-Text" version="0.1.0" />
+		<node id="3" name="Word Cloud" position="(420, 220)" title="Nube Tematica de Palabras" qualified_name="Orange.widgets.text.owwordcloud.OWWordCloud" project_name="Orange3-Text" version="0.1.0" />
+		<node id="4" name="Topic Modeling" position="(600, 100)" title="Modelado de Topicos (LDA)" qualified_name="Orange.widgets.text.owtopicmodeling.OWTopicModeling" project_name="Orange3-Text" version="0.1.0" />
+		<node id="5" name="Hierarchical Clustering" position="(600, 220)" title="Clustering de Comentarios" qualified_name="Orange.widgets.unsupervised.owhierarchicalclustering.OWHierarchicalClustering" project_name="Orange3" version="0.1.0" />
+	</nodes>
+	<links>
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
+		<link id="2" source_node_id="1" sink_node_id="3" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
+		<link id="3" source_node_id="2" sink_node_id="4" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
+		<link id="4" source_node_id="1" sink_node_id="5" source_channel="Corpus" sink_channel="Data" enabled="true" />
+	</links>
+	<annotations>
+		<text id="0" rect="(50, 20, 650, 40)" title="FLUJO 3: TEXT MINING Y ANALISIS DE SENTIMIENTOS EN YOUTUBE" />
+	</annotations>
+</scheme>

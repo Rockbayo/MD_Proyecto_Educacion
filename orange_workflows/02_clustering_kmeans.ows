@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scheme version="2.0" title="02_clustering_kmeans" description="Agrupamiento no supervisado mediante k-Means sobre variables estandarizadas de acceso digital y entorno familiar">
+	<nodes>
+		<node id="0" name="File" position="(60, 160)" title="Cargar Datos (100k)" qualified_name="Orange.widgets.data.owfile.OWFile" project_name="Orange3" version="0.1.0" />
+		<node id="1" name="Select Columns" position="(220, 160)" title="Filtrar Predictoras (Sin Notas)" qualified_name="Orange.widgets.data.owselectcolumns.OWSelectColumns" project_name="Orange3" version="0.1.0" />
+		<node id="2" name="Preprocess" position="(380, 160)" title="Estandarizar (Media=0, Var=1)" qualified_name="Orange.widgets.data.owpreprocess.OWPreprocess" project_name="Orange3" version="0.1.0" />
+		<node id="3" name="k-Means" position="(540, 160)" title="k-Means (k=3)" qualified_name="Orange.widgets.unsupervised.owkmeans.OWKMeans" project_name="Orange3" version="0.1.0" />
+		<node id="4" name="Silhouette Plot" position="(700, 100)" title="Grafica de Silueta" qualified_name="Orange.widgets.unsupervised.owsilhouetteplot.OWSilhouettePlot" project_name="Orange3" version="0.1.0" />
+		<node id="5" name="Scatter Plot" position="(700, 220)" title="Visualizacion de Clusters" qualified_name="Orange.widgets.visualize.owscatterplot.OWScatterPlot" project_name="Orange3" version="0.1.0" />
+		<node id="6" name="Box Plot" position="(700, 320)" title="Distribucion por Cluster" qualified_name="Orange.widgets.visualize.owboxplot.OWBoxPlot" project_name="Orange3" version="0.1.0" />
+	</nodes>
+	<links>
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="2" source_node_id="2" sink_node_id="3" source_channel="Preprocessed Data" sink_channel="Data" enabled="true" />
+		<link id="3" source_node_id="3" sink_node_id="4" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="4" source_node_id="3" sink_node_id="5" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="5" source_node_id="3" sink_node_id="6" source_channel="Data" sink_channel="Data" enabled="true" />
+	</links>
+	<annotations>
+		<text id="0" rect="(50, 20, 700, 40)" title="FLUJO 2: APRENDIZAJE NO SUPERVISADO (CLUSTERING K-MEANS k=3)" />
+	</annotations>
+</scheme>

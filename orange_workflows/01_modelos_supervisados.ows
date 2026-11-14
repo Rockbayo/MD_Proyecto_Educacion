@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<scheme version="2.0" title="01_modelos_supervisados" description="Evaluacion comparativa de tres modelos supervisados (Random Forest, Regresion Logistica y Red Neuronal) bajo validacion cruzada k=10">
+	<nodes>
+		<node id="0" name="File" position="(60, 180)" title="Cargar Datos (100k)" qualified_name="Orange.widgets.data.owfile.OWFile" project_name="Orange3" version="0.1.0" />
+		<node id="1" name="Select Columns" position="(220, 180)" title="Definir Target (Riesgo)" qualified_name="Orange.widgets.data.owselectcolumns.OWSelectColumns" project_name="Orange3" version="0.1.0" />
+		<node id="2" name="Test and Score" position="(420, 180)" title="Validacion Cruzada (k=10)" qualified_name="Orange.widgets.evaluate.owtestandscore.OWTestAndScore" project_name="Orange3" version="0.1.0" />
+		<node id="3" name="Random Forest" position="(300, 60)" title="Random Forest (100 arboles)" qualified_name="Orange.widgets.model.owrandomforest.OWRandomForest" project_name="Orange3" version="0.1.0" />
+		<node id="4" name="Logistic Regression" position="(420, 60)" title="Regresion Logistica (L2)" qualified_name="Orange.widgets.model.owlogisticregression.OWLogisticRegression" project_name="Orange3" version="0.1.0" />
+		<node id="5" name="Neural Network" position="(540, 60)" title="Red Neuronal (MLP)" qualified_name="Orange.widgets.model.owneuralnetwork.OWNeuralNetwork" project_name="Orange3" version="0.1.0" />
+		<node id="6" name="Confusion Matrix" position="(620, 180)" title="Matriz de Confusion" qualified_name="Orange.widgets.evaluate.owconfusionmatrix.OWConfusionMatrix" project_name="Orange3" version="0.1.0" />
+		<node id="7" name="ROC Analysis" position="(620, 280)" title="Curvas ROC y AUC" qualified_name="Orange.widgets.evaluate.owrocanalysis.OWROCAnalysis" project_name="Orange3" version="0.1.0" />
+	</nodes>
+	<links>
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Data" sink_channel="Data" enabled="true" />
+		<link id="2" source_node_id="3" sink_node_id="2" source_channel="Learner" sink_channel="Learner" enabled="true" />
+		<link id="3" source_node_id="4" sink_node_id="2" source_channel="Learner" sink_channel="Learner" enabled="true" />
+		<link id="4" source_node_id="5" sink_node_id="2" source_channel="Learner" sink_channel="Learner" enabled="true" />
+		<link id="5" source_node_id="2" sink_node_id="6" source_channel="Evaluation Results" sink_channel="Evaluation Results" enabled="true" />
+		<link id="6" source_node_id="2" sink_node_id="7" source_channel="Evaluation Results" sink_channel="Evaluation Results" enabled="true" />
+	</links>
+	<annotations>
+		<text id="0" rect="(50, 20, 650, 40)" title="FLUJO 1: MODELOS SUPERVISADOS DE CLASIFICACION (PREDICCION RIESGO CRITICO)" />
+	</annotations>
+</scheme>

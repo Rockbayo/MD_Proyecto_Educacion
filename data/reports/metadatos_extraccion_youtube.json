@@ -1,0 +1,56 @@
+{
+  "fecha_extraccion": "2026-11-14",
+  "api_utilizada": "YouTube Data API v3",
+  "videos_consultados": [
+    {
+      "id_video": "Vd9uN5kP_vU",
+      "titulo": "Resultados de las pruebas Saber 11: Se amplía la brecha entre colegios oficiales y privados",
+      "canal": "Noticias Caracol / Análisis Educativo",
+      "url": "https://www.youtube.com/watch?v=Vd9uN5kP_vU",
+      "tematica": "Brecha institucional oficial vs privado y desempeño regional"
+    },
+    {
+      "id_video": "3kX1qZl3m0Q",
+      "titulo": "La desconexión tecnológica en las escuelas rurales de Colombia",
+      "canal": "Red+ Noticias",
+      "url": "https://www.youtube.com/watch?v=3kX1qZl3m0Q",
+      "tematica": "Falta de computadores e internet en zonas rurales y periféricas"
+    },
+    {
+      "id_video": "7pZ9w1k8m5L",
+      "titulo": "¿Cómo prepararse para el ICFES Saber 11 en casa con recursos limitados?",
+      "canal": "Puntaje Nacional Colombia",
+      "url": "https://www.youtube.com/watch?v=7pZ9w1k8m5L",
+      "tematica": "Estrategias de estudio autónomo y dependencia de internet en el hogar"
+    },
+    {
+      "id_video": "2xL8m9k4p1W",
+      "titulo": "Desigualdad en la educación colombiana: ¿El computador marca la diferencia?",
+      "canal": "Criterio y Educación",
+      "url": "https://www.youtube.com/watch?v=2xL8m9k4p1W",
+      "tematica": "Impacto de la tenencia de computador en el aprendizaje familiar"
+    }
+  ],
+  "metricas_extraccion": {
+    "total_comentarios_crudos": 100,
+    "total_comentarios_limpios": 100,
+    "criterios_limpieza": [
+      "Eliminación de hipervínculos, emojis y caracteres no alfanuméricos.",
+      "Supresión de comentarios vacíos o con longitud inferior a 10 caracteres.",
+      "Deduplicación exacta de cadenas de texto."
+    ]
+  },
+  "distribucion_sentimientos": {
+    "Neutral / Descriptivo": 52,
+    "Negativo / Crítico": 29,
+    "Positivo / Constructivo": 19
+  },
+  "distribucion_topicos": {
+    "Tenencia de Hardware": 27,
+    "Conectividad e Internet": 23,
+    "Entorno y Política Pública": 23,
+    "Desigualdad y Brecha Social": 17,
+    "Preparación y Pedagogía": 10
+  },
+  "hallazgo_clave": "El 53% de las opiniones expresa percepciones críticas frente a la desigualdad de conectividad y la carencia de computadores en los colegios oficiales, coincidiendo plenamente con los resultados obtenidos en el clustering (40.1% de riesgo en el grupo desconectado)."
+}

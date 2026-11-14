@@ -1,0 +1,78 @@
+{
+  "fecha_analisis": "Noviembre 2026",
+  "algoritmo": "k-Means",
+  "normalizacion": "StandardScaler (Media=0, Varianza=1)",
+  "universo_evaluado": 100000,
+  "evaluacion_silhouette": {
+    "k_3": 0.269,
+    "k_4": 0.2574,
+    "k_5": 0.265
+  },
+  "k_seleccionado": 3,
+  "justificacion_k": "k=3 maximiza el coeficiente Silhouette (0.2690) y produce tipologías claramente diferenciables y operativas para la política educativa.",
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "nombre": "Privado Urbano con Ecosistema Digital Pleno",
+      "n_registros": 18595,
+      "pct_universo": 18.59,
+      "indicadores_clave": {
+        "tiene_internet_pct": 95.24,
+        "tiene_computador_pct": 83.01,
+        "colegio_oficial_pct": 0.04,
+        "zona_urbana_pct": 71.08,
+        "top_estratos": {
+          "Estrato 3": 36.2,
+          "Estrato 2": 28.1
+        }
+      },
+      "impacto_academico_post_hoc": {
+        "puntaje_global_promedio": 279.61,
+        "tasa_riesgo_critico_pct": 16.67
+      },
+      "patron_oculto": "Acceso casi universal a tecnología y predominio de educación privada con alto capital cultural."
+    },
+    {
+      "cluster_id": 1,
+      "nombre": "Vulnerabilidad Alta y Desconexión Tecnológica Crítica",
+      "n_registros": 42092,
+      "pct_universo": 42.09,
+      "indicadores_clave": {
+        "tiene_internet_pct": 6.35,
+        "tiene_computador_pct": 8.02,
+        "colegio_oficial_pct": 92.96,
+        "zona_urbana_pct": 68.03,
+        "top_estratos": {
+          "Sin Estrato": 46.6,
+          "Estrato 1": 31.5
+        }
+      },
+      "impacto_academico_post_hoc": {
+        "puntaje_global_promedio": 238.77,
+        "tasa_riesgo_critico_pct": 40.08
+      },
+      "patron_oculto": "Carencia casi total de internet y computador en sectores oficiales y rurales de estratos 1 y sin estrato, disparando el riesgo de fracaso escolar al 40.1%."
+    },
+    {
+      "cluster_id": 2,
+      "nombre": "Oficial Urbano en Transición (Conectividad Parcial sin PC)",
+      "n_registros": 39313,
+      "pct_universo": 39.31,
+      "indicadores_clave": {
+        "tiene_internet_pct": 93.42,
+        "tiene_computador_pct": 67.21,
+        "colegio_oficial_pct": 100.0,
+        "zona_urbana_pct": 63.47,
+        "top_estratos": {
+          "Estrato 2": 42.6,
+          "Estrato 3": 24.7
+        }
+      },
+      "impacto_academico_post_hoc": {
+        "puntaje_global_promedio": 253.81,
+        "tasa_riesgo_critico_pct": 25.93
+      },
+      "patron_oculto": "Disponen de conexión a internet principalmente móvil, pero presentan una severa brecha de computador en el hogar (33% no lo tiene), lo que limita su desempeño en competencias complejas."
+    }
+  ]
+}

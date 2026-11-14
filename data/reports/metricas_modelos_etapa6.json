@@ -1,0 +1,58 @@
+{
+  "fecha_analisis": "Noviembre 2026",
+  "universo_evaluado": 100000,
+  "variable_objetivo": "riesgo_critico (< 220 puntos)",
+  "estrategia_evaluacion": "Partición estratificada 80/20 y Validación Cruzada",
+  "modelos": {
+    "Random Forest": {
+      "accuracy": 0.7239,
+      "precision": 0.6671,
+      "recall": 0.1694,
+      "f1_score": 0.2702,
+      "auc": 0.713,
+      "tiempo_seg": 0.99,
+      "matriz_confusion": {
+        "tn": 13457,
+        "fp": 510,
+        "fn": 5011,
+        "tp": 1022
+      },
+      "parametros": "{'bootstrap': True, 'ccp_alpha': 0.0, 'class_weight': None, 'criterion': 'gini', 'max_depth': 12, 'max_features': 'sqrt', 'max_leaf_nodes': None, 'max_samples': None, 'min_impurity_decrease': 0.0, 'min_samples_leaf': 1, 'min_samples_split': 2, 'min_weight_fraction_leaf': 0.0, 'monotonic_cst': None, 'n_estimators': 100, 'n_jobs': -1, 'oob_score': False, 'random_state': 42, 'verbose': 0, 'warm_start': False}"
+    },
+    "Regresion Logistica": {
+      "accuracy": 0.6459,
+      "precision": 0.4409,
+      "recall": 0.6481,
+      "f1_score": 0.5248,
+      "auc": 0.7147,
+      "tiempo_seg": 0.47,
+      "matriz_confusion": {
+        "tn": 9008,
+        "fp": 4959,
+        "fn": 2123,
+        "tp": 3910
+      },
+      "parametros": "{'C': 1.0, 'class_weight': 'balanced', 'dual': False, 'fit_intercept': True, 'intercept_scaling': 1, 'l1_ratio': None, 'max_iter': 500, 'multi_class': 'deprecated', 'n_jobs': None, 'penalty': 'l2', 'random_state': 42, 'solver': 'lbfgs', 'tol': 0.0001, 'verbose': 0, 'warm_start': False}"
+    },
+    "Red Neuronal (MLP)": {
+      "accuracy": 0.7257,
+      "precision": 0.5913,
+      "recall": 0.2931,
+      "f1_score": 0.3919,
+      "auc": 0.7149,
+      "tiempo_seg": 23.79,
+      "matriz_confusion": {
+        "tn": 12745,
+        "fp": 1222,
+        "fn": 4265,
+        "tp": 1768
+      },
+      "parametros": "{'activation': 'relu', 'alpha': 0.0001, 'batch_size': 'auto', 'beta_1': 0.9, 'beta_2': 0.999, 'early_stopping': False, 'epsilon': 1e-08, 'hidden_layer_sizes': (64, 32), 'learning_rate': 'constant', 'learning_rate_init': 0.001, 'max_fun': 15000, 'max_iter': 40, 'momentum': 0.9, 'n_iter_no_change': 10, 'nesterovs_momentum': True, 'power_t': 0.5, 'random_state': 42, 'shuffle': True, 'solver': 'adam', 'tol': 0.0001, 'validation_fraction': 0.1, 'verbose': False, 'warm_start': False}"
+    }
+  },
+  "modelo_ganador": {
+    "nombre": "Regresion Logistica",
+    "criterio": "Mayor sensibilidad (Recall de 64.81%) para detección temprana y focalización de ayudas preventivas",
+    "justificacion": "En un problema de riesgo educativo crítico, el costo de un falso negativo (un estudiante vulnerable no detectado) es mucho mayor que el de un falso positivo. La Regresión Logística balanceada maximiza el Recall evitando omitir estudiantes en riesgo."
+  }
+}
