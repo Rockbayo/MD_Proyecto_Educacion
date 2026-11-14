@@ -1,4 +1,5 @@
 import os
+import json
 import sqlite3
 from flask import Flask, render_template, request, jsonify
 
@@ -965,6 +966,73 @@ def api_olap_pregunta4():
 
     except Exception as e:
         return jsonify({"status": "error", "message": str(e)}), 500
+
+
+# -------------------------------------------------------------
+# ETAPA 6: CONOCIMIENTO OCULTO (MODELOS Y MINERÍA DE TEXTO)
+# -------------------------------------------------------------
+
+@app.route('/conocimiento-oculto')
+@app.route('/etapa6')
+def conocimiento_oculto():
+    """Vista interactiva de la Etapa 6: Modelos Supervisados, Clustering k-Means y Análisis de Comentarios."""
+    metricas_sup_path = os.path.join(BASE_DIR, 'data', 'reports', 'metricas_modelos_etapa6.json')
+    metricas_clust_path = os.path.join(BASE_DIR, 'data', 'reports', 'metricas_clustering_etapa6.json')
+    metadatos_yt_path = os.path.join(BASE_DIR, 'data', 'reports', 'metadatos_extraccion_youtube.json')
+
+    metricas_sup = {}
+    metricas_clust = {}
+    metadatos_yt = {}
+
+    if os.path.exists(metricas_sup_path):
+        with open(metricas_sup_path, 'r', encoding='utf-8') as f:
+            metricas_sup = json.load(f)
+
+    if os.path.exists(metricas_clust_path):
+        with open(metricas_clust_path, 'r', encoding='utf-8') as f:
+            metricas_clust = json.load(f)
+
+    if os.path.exists(metadatos_yt_path):
+        with open(metadatos_yt_path, 'r', encoding='utf-8') as f:
+            metadatos_yt = json.load(f)
+
+    return render_template(
+        'etapa6/conocimiento_oculto.html',
+        supervisados=metricas_sup,
+        clustering=metricas_clust,
+        youtube=metadatos_yt
+    )
+
+
+@app.route('/api/v1/etapa6/resumen')
+def api_etapa6_resumen():
+    """Endpoint JSON con métricas comparativas supervisadas, clustering y YouTube."""
+    metricas_sup_path = os.path.join(BASE_DIR, 'data', 'reports', 'metricas_modelos_etapa6.json')
+    metricas_clust_path = os.path.join(BASE_DIR, 'data', 'reports', 'metricas_clustering_etapa6.json')
+    metadatos_yt_path = os.path.join(BASE_DIR, 'data', 'reports', 'metadatos_extraccion_youtube.json')
+
+    data_sup = {}
+    data_clust = {}
+    data_yt = {}
+
+    if os.path.exists(metricas_sup_path):
+        with open(metricas_sup_path, 'r', encoding='utf-8') as f:
+            data_sup = json.load(f)
+
+    if os.path.exists(metricas_clust_path):
+        with open(metricas_clust_path, 'r', encoding='utf-8') as f:
+            data_clust = json.load(f)
+
+    if os.path.exists(metadatos_yt_path):
+        with open(metadatos_yt_path, 'r', encoding='utf-8') as f:
+            data_yt = json.load(f)
+
+    return jsonify({
+        "status": "success",
+        "supervisados": data_sup,
+        "clustering": data_clust,
+        "youtube": data_yt
+    })
 
 
 if __name__ == '__main__':

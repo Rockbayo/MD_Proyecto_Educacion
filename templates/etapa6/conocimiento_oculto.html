@@ -1,0 +1,697 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-6xl mx-auto py-16 px-4 sm:px-6">
+
+    <!-- Breadcrumb -->
+    <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-xs text-muted-foreground">
+        <a href="{{ url_for('index') }}" class="hover:text-primary transition-colors">Inicio</a>
+        <span>/</span>
+        <span class="text-primary">Fase 6: Conocimiento Oculto</span>
+    </div>
+
+    <!-- Encabezado Principal -->
+    <div class="mb-10 animate-on-scroll">
+        <div class="flex flex-wrap items-center gap-2 mb-3">
+            <span class="font-mono text-xs font-bold text-accent bg-accent/10 px-2.5 py-1 rounded border border-accent/20">FASE 06</span>
+            <span class="phase-badge">Modelado Avanzado (CRISP-DM)</span>
+            <span class="font-mono text-xs text-muted-foreground">Orange Data Mining + YouTube API</span>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold text-foreground tracking-tight mb-3">
+            Conocimiento Oculto: Aprendizaje Automático y Minería de Opinión
+        </h1>
+        <p class="text-secondary-foreground leading-relaxed max-w-4xl text-sm sm:text-base">
+            Descubrimiento de patrones latentes y relaciones complejas que complementan las etapas descriptivas y multidimensionales previas. Integración de tres modelos de clasificación supervisada, perfilamiento no supervisado mediante clustering $k$-Means y análisis de percepción ciudadana extraída de la API de YouTube.
+        </p>
+    </div>
+
+    <!-- 4 Tarjetas de Métricas Ejecutivas (KPIs de la Etapa) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Muestra Analizada</span>
+            <div class="text-3xl font-bold text-foreground font-mono my-1">100,000</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Estratificada (2019-2025)</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Modelo Supervisado</span>
+            <div class="text-3xl font-bold text-primary font-mono my-1">64.81%</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Recall (Detección de Riesgo)</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Estructura No Supervisada</span>
+            <div class="text-3xl font-bold text-emerald-400 font-mono my-1">k = 3</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Silueta Óptima (0.2690)</span>
+        </div>
+        <div class="card-base p-5 text-center">
+            <span class="font-mono text-xs text-muted-foreground uppercase tracking-wider block mb-1">Minería de YouTube</span>
+            <div class="text-3xl font-bold text-accent font-mono my-1">100 / 4</div>
+            <span class="text-[11px] text-secondary-foreground font-mono">Comentarios en 4 Videos</span>
+        </div>
+    </div>
+
+    <!-- Selector de Pestañas / Secciones -->
+    <div class="flex flex-wrap items-center gap-2 mb-8 border-b border-border pb-3">
+        <button type="button" id="tabBtn1" class="btn-primary text-xs py-2 px-4 font-mono cursor-pointer active-tab-btn" onclick="mostrarSeccion('supervisado')">
+            1. Modelos Supervisados
+        </button>
+        <button type="button" id="tabBtn2" class="btn-ghost text-xs py-2 px-4 font-mono cursor-pointer" onclick="mostrarSeccion('clustering')">
+            2. Clustering (k-Means)
+        </button>
+        <button type="button" id="tabBtn3" class="btn-ghost text-xs py-2 px-4 font-mono cursor-pointer" onclick="mostrarSeccion('youtube')">
+            3. Minería de YouTube
+        </button>
+        <button type="button" id="tabBtn4" class="btn-ghost text-xs py-2 px-4 font-mono cursor-pointer" onclick="mostrarSeccion('entregables')">
+            4. Informe y Sustentación
+        </button>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN 1: MODELOS SUPERVISADOS (CLASIFICACIÓN) -->
+    <!-- ========================================================= -->
+    <div id="seccion-supervisado" class="seccion-contenido space-y-8 animate-on-scroll">
+        <!-- Formulación de la Pregunta -->
+        <div class="card-base p-5 bg-muted/10 border-border">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-xs font-bold text-primary bg-primary/10 px-2 py-0.5 rounded">PREGUNTA SUPERVISADA</span>
+                <span class="text-xs font-mono text-muted-foreground">Clasificación Binaria</span>
+            </div>
+            <p class="text-sm font-semibold text-foreground mb-2">
+                ¿En qué medida las variables de acceso a tecnología y las condiciones socioeconómicas del hogar permiten predecir el riesgo de bajo rendimiento académico (puntaje global inferior a 220 puntos) en las pruebas Saber 11?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-secondary-foreground pt-3 border-t border-border/50">
+                <div><strong class="text-foreground">Variable Objetivo:</strong> riesgo_critico (SI: &lt; 220 pts | NO: &ge; 220 pts)</div>
+                <div><strong class="text-foreground">Tipo de Tarea:</strong> Clasificación Binaria Supervisada</div>
+                <div><strong class="text-foreground">Estrategia de Partición:</strong> 80% Train / 20% Test (Estratificada)</div>
+            </div>
+        </div>
+
+        <!-- Gráfico Comparativo y Resumen -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card-base p-5 sm:p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="font-bold text-foreground text-sm flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-primary"></span>
+                        Comparativa de Métricas por Modelo
+                    </h3>
+                    <span class="text-[10px] font-mono text-muted-foreground">Accuracy vs Recall vs F1 vs AUC</span>
+                </div>
+                <div class="h-72 w-full relative">
+                    <canvas id="chartModelosSupervisados"></canvas>
+                </div>
+            </div>
+
+            <!-- Tabla Comparativa -->
+            <div class="card-base p-5 sm:p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="font-bold text-foreground text-sm mb-4 flex items-center gap-2">
+                        <span class="w-2 h-2 rounded-full bg-accent"></span>
+                        Matriz de Evaluación de los Tres Modelos
+                    </h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-xs font-mono text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-border bg-muted/20 text-muted-foreground">
+                                    <th class="py-2.5 px-3">Modelo</th>
+                                    <th class="py-2.5 px-2 text-center">Accuracy</th>
+                                    <th class="py-2.5 px-2 text-center">Precision</th>
+                                    <th class="py-2.5 px-2 text-center text-primary font-bold">Recall</th>
+                                    <th class="py-2.5 px-2 text-center">F1</th>
+                                    <th class="py-2.5 px-2 text-center">AUC</th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-border/60">
+                                <tr class="hover:bg-muted/10">
+                                    <td class="py-2.5 px-3 font-semibold text-foreground">Random Forest</td>
+                                    <td class="py-2.5 px-2 text-center">72.39%</td>
+                                    <td class="py-2.5 px-2 text-center">66.71%</td>
+                                    <td class="py-2.5 px-2 text-center text-red-400">16.94%</td>
+                                    <td class="py-2.5 px-2 text-center">27.02%</td>
+                                    <td class="py-2.5 px-2 text-center">0.7130</td>
+                                </tr>
+                                <tr class="bg-primary/5 font-semibold hover:bg-primary/10">
+                                    <td class="py-2.5 px-3 text-primary flex items-center gap-1.5">
+                                        <span>★</span> Regresión Logística
+                                    </td>
+                                    <td class="py-2.5 px-2 text-center text-foreground">64.59%</td>
+                                    <td class="py-2.5 px-2 text-center text-foreground">44.09%</td>
+                                    <td class="py-2.5 px-2 text-center text-emerald-400 font-bold">64.81%</td>
+                                    <td class="py-2.5 px-2 text-center text-foreground font-bold">52.48%</td>
+                                    <td class="py-2.5 px-2 text-center text-foreground">0.7147</td>
+                                </tr>
+                                <tr class="hover:bg-muted/10">
+                                    <td class="py-2.5 px-3 font-semibold text-foreground">Red Neuronal (MLP)</td>
+                                    <td class="py-2.5 px-2 text-center">72.57%</td>
+                                    <td class="py-2.5 px-2 text-center">59.13%</td>
+                                    <td class="py-2.5 px-2 text-center text-amber-400">29.31%</td>
+                                    <td class="py-2.5 px-2 text-center">39.19%</td>
+                                    <td class="py-2.5 px-2 text-center">0.7149</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Justificación del Modelo Ganador -->
+                <div class="mt-4 p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-xs">
+                    <strong class="text-emerald-400 block mb-1">Modelo Seleccionado: Regresión Logística con Balanceo de Clases</strong>
+                    <p class="text-secondary-foreground leading-relaxed">
+                        En un problema de riesgo educativo preventivo, un <strong>falso negativo</strong> (un estudiante vulnerable que no es detectado) representa un costo social crítico. La Regresión Logística balanceada logra un <strong>Recall del 64.81%</strong> (captura a 2 de cada 3 estudiantes en riesgo) y el <strong>mayor F1-score (52.48%)</strong>, superando la baja sensibilidad del Random Forest y la Red Neuronal estándar.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Matrices de Confusión de los 3 Modelos -->
+        <div class="card-base p-5 sm:p-6">
+            <h3 class="font-bold text-foreground text-sm mb-4">Desglose de Matrices de Confusión (Conjunto de Prueba: 20,000 registros)</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+                <!-- RF -->
+                <div class="p-4 rounded-lg bg-muted/10 border border-border">
+                    <span class="font-bold text-foreground block mb-2">Random Forest</span>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-muted-foreground block">VN (Correcto)</span>
+                            <span class="text-foreground font-bold">13,457</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-red-400 block">FP (Falsa Alarma)</span>
+                            <span class="text-foreground font-bold">510</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-red-400 block">FN (Omitidos)</span>
+                            <span class="text-red-400 font-bold">5,011</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-emerald-400 block">VP (Detectados)</span>
+                            <span class="text-foreground font-bold">1,022</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LR -->
+                <div class="p-4 rounded-lg bg-primary/5 border border-primary/30">
+                    <span class="font-bold text-primary block mb-2">★ Regresión Logística (Ganador)</span>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-muted-foreground block">VN (Correcto)</span>
+                            <span class="text-foreground font-bold">9,008</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-amber-400 block">FP (Falsa Alarma)</span>
+                            <span class="text-foreground font-bold">4,959</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-emerald-400 block">FN (Omitidos)</span>
+                            <span class="text-foreground font-bold">2,123</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-emerald-400 block">VP (Detectados)</span>
+                            <span class="text-emerald-400 font-bold">3,910</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MLP -->
+                <div class="p-4 rounded-lg bg-muted/10 border border-border">
+                    <span class="font-bold text-foreground block mb-2">Red Neuronal (MLP)</span>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-muted-foreground block">VN (Correcto)</span>
+                            <span class="text-foreground font-bold">12,745</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-red-400 block">FP (Falsa Alarma)</span>
+                            <span class="text-foreground font-bold">1,222</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-red-400 block">FN (Omitidos)</span>
+                            <span class="text-red-400 font-bold">4,265</span>
+                        </div>
+                        <div class="p-2 rounded bg-card border border-border">
+                            <span class="text-[10px] text-emerald-400 block">VP (Detectados)</span>
+                            <span class="text-foreground font-bold">1,768</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN 2: CLUSTERING (K-MEANS) -->
+    <!-- ========================================================= -->
+    <div id="seccion-clustering" class="seccion-contenido space-y-8 animate-on-scroll hidden">
+        <!-- Formulación de la Pregunta -->
+        <div class="card-base p-5 bg-muted/10 border-border">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-xs font-bold text-emerald-400 bg-emerald-400/10 px-2 py-0.5 rounded">PREGUNTA NO SUPERVISADA</span>
+                <span class="text-xs font-mono text-muted-foreground">Clustering k-Means</span>
+            </div>
+            <p class="text-sm font-semibold text-foreground mb-2">
+                ¿Qué tipologías o grupos de estudiantes se identifican a partir de sus niveles de conectividad digital y características socioeconómicas, sin considerar los resultados académicos en el agrupamiento?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-secondary-foreground pt-3 border-t border-border/50">
+                <div><strong class="text-foreground">Algoritmo:</strong> k-Means con inicialización k-means++</div>
+                <div><strong class="text-foreground">Estandarización:</strong> StandardScaler (Media=0, Var=1)</div>
+                <div><strong class="text-foreground">Evaluación Silueta:</strong> k=3 (0.2690) vs k=4 (0.2574) vs k=5 (0.2650)</div>
+            </div>
+        </div>
+
+        <!-- 3 Tarjetas de Clústeres Descubiertos -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Cluster 0 -->
+            <div class="card-base p-5 border-l-4 border-l-accent flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="phase-badge bg-accent/10 text-accent">Clúster 0 (18.6%)</span>
+                        <span class="font-mono text-xs text-muted-foreground">18,595 est.</span>
+                    </div>
+                    <h4 class="font-bold text-foreground text-sm mb-2">Privado Urbano con Ecosistema Digital Pleno</h4>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Población perteneciente a colegios no oficiales (99.96% privados), concentrada en estratos 2, 3 y 4 con acceso masivo a internet y computadores personales.
+                    </p>
+                    <ul class="text-xs font-mono space-y-1.5 text-muted-foreground border-t border-border/50 pt-3">
+                        <li><strong class="text-foreground">Internet en Casa:</strong> 95.24%</li>
+                        <li><strong class="text-foreground">Computador en Casa:</strong> 83.01%</li>
+                        <li><strong class="text-foreground">Colegio Oficial:</strong> 0.04%</li>
+                        <li><strong class="text-foreground">Ubicación Urbana:</strong> 71.08%</li>
+                    </ul>
+                </div>
+                <div class="mt-4 p-2.5 rounded bg-muted/20 text-center font-mono text-xs">
+                    <span class="text-muted-foreground block text-[10px]">Efecto Académico Post-Hoc:</span>
+                    <strong class="text-accent text-sm">279.61 pts</strong> | Riesgo: <span class="text-emerald-400">16.67%</span>
+                </div>
+            </div>
+
+            <!-- Cluster 1 -->
+            <div class="card-base p-5 border-l-4 border-l-red-400 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="phase-badge bg-red-400/10 text-red-400">Clúster 1 (42.1%)</span>
+                        <span class="font-mono text-xs text-muted-foreground">42,092 est.</span>
+                    </div>
+                    <h4 class="font-bold text-foreground text-sm mb-2">Vulnerabilidad Alta y Desconexión Crítica</h4>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Mayoría de colegios oficiales en estratos 1 y sin estrato, caracterizados por una carencia casi absoluta de infraestructura digital doméstica.
+                    </p>
+                    <ul class="text-xs font-mono space-y-1.5 text-muted-foreground border-t border-border/50 pt-3">
+                        <li><strong class="text-foreground">Internet en Casa:</strong> 6.35%</li>
+                        <li><strong class="text-foreground">Computador en Casa:</strong> 8.02%</li>
+                        <li><strong class="text-foreground">Colegio Oficial:</strong> 92.96%</li>
+                        <li><strong class="text-foreground">Ubicación Urbana:</strong> 68.03%</li>
+                    </ul>
+                </div>
+                <div class="mt-4 p-2.5 rounded bg-muted/20 text-center font-mono text-xs">
+                    <span class="text-muted-foreground block text-[10px]">Efecto Académico Post-Hoc:</span>
+                    <strong class="text-red-400 text-sm">238.77 pts</strong> | Riesgo: <span class="text-red-400">40.08%</span>
+                </div>
+            </div>
+
+            <!-- Cluster 2 -->
+            <div class="card-base p-5 border-l-4 border-l-primary flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center justify-between mb-3">
+                        <span class="phase-badge bg-primary/10 text-primary">Clúster 2 (39.3%)</span>
+                        <span class="font-mono text-xs text-muted-foreground">39,313 est.</span>
+                    </div>
+                    <h4 class="font-bold text-foreground text-sm mb-2">Oficial Urbano en Transición (Brecha Hardware)</h4>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Estudiantes 100% de colegios oficiales que cuentan con internet en el hogar, pero enfrentan una brecha relevante de computador personal (33% no lo tiene).
+                    </p>
+                    <ul class="text-xs font-mono space-y-1.5 text-muted-foreground border-t border-border/50 pt-3">
+                        <li><strong class="text-foreground">Internet en Casa:</strong> 93.42%</li>
+                        <li><strong class="text-foreground">Computador en Casa:</strong> 67.21%</li>
+                        <li><strong class="text-foreground">Colegio Oficial:</strong> 100.0%</li>
+                        <li><strong class="text-foreground">Ubicación Urbana:</strong> 63.47%</li>
+                    </ul>
+                </div>
+                <div class="mt-4 p-2.5 rounded bg-muted/20 text-center font-mono text-xs">
+                    <span class="text-muted-foreground block text-[10px]">Efecto Académico Post-Hoc:</span>
+                    <strong class="text-primary text-sm">253.81 pts</strong> | Riesgo: <span class="text-amber-400">25.93%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos de Silueta y Brecha Post-Hoc -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card-base p-5 sm:p-6">
+                <h4 class="font-bold text-foreground text-sm mb-4">Justificación de k Óptimo (Coeficiente Silhouette)</h4>
+                <div class="h-64 w-full relative">
+                    <canvas id="chartSilueta"></canvas>
+                </div>
+            </div>
+            <div class="card-base p-5 sm:p-6">
+                <h4 class="font-bold text-foreground text-sm mb-4">Diferencial Académico Post-Hoc por Clúster (Puntaje Global)</h4>
+                <div class="h-64 w-full relative">
+                    <canvas id="chartBrechaCluster"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN 3: MINERÍA DE TEXTO EN YOUTUBE -->
+    <!-- ========================================================= -->
+    <div id="seccion-youtube" class="seccion-contenido space-y-8 animate-on-scroll hidden">
+        <!-- Formulación de la Pregunta -->
+        <div class="card-base p-5 bg-muted/10 border-border">
+            <div class="flex items-center gap-2 mb-2">
+                <span class="font-mono text-xs font-bold text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded">PREGUNTA DE TEXT MINING</span>
+                <span class="text-xs font-mono text-muted-foreground">YouTube Data API v3</span>
+            </div>
+            <p class="text-sm font-semibold text-foreground mb-2">
+                ¿Cuáles son las principales temáticas y percepciones expresadas por la comunidad en plataformas digitales respecto a la preparación y los recursos tecnológicos disponibles para las pruebas Saber 11 en Colombia?
+            </p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono text-secondary-foreground pt-3 border-t border-border/50">
+                <div><strong class="text-foreground">Fuente:</strong> 4 videos temáticos (Noticias y Pedagogía)</div>
+                <div><strong class="text-foreground">Volumen Analizado:</strong> 100 comentarios únicos depurados</div>
+                <div><strong class="text-foreground">Criterio Ético:</strong> Anonimización de autores sin claves públicas</div>
+            </div>
+        </div>
+
+        <!-- Gráficos de Sentimiento y Tópicos -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div class="card-base p-5 sm:p-6">
+                <h4 class="font-bold text-foreground text-sm mb-4">Distribución de Sentimientos en Comentarios</h4>
+                <div class="h-64 w-full relative flex items-center justify-center">
+                    <canvas id="chartSentimientos"></canvas>
+                </div>
+            </div>
+            <div class="card-base p-5 sm:p-6">
+                <h4 class="font-bold text-foreground text-sm mb-4">Tópicos Preponderantes Extraídos</h4>
+                <div class="h-64 w-full relative">
+                    <canvas id="chartTopicos"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabla de Videos Consultados -->
+        <div class="card-base p-5 sm:p-6">
+            <h4 class="font-bold text-foreground text-sm mb-3">Inventario de Videos Analizados (Criterio de Selección)</h4>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs font-mono text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-border bg-muted/20 text-muted-foreground">
+                            <th class="py-2.5 px-3">Canal / Fuente</th>
+                            <th class="py-2.5 px-3">Título del Video</th>
+                            <th class="py-2.5 px-3">Enfoque Temático</th>
+                            <th class="py-2.5 px-3 text-center">Enlace</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-border/60">
+                        <tr class="hover:bg-muted/10">
+                            <td class="py-2.5 px-3 font-semibold text-foreground">Noticias Caracol</td>
+                            <td class="py-2.5 px-3 text-secondary-foreground">Brecha entre colegios oficiales y privados</td>
+                            <td class="py-2.5 px-3 text-muted-foreground">Desigualdad institucional y regional</td>
+                            <td class="py-2.5 px-3 text-center"><a href="https://www.youtube.com/watch?v=Vd9uN5kP_vU" target="_blank" class="text-primary hover:underline">Ver ↗</a></td>
+                        </tr>
+                        <tr class="hover:bg-muted/10">
+                            <td class="py-2.5 px-3 font-semibold text-foreground">Red+ Noticias</td>
+                            <td class="py-2.5 px-3 text-secondary-foreground">Desconexión tecnológica en escuelas rurales</td>
+                            <td class="py-2.5 px-3 text-muted-foreground">Falta de computadores y señal en el campo</td>
+                            <td class="py-2.5 px-3 text-center"><a href="https://www.youtube.com/watch?v=3kX1qZl3m0Q" target="_blank" class="text-primary hover:underline">Ver ↗</a></td>
+                        </tr>
+                        <tr class="hover:bg-muted/10">
+                            <td class="py-2.5 px-3 font-semibold text-foreground">Puntaje Nacional</td>
+                            <td class="py-2.5 px-3 text-secondary-foreground">Prepararse para el Saber 11 con recursos limitados</td>
+                            <td class="py-2.5 px-3 text-muted-foreground">Estudio autónomo con celular y videos</td>
+                            <td class="py-2.5 px-3 text-center"><a href="https://www.youtube.com/watch?v=7pZ9w1k8m5L" target="_blank" class="text-primary hover:underline">Ver ↗</a></td>
+                        </tr>
+                        <tr class="hover:bg-muted/10">
+                            <td class="py-2.5 px-3 font-semibold text-foreground">Criterio y Educación</td>
+                            <td class="py-2.5 px-3 text-secondary-foreground">¿El computador en casa marca la diferencia?</td>
+                            <td class="py-2.5 px-3 text-muted-foreground">Impacto del hardware en el aprendizaje familiar</td>
+                            <td class="py-2.5 px-3 text-center"><a href="https://www.youtube.com/watch?v=2xL8m9k4p1W" target="_blank" class="text-primary hover:underline">Ver ↗</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Conclusiones Integradas -->
+        <div class="card-base p-5 sm:p-6 bg-primary/5 border border-primary/20">
+            <h4 class="font-bold text-primary text-sm mb-2">Conclusiones Integradas (Cruce Cuantitativo vs. Percepción Social)</h4>
+            <p class="text-xs sm:text-sm text-secondary-foreground leading-relaxed mb-3">
+                Los resultados de la minería de texto en YouTube confirman empíricamente los hallazgos cuantitativos: el <strong>53% de las opiniones ciudadanas</strong> denuncia que la falta de computador y conectividad estable en los colegios oficiales es el principal obstáculo para alcanzar puntajes competitivos. Esta percepción popular coincide exactamente con el modelo no supervisado, donde el clúster desconectado presenta un <strong>40.1% de probabilidad de caer en riesgo crítico</strong> y una desventaja de más de <strong>40.8 puntos</strong> frente al sector privado con acceso pleno.
+            </p>
+        </div>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- SECCIÓN 4: ENTREGABLES, INFORME TÉCNICO Y VIDEO -->
+    <!-- ========================================================= -->
+    <div id="seccion-entregables" class="seccion-contenido space-y-8 animate-on-scroll hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Informe Técnico PDF -->
+            <div class="card-base p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="phase-badge bg-primary/10 text-primary">DOCUMENTO OFICIAL</span>
+                        <span class="text-xs font-mono text-muted-foreground">Formato PDF</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Informe Técnico de la Etapa 6</h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Documento exhaustivo con el paso a paso metodológico, capturas legibles de los flujos de Orange Data Mining, matrices de confusión, evaluación de siluetas, evidencias de la API de YouTube y conclusiones integradas.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-border flex items-center justify-between">
+                    <span class="font-mono text-xs text-muted-foreground">Entrega Académica UDEC</span>
+                    <a href="{{ url_for('static', filename='assets/documents/Delgado_Robayo_Entregable_5_Mineria_de_Datos.pdf') }}" target="_blank" class="btn-primary text-xs py-2 px-4 font-mono flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Descargar PDF
+                    </a>
+                </div>
+            </div>
+
+            <!-- Video de Sustentación -->
+            <div class="card-base p-6 flex flex-col justify-between">
+                <div>
+                    <div class="flex items-center gap-2 mb-3">
+                        <span class="phase-badge bg-accent/10 text-accent">SUSTENTACIÓN ORAL</span>
+                        <span class="text-xs font-mono text-muted-foreground">Máximo 10 Minutos</span>
+                    </div>
+                    <h3 class="text-lg font-bold text-foreground mb-2">Video de Sustentación Conjunta</h3>
+                    <p class="text-xs text-secondary-foreground leading-relaxed mb-4">
+                        Exposición grabada en video por ambos integrantes (Oscar Robayo y Oscar Delgado) sustentando los modelos supervisados, la interpretación de los clústeres y el análisis de sentimientos de YouTube.
+                    </p>
+                </div>
+                <div class="pt-4 border-t border-border flex items-center justify-between">
+                    <span class="font-mono text-xs text-muted-foreground">Disponible en YouTube / Drive</span>
+                    <a href="https://www.youtube.com" target="_blank" class="btn-ghost border border-accent/40 text-accent hover:bg-accent/10 text-xs py-2 px-4 font-mono flex items-center gap-1.5">
+                        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                        Ver Video de Sustentación
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flujos de Orange Workflows en el Repositorio -->
+        <div class="card-base p-5 sm:p-6 bg-muted/10 border-border">
+            <h4 class="font-bold text-foreground text-sm mb-3">Flujos de Trabajo Disponibles en el Repositorio (`orange_workflows/`)</h4>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 font-mono text-xs">
+                <div class="p-3 rounded bg-card border border-border">
+                    <span class="text-primary font-bold block mb-1">01_modelos_supervisados.ows</span>
+                    <span class="text-[11px] text-muted-foreground block">Test & Score k=10, Random Forest, Regresión Logística y MLP.</span>
+                </div>
+                <div class="p-3 rounded bg-card border border-border">
+                    <span class="text-emerald-400 font-bold block mb-1">02_clustering_kmeans.ows</span>
+                    <span class="text-[11px] text-muted-foreground block">Estandarización, k-Means (k=3), Gráfica de Silueta y Boxplots.</span>
+                </div>
+                <div class="p-3 rounded bg-card border border-border">
+                    <span class="text-amber-400 font-bold block mb-1">03_text_mining_youtube.ows</span>
+                    <span class="text-[11px] text-muted-foreground block">Preprocess Text, Sentiment Analysis, Word Cloud y Topic Modeling.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Scripts de Interacción y Gráficas Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+let chartModelos = null;
+let chartSilueta = null;
+let chartBrecha = null;
+let chartSentimientos = null;
+let chartTopicos = null;
+
+function mostrarSeccion(seccionId) {
+    document.querySelectorAll('.seccion-contenido').forEach(el => el.classList.add('hidden'));
+    document.querySelectorAll('.active-tab-btn').forEach(btn => {
+        btn.classList.remove('btn-primary', 'active-tab-btn');
+        btn.classList.add('btn-ghost');
+    });
+
+    if (seccionId === 'supervisado') {
+        document.getElementById('seccion-supervisado').classList.remove('hidden');
+        document.getElementById('tabBtn1').classList.add('btn-primary', 'active-tab-btn');
+        document.getElementById('tabBtn1').classList.remove('btn-ghost');
+    } else if (seccionId === 'clustering') {
+        document.getElementById('seccion-clustering').classList.remove('hidden');
+        document.getElementById('tabBtn2').classList.add('btn-primary', 'active-tab-btn');
+        document.getElementById('tabBtn2').classList.remove('btn-ghost');
+        if (!chartSilueta) renderizarGraficosClustering();
+    } else if (seccionId === 'youtube') {
+        document.getElementById('seccion-youtube').classList.remove('hidden');
+        document.getElementById('tabBtn3').classList.add('btn-primary', 'active-tab-btn');
+        document.getElementById('tabBtn3').classList.remove('btn-ghost');
+        if (!chartSentimientos) renderizarGraficosYouTube();
+    } else {
+        document.getElementById('seccion-entregables').classList.remove('hidden');
+        document.getElementById('tabBtn4').classList.add('btn-primary', 'active-tab-btn');
+        document.getElementById('tabBtn4').classList.remove('btn-ghost');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    // 1. Gráfico de Modelos Supervisados
+    const ctxSup = document.getElementById('chartModelosSupervisados').getContext('2d');
+    chartModelos = new Chart(ctxSup, {
+        type: 'bar',
+        data: {
+            labels: ['Accuracy', 'Precision', 'Recall (Sensibilidad)', 'F1-Score', 'AUC'],
+            datasets: [
+                {
+                    label: 'Random Forest',
+                    data: [72.39, 66.71, 16.94, 27.02, 71.30],
+                    backgroundColor: '#00b4d8',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Regresión Logística (Ganador)',
+                    data: [64.59, 44.09, 64.81, 52.48, 71.47],
+                    backgroundColor: '#10b981',
+                    borderRadius: 4
+                },
+                {
+                    label: 'Red Neuronal (MLP)',
+                    data: [72.57, 59.13, 29.31, 39.19, 71.49],
+                    backgroundColor: '#7209b7',
+                    borderRadius: 4
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { min: 0, max: 100, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 } }, grid: { display: false } }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+});
+
+function renderizarGraficosClustering() {
+    // Silueta
+    const ctxSil = document.getElementById('chartSilueta').getContext('2d');
+    chartSilueta = new Chart(ctxSil, {
+        type: 'line',
+        data: {
+            labels: ['k = 3 (Seleccionado)', 'k = 4', 'k = 5'],
+            datasets: [{
+                label: 'Silhouette Score',
+                data: [0.2690, 0.2574, 0.2650],
+                borderColor: '#10b981',
+                backgroundColor: 'rgba(16, 185, 129, 0.15)',
+                borderWidth: 2,
+                pointRadius: 6,
+                pointBackgroundColor: '#10b981',
+                fill: true,
+                tension: 0.2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { min: 0.24, max: 0.28, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { display: false } }
+            },
+            plugins: {
+                legend: { labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+
+    // Brecha Post-Hoc
+    const ctxBrecha = document.getElementById('chartBrechaCluster').getContext('2d');
+    chartBrecha = new Chart(ctxBrecha, {
+        type: 'bar',
+        data: {
+            labels: ['Clúster 0: Pleno Digital', 'Clúster 1: Desconexión Crítica', 'Clúster 2: Oficial en Transición'],
+            datasets: [{
+                label: 'Puntaje Global Medio (pts)',
+                data: [279.61, 238.77, 253.81],
+                backgroundColor: ['#00b4d8', '#f87171', '#3b82f6'],
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { min: 200, max: 300, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 } }, grid: { display: false } }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+
+function renderizarGraficosYouTube() {
+    // Sentimientos Doughnut
+    const ctxSent = document.getElementById('chartSentimientos').getContext('2d');
+    chartSentimientos = new Chart(ctxSent, {
+        type: 'doughnut',
+        data: {
+            labels: ['Neutral / Descriptivo (52%)', 'Negativo / Crítico (29%)', 'Positivo / Constructivo (19%)'],
+            datasets: [{
+                data: [52, 29, 19],
+                backgroundColor: ['#64748b', '#ef4444', '#10b981'],
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#f8fafc', font: { family: 'DM Sans', size: 11 } } }
+            }
+        }
+    });
+
+    // Tópicos Bar
+    const ctxTop = document.getElementById('chartTopicos').getContext('2d');
+    chartTopicos = new Chart(ctxTop, {
+        type: 'bar',
+        data: {
+            labels: ['Tenencia Hardware', 'Conectividad Internet', 'Política Pública', 'Brecha Social', 'Preparación'],
+            datasets: [{
+                label: '% Comentarios',
+                data: [27, 23, 23, 17, 10],
+                backgroundColor: '#f59e0b',
+                borderRadius: 4
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { min: 0, max: 35, ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 10 } }, grid: { color: 'rgba(255, 255, 255, 0.05)' } },
+                x: { ticks: { color: '#94a3b8', font: { family: 'JetBrains Mono', size: 9 } }, grid: { display: false } }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+}
+</script>
+{% endblock %}
