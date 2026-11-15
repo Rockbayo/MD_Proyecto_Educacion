@@ -1,21 +1,43 @@
 <?xml version='1.0' encoding='utf-8'?>
-<scheme version="2.0" title="03_text_mining_youtube" description="Procesamiento de lenguaje natural, extraccion de sentimientos y agrupamiento tematico sobre comentarios de YouTube">
+<scheme version="2.0" title="" description="">
 	<nodes>
-		<node id="0" name="Corpus" position="(60, 160)" title="Cargar Comentarios YouTube" qualified_name="Orange.widgets.text.owcorpus.OWCorpus" project_name="Orange3-Text" version="0.1.0" />
-		<node id="1" name="Preprocess Text" position="(240, 160)" title="Tokenizar + Stopwords Español" qualified_name="Orange.widgets.text.owpreprocess.OWPreprocess" project_name="Orange3-Text" version="0.1.0" />
-		<node id="2" name="Sentiment Analysis" position="(420, 100)" title="Analisis de Sentimientos" qualified_name="Orange.widgets.text.owsentiment.OWSentiment" project_name="Orange3-Text" version="0.1.0" />
-		<node id="3" name="Word Cloud" position="(420, 220)" title="Nube Tematica de Palabras" qualified_name="Orange.widgets.text.owwordcloud.OWWordCloud" project_name="Orange3-Text" version="0.1.0" />
-		<node id="4" name="Topic Modeling" position="(600, 100)" title="Modelado de Topicos (LDA)" qualified_name="Orange.widgets.text.owtopicmodeling.OWTopicModeling" project_name="Orange3-Text" version="0.1.0" />
-		<node id="5" name="Hierarchical Clustering" position="(600, 220)" title="Clustering de Comentarios" qualified_name="Orange.widgets.unsupervised.owhierarchicalclustering.OWHierarchicalClustering" project_name="Orange3" version="0.1.0" />
+		<node id="0" name="Corpus" qualified_name="orangecontrib.text.widgets.owcorpus.OWCorpus" project_name="Orange3-Text" version="" title="Corpus" position="(109.0, 255.0)" />
+		<node id="1" name="Preprocess Text" qualified_name="orangecontrib.text.widgets.owpreprocess.OWPreprocess" project_name="Orange3-Text" version="" title="Preprocess Text" position="(381.0, 256.0)" />
+		<node id="2" name="Word Cloud" qualified_name="orangecontrib.text.widgets.owwordcloud.OWWordCloud" project_name="Orange3-Text" version="" title="Word Cloud" position="(558.0, 197.0)" />
+		<node id="3" name="Sentiment Analysis" qualified_name="orangecontrib.text.widgets.owsentimentanalysis.OWSentimentAnalysis" project_name="Orange3-Text" version="" title="Sentiment Analysis" position="(553.0, 324.0)" />
 	</nodes>
 	<links>
-		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
-		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
-		<link id="2" source_node_id="1" sink_node_id="3" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
-		<link id="3" source_node_id="2" sink_node_id="4" source_channel="Corpus" sink_channel="Corpus" enabled="true" />
-		<link id="4" source_node_id="1" sink_node_id="5" source_channel="Corpus" sink_channel="Data" enabled="true" />
+		<link id="0" source_node_id="0" sink_node_id="1" source_channel="Corpus" sink_channel="Corpus" enabled="true" source_channel_id="corpus" sink_channel_id="corpus" />
+		<link id="1" source_node_id="1" sink_node_id="2" source_channel="Corpus" sink_channel="Corpus" enabled="true" source_channel_id="corpus" sink_channel_id="corpus" />
+		<link id="2" source_node_id="1" sink_node_id="3" source_channel="Corpus" sink_channel="Corpus" enabled="true" source_channel_id="corpus" sink_channel_id="corpus" />
 	</links>
-	<annotations>
-		<text id="0" rect="(50, 20, 650, 40)" title="FLUJO 3: TEXT MINING Y ANALISIS DE SENTIMIENTOS EN YOUTUBE" />
-	</annotations>
+	<annotations />
+	<thumbnail />
+	<node_properties>
+		<properties node_id="0" format="pickle">gASVRgMAAAAAAAB9lCiMEmNvbnRyb2xBcmVhVmlzaWJsZZSIjAxyZWNlbnRfZmlsZXOUXZQojFND
+Oi9Vc2Vycy9pbmdvci9NRF9Qcm95ZWN0b19FZHVjYWNpb24vZGF0YS9wcm9jZXNzZWQvY29tZW50
+YXJpb3NfeW91dHViZV9saW1waW9zLmNzdpSMEWJvb2stZXhjZXJwdHMudGFilIwYZ3JpbW0tdGFs
+ZXMtc2VsZWN0ZWQudGFilIwYZWxlY3Rpb24tdHdlZXRzLTIwMTYudGFilIwXZnJpZW5kcy10cmFu
+c2NyaXB0cy50YWKUjAxhbmRlcnNlbi50YWKUZYwTc2F2ZWRXaWRnZXRHZW9tZXRyeZRDQgHZ0MsA
+AwAAAAAC5gAAAYUAAASZAAAC3AAAAucAAAGkAAAEmAAAAtsAAAAAAAAAAAeAAAAC5wAAAaQAAASY
+AAAC25SMC19fdmVyc2lvbl9flEsCjBBjb250ZXh0X3NldHRpbmdzlF2UKIwVb3Jhbmdld2lkZ2V0
+LnNldHRpbmdzlIwHQ29udGV4dJSTlCmBlH2UKIwGdmFsdWVzlH2UKIwIbGFuZ3VhZ2WUjAJlc5RK
+/v///4aUjA50aXRsZV92YXJpYWJsZZROSv7///+GlIwKdXNlZF9hdHRyc5RdlIwOdGV4dG9fb3Jp
+Z2luYWyUS2eGlGFK/f///4aUaAxLAnWMCmF0dHJpYnV0ZXOUfZQojAhpZF92aWRlb5RLAYwMdGl0
+dWxvX3ZpZGVvlEsBjAVsaWtlc5RLAowRZmVjaGFfcHVibGljYWNpb26USwSMC3NlbnRpbWllbnRv
+lEsBjBB0b3BpY29fcHJpbmNpcGFslEsBdYwFbWV0YXOUfZQoaB1LA4wMdGV4dG9fbGltcGlvlEsD
+dYwOZG9jdW1lbnRzX2hhc2iUihBl4NxubnPp2l7OVWniMK8UaBZOdWJoESmBlH2UKGgUfZQoaBaM
+AmVulEr+////hpRoGU5K/v///4aUaBtdlIwEVGV4dJRLZ4aUYUr9////hpRoDEsCdWggfZSMCENh
+dGVnb3J5lEsBc2gofZRoM0sDc2grihCNciXsYEwsVYvSXAU9vbo6aBaMAmVulHViZXUu
+</properties>
+		<properties node_id="1" format="literal">{'autocommit': True, 'controlAreaVisible': True, 'savedWidgetGeometry': None, 'storedsettings': {'name': '', 'preprocessors': [('preprocess.transform', {}), ('preprocess.tokenize', {}), ('preprocess.filter', {})]}, '__version__': 4}</properties>
+		<properties node_id="2" format="pickle">gASVcwAAAAAAAAB9lCiMEmNvbnRyb2xBcmVhVmlzaWJsZZSIjBNzYXZlZFdpZGdldEdlb21ldHJ5
+lE6MDnNlbGVjdGVkX3dvcmRzlI+UjAt3b3Jkc19jb2xvcpSIjAp3b3Jkc190aWx0lEsAjAtfX3Zl
+cnNpb25fX5RLAXUu
+</properties>
+		<properties node_id="3" format="literal">{'autocommit': True, 'controlAreaVisible': True, 'lilah_language': 'sl', 'liu_language': 'en', 'method_idx': 1, 'multi_language': 'en', 'savedWidgetGeometry': None, 'senti_language': 'en', '__version__': 2}</properties>
+	</node_properties>
+	<session_state>
+		<window_groups />
+	</session_state>
 </scheme>
