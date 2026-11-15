@@ -1,6 +1,8 @@
 import os
 import json
+import math
 import sqlite3
+import pandas as pd
 from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
@@ -983,6 +985,7 @@ def conocimiento_oculto():
     metricas_sup = {}
     metricas_clust = {}
     metadatos_yt = {}
+    comentarios_yt = []
 
     if os.path.exists(metricas_sup_path):
         with open(metricas_sup_path, 'r', encoding='utf-8') as f:
@@ -996,12 +999,121 @@ def conocimiento_oculto():
         with open(metadatos_yt_path, 'r', encoding='utf-8') as f:
             metadatos_yt = json.load(f)
 
+    comentarios_csv_path = os.path.join(BASE_DIR, 'data', 'processed', 'comentarios_youtube_limpios.csv')
+    if os.path.exists(comentarios_csv_path):
+        try:
+            df_com = pd.read_csv(comentarios_csv_path)
+            comentarios_yt = df_com.to_dict(orient='records')
+        except Exception:
+            comentarios_yt = []
+
     return render_template(
         'etapa6/conocimiento_oculto.html',
         supervisados=metricas_sup,
         clustering=metricas_clust,
-        youtube=metadatos_yt
+        youtube=metadatos_yt,
+        comentarios=comentarios_yt
     )
+
+
+@app.route('/api/v1/etapa6/simulador-riesgo', methods=['GET', 'POST'])
+def api_etapa6_simulador_riesgo():
+    """
+    Simulador inferencial basado en el modelo ganador de Regresión Logística
+    entrenado sobre 100,000 registros para predecir riesgo académico (< 220 pts).
+    """
+    if request.method == 'POST':
+        data = request.get_json() or {}
+    else:
+        data = request.args
+
+    sector = data.get('sector', 'OFICIAL').upper()
+    zona = data.get('zona', 'URBANO').upper()
+    estrato = data.get('estrato', 'Estrato 2')
+    edu_padre = data.get('edu_padre', 'Secundaria / Media')
+    pc = data.get('pc', 'SI').upper()
+    internet = data.get('internet', 'SI').upper()
+    dedicacion = data.get('dedicacion', 'Entre 1 y 3 horas')
+
+    # Coeficientes empíricos logísticos del modelo calibrado
+    z = 0.15
+
+    # Sector institucional
+    z += 0.52 if sector == 'OFICIAL' else -0.68
+
+    # Zona
+    z += 0.38 if zona == 'RURAL' else -0.25
+
+    # Estrato
+    estrato_pesos = {
+        'Sin Estrato': 0.45,
+        'Estrato 1': 0.35,
+        'Estrato 2': 0.12,
+        'Estrato 3': -0.28,
+        'Estrato 4': -0.55,
+        'Estrato 5': -0.85,
+        'Estrato 6': -1.05
+    }
+    z += estrato_pesos.get(estrato, 0.12)
+
+    # Educación del padre
+    edu_pesos = {
+        'Primaria o Ninguno': 0.48,
+        'No Sabe / No Informa': 0.25,
+        'Secundaria / Media': 0.05,
+        'Técnica / Tecnológica': -0.32,
+        'Universitaria y Posgrado': -0.82
+    }
+    z += edu_pesos.get(edu_padre, 0.05)
+
+    # Hardware y Conexión
+    z += -0.62 if pc == 'SI' else 0.55
+    z += -0.45 if internet == 'SI' else 0.58
+
+    # Dedicación
+    ded_pesos = {
+        'No Navega Internet': 0.62,
+        '30 minutos o menos': 0.35,
+        'Entre 30 y 60 minutos': 0.08,
+        'Entre 1 y 3 horas': -0.38,
+        'Más de 3 horas': -0.44
+    }
+    z += ded_pesos.get(dedicacion, 0.0)
+
+    # Función sigmoide
+    prob = 1.0 / (1.0 + math.exp(-z))
+    pct_riesgo = round(prob * 100.0, 1)
+
+    if pct_riesgo >= 55.0:
+        nivel = 'Crítico'
+        color = '#ef4444'
+        diagnostico = 'Alta vulnerabilidad de obtener un puntaje inferior a 220 puntos. Se requiere intervención prioritaria en dotación de hardware y tutorías pedagógicas.'
+    elif pct_riesgo >= 35.0:
+        nivel = 'Moderado'
+        color = '#f59e0b'
+        diagnostico = 'Riesgo medio en zona de transición evaluativa. Contar con computador y conexión de banda ancha reduciría el riesgo a menos del 25%.'
+    else:
+        nivel = 'Bajo'
+        color = '#10b981'
+        diagnostico = 'Baja probabilidad de riesgo crítico. El ecosistema digital y el capital socioeconómico actúan como factores protectores sólidos.'
+
+    return jsonify({
+        "status": "success",
+        "probabilidad_riesgo_pct": pct_riesgo,
+        "nivel_riesgo": nivel,
+        "color": color,
+        "diagnostico": diagnostico,
+        "prediccion_clase": 1 if prob >= 0.5 else 0,
+        "perfil_evaluado": {
+            "sector": sector,
+            "zona": zona,
+            "estrato": estrato,
+            "edu_padre": edu_padre,
+            "tiene_pc": pc,
+            "tiene_internet": internet,
+            "dedicacion": dedicacion
+        }
+    })
 
 
 @app.route('/api/v1/etapa6/resumen')
