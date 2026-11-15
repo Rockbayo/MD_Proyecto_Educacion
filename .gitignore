@@ -50,3 +50,7 @@ scripts/generar_informe_etapa6_docx.py
 *.swp*
 *.p
 
+
+# Guiones y notas internas de sustentacion
+*guion*
+*Guion*
